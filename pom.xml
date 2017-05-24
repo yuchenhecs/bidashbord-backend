@@ -7,15 +7,18 @@
     <groupId>bi</groupId>
     <artifactId>bi-backend</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.2.RELEASE</version>
+        <version>1.5.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
         <java.version>1.8</java.version>
+        <tomcat.version>8.5.0</tomcat.version>
     </properties>
 
     <dependencies>
@@ -31,6 +34,16 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <!--<scope>provided</scope>-->
         </dependency>
     </dependencies>
 
@@ -56,5 +69,20 @@
             <!--<url>https://repo.spring.io/libs-release</url>-->
         <!--</pluginRepository>-->
     <!--</pluginRepositories>-->
+
+    <build>
+        <finalName>bibackend</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <manifest>
+                        <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                    </manifest>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

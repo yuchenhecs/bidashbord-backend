@@ -4,17 +4,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 
-/**
- * Created by harshavardhanpatil on 5/23/17.
- */
 @SpringBootApplication
-public class ApplicationInitializer {
+public class ApplicationInitializer extends SpringBootServletInitializer {
 
     private static final Logger log = LoggerFactory.getLogger(ApplicationInitializer.class);
 
     public static void main(String[] args) {
         log.info("Starting the Application");
         SpringApplication.run(ApplicationInitializer.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(ApplicationInitializer.class);
     }
 }
