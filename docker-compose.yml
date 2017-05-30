@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - /tmp/logs:/usr/local/tomcat/logs
+    container_name: bibackendservice
+    links:
+      - db
+    networks:
+      - net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  db:
+    image: mysql:5.7.18
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - net
+    hostname: mysql
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=oranj1234
+      - MYSQL_DATABASE=goals_db
+networks:
+  net:
+    driver: bridge

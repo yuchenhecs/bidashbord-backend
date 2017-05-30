@@ -1,0 +1,50 @@
+{
+  "family": "buisness-intelligence",
+  "networkMode": "bridge",
+  "containerDefinitions": [
+    {
+      "name": "bibackend",
+      "image": "151468003545.dkr.ecr.us-east-1.amazonaws.com/bibackend:latest",
+      "memory": 700,
+      "links": [],
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "SPRING_PROFILES_DEFAULT",
+          "value": "uat"
+        }
+      ],
+      "mountPoints": [
+        {
+          "containerPath": "/usr/local/tomcat/logs/",
+          "sourceVolume": "tomcatlogs"
+        }
+      ],
+      "volumesFrom": [],
+      "disableNetworking": false,
+      "readonlyRootFilesystem": false,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "buisness-intelligence",
+          "awslogs-region": "us-east-1"
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "host": {
+        "sourcePath": "/usr/local/tomcat/logs/"
+      },
+      "name": "tomcatlogs"
+    }
+  ]
+}
