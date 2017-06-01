@@ -1,9 +1,8 @@
 package com.bi.oranj.controller;
 
-import com.bi.oranj.dao.GoalDAO;
-import com.bi.oranj.model.Goal;
+//import com.bi.oranj.dao.GoalDAO;
+import com.bi.oranj.entity.GoalEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class GoalController {
 
-    @Autowired
-    private GoalDAO goalDao;
+//    @Autowired
+//    private GoalDAO goalDao;
 
 
     @RequestMapping("/create")
@@ -23,14 +22,14 @@ public class GoalController {
     public String create(String name) {
         String userId = "";
         try {
-            Goal goal = new Goal(name);
-            goalDao.save(goal);
-            userId = String.valueOf(goal.getId());
+            GoalEntity goalEntity = new GoalEntity(name);
+//            goalDao.save(goalEntity);
+            userId = String.valueOf(goalEntity.getId());
         }
         catch (Exception ex) {
             return "Error creating the goal: " + ex.toString();
         }
-        return "Goal succesfully created with id = " + userId;
+        return "GoalEntity succesfully created with id = " + userId;
     }
 
     /**
@@ -40,29 +39,29 @@ public class GoalController {
     @ResponseBody
     public String delete(long id) {
         try {
-            Goal goal = new Goal(id);
-            goalDao.delete(goal);
+            GoalEntity goalEntity = new GoalEntity(id);
+//            goalDao.delete(goalEntity);
         }
         catch (Exception ex) {
             return "Error deleting the goal:" + ex.toString();
         }
-        return "Goal succesfully deleted!";
+        return "GoalEntity succesfully deleted!";
     }
 
     /**
      * GET /get-by-name  --> Return the id for the goal having the passed
      * name.
      */
-    @RequestMapping("/getByName")
+    @RequestMapping("/get-by-name")
     @ResponseBody
     public String getByName(String name) {
         String goalId = "";
         try {
-            Goal goal = goalDao.findByName(name);
-            goalId = String.valueOf(goal.getId());
+//            GoalEntity goalEntity = goalDao.findByName(name);
+//            goalId = String.valueOf(goalEntity.getId());
         }
         catch (Exception ex) {
-            return "Goal not found";
+            return "GoalEntity not found";
         }
         return "The goal id is: " + goalId;
     }
@@ -75,14 +74,14 @@ public class GoalController {
     @ResponseBody
     public String updateGoal(long id, String name) {
         try {
-            Goal goal = goalDao.findOne(id);
-            goal.setName(name);
-            goalDao.save(goal);
+//            GoalEntity goalEntity = goalDao.findOne(id);
+//            goalEntity.setName(name);
+//            goalDao.save(goalEntity);
         }
         catch (Exception ex) {
             return "Error updating the goal: " + ex.toString();
         }
-        return "Goal succesfully updated!";
+        return "GoalEntity successfully updated!";
     }
 
 }

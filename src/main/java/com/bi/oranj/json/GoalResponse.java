@@ -1,0 +1,103 @@
+package com.bi.oranj.json;
+
+import com.bi.oranj.controller.resp.BIResponse;
+import com.bi.oranj.serializer.GoalResponseSerializer;
+import com.bi.oranj.wrapper.User;
+import com.bi.oranj.wrapper.user.Firm;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.util.Collection;
+
+/**
+ * Created by jaloliddinbakirov on 5/30/17.
+ *
+ * User is an abstract class extended by Client, Advisor, Firm classes
+ *
+ */
+
+@JsonSerialize(using = GoalResponseSerializer.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class GoalResponse implements BIResponse{
+
+    private int totalGoals;     // _
+//    private int totalFirms;     //  |
+//    private int totalAdvisors;  //  | one of them
+//    private int totalClients;   // _|
+
+    private int totalUsers;
+
+    private int page;   //  page number
+    private int count;  //  page count
+    private Collection<? extends User> users;
+
+    public int getTotalGoals() {
+        return totalGoals;
+    }
+
+    public void setTotalGoals(int totalGoals) {
+        this.totalGoals = totalGoals;
+    }
+
+//    public int getTotalFirms() {
+//        return totalFirms;
+//    }
+//
+//    public void setTotalFirms(int totalFirms) {
+//        this.totalFirms = totalFirms;
+//    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public Collection<? extends User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<? extends User> users) {
+        this.users = users;
+    }
+
+//    public int getTotalAdvisors() {
+//        return totalAdvisors;
+//    }
+//
+//    public void setTotalAdvisors(int totalAdvisors) {
+//        this.totalAdvisors = totalAdvisors;
+//    }
+//
+//    public int getTotalClients() {
+//        return totalClients;
+//    }
+//
+//    public void setTotalClients(int totalClients) {
+//        this.totalClients = totalClients;
+//    }
+
+    public int getTotalUsers() {
+        return totalUsers;
+    }
+
+    public void setTotalUsers(int totalUsers) {
+        this.totalUsers = totalUsers;
+    }
+
+
+//    @Override
+//    public String toString(){
+//
+//    }
+}
