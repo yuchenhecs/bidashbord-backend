@@ -1,6 +1,5 @@
 package com.bi.oranj.config;
 
-
 import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
