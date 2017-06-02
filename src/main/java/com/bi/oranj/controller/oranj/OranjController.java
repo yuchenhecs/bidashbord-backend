@@ -31,6 +31,8 @@ public class OranjController {
 
         String startDate = date + CommonEnum.SPACE +CommonEnum.START_SECOND_OF_THE_DAY;
         String endDate = date + CommonEnum.SPACE +CommonEnum.LAST_SECOND_OF_THE_DAY;
+        log.info("Saving {} goals", date);
         return oranjService.getGoals(startDate, endDate);
+
     }
 }

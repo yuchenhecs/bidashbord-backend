@@ -42,7 +42,14 @@ public class OranjGoal {
 
     @Column(name = "updated_by_id", nullable = true)
     private Long updatedById;
+
     private boolean deleted;
+    private String userLastName;
+    private Long firmId;
+    private String firmName;
+    private Long advisorId;
+    private String advisorFirstName;
+    private String advisorLastName;
 
     public OranjGoal(){
         // For JPA to use

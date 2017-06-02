@@ -14,23 +14,22 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "bi_goal")
+@Table(name = "goal")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BiGoal {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
+    @Column(name = "goal_id")
+    private Long goalId;
 
     @Column(name = "goal_name")
     private String name;
     private String type;
 
-    @Column(name = "goal_id")
-    private Long goalId;
+    private boolean deleted;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "creation_date")
+    private String creationDate;
 
     @Column(name = "advisor_id")
     private Long advisorId;
@@ -38,25 +37,8 @@ public class BiGoal {
     @Column(name = "firm_id")
     private Long firmId;
 
-    @Column(name = "firm_name")
-    private String firmName;
-
-    private boolean deleted;
-
-    @Column(name = "creation_date")
-    private String creationDate;
-
-    @Column(name = "user_first_name")
-    private String userFirstName;
-
-    @Column(name = "user_last_name")
-    private String userLastName;
-
-    @Column(name = "advisor_first_name")
-    private String advisorFirstName;
-
-    @Column(name = "advisor_last_name")
-    private String advisorLastName;
+    @Column(name = "user_id")
+    private Long userId;
 
     public BiGoal(){
         // For JPA to use
