@@ -18,7 +18,6 @@ public interface AdvisorRepository extends JpaRepository<BiGoal, Integer>{
     @Query(value="SELECT advisor_id, advisor_first_name, advisor_last_name, GROUP_CONCAT(type separator ','), " +
             "COUNT(type) AS c FROM bi_goal WHERE firm_id = ?1 GROUP " +
             "BY advisor_id, advisor_first_name, advisor_last_name ORDER BY advisor_first_name LIMIT ?2, ?3", nativeQuery = true)
-
     public List<Object[]> findGoalsOrdered (long firmId, int start, int next);
 
 }

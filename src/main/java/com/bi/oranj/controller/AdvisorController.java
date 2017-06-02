@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * Created by jaloliddinbakirov on 5/24/17.
  */
@@ -20,12 +23,17 @@ public class AdvisorController {
     @Autowired
     private AdvisorService advisorService;
 
-    @RequestMapping(value = "/advisor/{firmId}/page/{pageNum}", method = RequestMethod.GET)
+    @RequestMapping(value = "/advisor/{firmId}", method = RequestMethod.GET)
     @ResponseBody
-    public BIResponse getFirmsOrdered (@PathVariable int pageNum, @PathVariable long firmId){
+    public BIResponse getFirmsOrdered (@RequestParam (value = "page") int pageNum, @PathVariable long firmId, HttpServletResponse response) throws IOException {
         int totalPages = advisorService.totalPages(firmId);
 
+        if (pageNum < 0 || firmId < 0){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Bad input parameter");
+        }
         if (pageNum > totalPages){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return RestResponse.success("Data not found");
         }
 
@@ -34,6 +42,7 @@ public class AdvisorController {
             advisors = advisorService.buildResponse(pageNum, firmId);
         }catch (Exception ex){
             logger.error("Error while building response for firms: " + ex);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return null;
         }
 

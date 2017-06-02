@@ -14,14 +14,13 @@ import java.util.List;
  */
 public interface GoalRepository extends JpaRepository<BiGoal, Integer> {
 
-
-    @Query(value="SELECT g.firmId, g.type, count(g) from BiGoal g GROUP BY g.firmId, g.type")
-    public List<Object[]> findGoals ();
-
     @Query(value = "SELECT count(goalId) FROM BiGoal")
     public Integer totalGoals();
 
     @Query(value = "SELECT count(goalId) FROM BiGoal WHERE firmId = ?1")
-    public Integer totalFirmGoals (long firmId);
+    public Integer totalAdvisorGoals (long firmId);
+
+    @Query(value = "SELECT count(goalId) FROM BiGoal WHERE firmId = ?1 and advisorId = ?2")
+    public Integer totalClientGoals (long firmId, long advisorId);
 
 }

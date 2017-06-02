@@ -72,27 +72,18 @@ public class AdvisorService {
                     }
                 }
                 hashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, goalList, count));
-                System.out.println(firstName + " " + lastName);
             }
         }
 
-        for (Map.Entry e : hashMap.entrySet()){
-            System.out.println(e.getKey() + " " + ((Advisor)e.getValue()).getFirstName());
-        }
 
         return hashMap.values();
     }
 
     public GoalResponse buildResponse (int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinct(firmId).size();
-        int totalGoals = goalRepository.totalFirmGoals(firmId);
+        int totalGoals = goalRepository.totalAdvisorGoals(firmId);
 
         Collection<Advisor> advisors = findAdvisorsOrdered(pageNum, firmId);
-
-        Iterator iterator = advisors.iterator();
-        while(iterator.hasNext()){
-            System.out.println(((Advisor) iterator.next()).getFirstName());
-        }
 
         if (advisors == null || advisors.isEmpty())
             return null;
