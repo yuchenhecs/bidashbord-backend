@@ -1,6 +1,7 @@
 package com.bi.oranj.service;
 
 
+import com.bi.oranj.entity.BiGoal;
 import com.bi.oranj.entity.GoalEntity;
 import com.bi.oranj.json.GoalResponse;
 import com.bi.oranj.repository.FirmRepository;
@@ -30,20 +31,20 @@ public class FirmService {
     private Integer pageSize;
 
     public int totalPages (){
-        return firmRepository.findDistinct().size() / 10;
+        return firmRepository.findDistinct().size() / pageSize;
     }
 
     public Collection<Firm> findFirmsOrdered (int pageNum){
 
-        List<Object[]> goalObjects = (List<Object[]>) firmRepository.findGoalsOrdered(pageNum * 10, pageSize);
+        List<BiGoal> goalObjects = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
 
-        Map<Integer, Firm> hashMap = new HashMap<>();
+        Map<Long, Firm> hashMap = new HashMap<>();
 
-        for (Object[] goal : goalObjects){
-            int firmId = ((BigInteger) goal[0]).intValue();
-            String firmName = (String) goal[1];
-            String[] types = ((String) goal[2]).split(",");
-            int count = ((BigInteger) goal[3]).intValue();
+        for (BiGoal goal : goalObjects){
+            long firmId = goal.getFirmId();
+            String firmName = goal.getFirmName();
+            String[] types = goal.getType().split(",");
+            int count = goal.getCount().intValue();
 
             if (hashMap.containsKey(firmId)){
                 Firm firm = hashMap.get(firmId);
@@ -94,39 +95,5 @@ public class FirmService {
 
         return goalResponse;
     }
-
-    /**
-     *
-     * @param pageNum is the number of next page, which is multiplied by 10 to retrieve next records
-     * @return
-     */
-//    public Collection<Firm> findFirmsOrdered (int pageNum){
-//
-//        List<Object[]> goalObjects = (List<Object[]>) goalRepository.findGoalsOrdered(new PageRequest(pageNum, pageSize));
-//
-//        Map<Integer, Firm> hashMap = new HashMap<>();
-//
-//        for (Object[] goal : goalObjects){
-//
-//            GoalEntity ge = new GoalEntity((int) goal[0], (String) goal[1], Math.toIntExact((long) goal[2]));
-//
-//            if (hashMap.containsKey(ge.getFirmId())){
-//                Firm firm = hashMap.get(ge.getFirmId());
-//
-//                HashMap<String, Integer> goalList = firm.getGoals();
-//                goalList.put(ge.getType(), ge.getCount());
-//
-//                firm.setUserId(ge.getFirmId());
-//                firm.setTotal(ge.getCount());
-//                firm.setGoals(goalList);
-//            } else {
-//                HashMap<String, Integer> goalsList = new HashMap<>();
-//                goalsList.put(ge.getType(), ge.getCount());
-//                hashMap.put(ge.getFirmId(), new Firm(ge.getFirmId(), ge.getName(), goalsList, ge.getCount()));
-//            }
-//        }
-//
-//        return hashMap.values();
-//    }
 
 }

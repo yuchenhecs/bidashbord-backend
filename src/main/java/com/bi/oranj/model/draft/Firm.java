@@ -51,7 +51,7 @@ public class Firm extends User{
         this.goals = goal;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 

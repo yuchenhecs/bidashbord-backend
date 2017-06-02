@@ -31,12 +31,12 @@ public class AdvisorService {
 
 
     public int totalPages (long firmId){
-        return advisorRepository.findDistinct(firmId).size() / 10;
+        return advisorRepository.findDistinct(firmId).size() / pageSize;
     }
 
     public Collection<Advisor> findAdvisorsOrdered (int pageNum, long firmId){
 
-        List<Object[]> goalObjects = (List<Object[]>) advisorRepository.findGoalsOrdered(firmId, pageNum * 10, pageSize);
+        List<Object[]> goalObjects = (List<Object[]>) advisorRepository.findGoalsOrdered(firmId, pageNum * pageSize, pageSize);
 
         Map<Integer, Advisor> hashMap = new HashMap<>();
 

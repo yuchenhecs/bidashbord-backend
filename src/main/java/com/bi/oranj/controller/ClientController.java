@@ -1,6 +1,7 @@
 package com.bi.oranj.controller;
 
 import com.bi.oranj.controller.resp.BIResponse;
+import com.bi.oranj.controller.resp.RestResponse;
 import com.bi.oranj.json.GoalResponse;
 import com.bi.oranj.service.ClientService;
 import org.slf4j.Logger;
@@ -38,15 +39,18 @@ public class ClientController {
             return RestResponse.success("Data not found");
         }
 
-        GoalResponse firms;
+        GoalResponse clients;
         try{
-            firms = clientService.buildResponse(pageNum, firmId, advisorId);
+            clients = clientService.buildResponse(pageNum, firmId, advisorId);
+            if (pageNum == totalPages){
+                clients.setLast(true);
+            }
         }catch (Exception ex){
             logger.error("Error while building response for firms: " + ex);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return null;
         }
-        return firms;
+        return clients;
     }
 
 

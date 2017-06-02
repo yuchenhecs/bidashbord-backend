@@ -32,12 +32,12 @@ public class ClientService {
 
 
     public int totalPages (long firmId, long advisorId){
-        return clientRepository.findDistinct(firmId, advisorId).size() / 10;
+        return clientRepository.findDistinctByFirmByAdvisor(firmId, advisorId).size() / pageSize;
     }
 
     public Collection<Client> findClientsOrdered (int pageNum, long firmId, long advisorId){
 
-        List<Object[]> goalObjects = (List<Object[]>) clientRepository.findGoalsOrdered(firmId, advisorId, pageNum * 10, pageSize);
+        List<Object[]> goalObjects = (List<Object[]>) clientRepository.findGoalsOrderedByFirmByAdvisor(firmId, advisorId, pageNum * pageSize, pageSize);
 
         Map<Integer, Client> hashMap = new HashMap<>();
 
@@ -81,7 +81,7 @@ public class ClientService {
     }
 
     public GoalResponse buildResponse (int pageNum, long firmId, long advisorId){
-        int totalClients = clientRepository.findDistinct(firmId, advisorId).size();
+        int totalClients = clientRepository.findDistinctByFirmByAdvisor(firmId, advisorId).size();
         int totalGoals = goalRepository.totalClientGoals(firmId, advisorId);
 
 

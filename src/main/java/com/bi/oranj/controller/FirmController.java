@@ -1,18 +1,16 @@
 package com.bi.oranj.controller;
 
 import com.bi.oranj.controller.resp.BIResponse;
-import com.bi.oranj.entity.GoalEntity;
+import com.bi.oranj.controller.resp.RestResponse;
 import com.bi.oranj.json.GoalResponse;
 import com.bi.oranj.service.FirmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by jaloliddinbakirov on 5/25/17.
@@ -35,13 +33,16 @@ public class FirmController {
             return RestResponse.error("Bad input parameter");
         }
         if (pageNum > totalPages){
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return RestResponse.success("Data not found");
         }
 
         GoalResponse firms;
         try{
             firms = firmService.buildResponse(pageNum);
+            if (pageNum == totalPages){
+                firms.setLast(true);
+            }
         }catch (Exception ex){
             logger.error("Error while building response for firms: " + ex);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

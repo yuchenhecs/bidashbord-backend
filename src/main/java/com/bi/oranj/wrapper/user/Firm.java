@@ -14,7 +14,7 @@ import java.util.HashMap;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Firm extends User{
 
-    public Firm (int firmId, String name, HashMap<String, Integer> goals, int total){
+    public Firm (long firmId, String name, HashMap<String, Integer> goals, long total){
         super(firmId, name, goals, total);
     }
 }

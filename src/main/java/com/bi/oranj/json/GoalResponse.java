@@ -29,6 +29,7 @@ public class GoalResponse implements BIResponse{
 
     private int page;   //  page number
     private int count;  //  page count
+    private boolean last;
     private Collection<? extends User> users;
 
     public int getTotalGoals() {
@@ -38,14 +39,6 @@ public class GoalResponse implements BIResponse{
     public void setTotalGoals(int totalGoals) {
         this.totalGoals = totalGoals;
     }
-
-//    public int getTotalFirms() {
-//        return totalFirms;
-//    }
-//
-//    public void setTotalFirms(int totalFirms) {
-//        this.totalFirms = totalFirms;
-//    }
 
     public int getPage() {
         return page;
@@ -71,22 +64,6 @@ public class GoalResponse implements BIResponse{
         this.users = users;
     }
 
-//    public int getTotalAdvisors() {
-//        return totalAdvisors;
-//    }
-//
-//    public void setTotalAdvisors(int totalAdvisors) {
-//        this.totalAdvisors = totalAdvisors;
-//    }
-//
-//    public int getTotalClients() {
-//        return totalClients;
-//    }
-//
-//    public void setTotalClients(int totalClients) {
-//        this.totalClients = totalClients;
-//    }
-
     public int getTotalUsers() {
         return totalUsers;
     }
@@ -95,9 +72,12 @@ public class GoalResponse implements BIResponse{
         this.totalUsers = totalUsers;
     }
 
+    public boolean isLast() {
+        return last;
+    }
 
-//    @Override
-//    public String toString(){
-//
-//    }
+    public void setLast(boolean last) {
+        this.last = last;
+    }
+
 }

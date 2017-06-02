@@ -57,6 +57,8 @@ public class BiGoal {
     @Column(name = "advisor_last_name")
     private String advisorLastName;
 
+    private Long count;
+
     public BiGoal(){
         // For JPA to use
     }

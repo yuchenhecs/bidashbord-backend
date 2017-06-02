@@ -1,6 +1,7 @@
 package com.bi.oranj.controller;
 
 import com.bi.oranj.controller.resp.BIResponse;
+import com.bi.oranj.controller.resp.RestResponse;
 import com.bi.oranj.json.GoalResponse;
 import com.bi.oranj.service.AdvisorService;
 import org.slf4j.Logger;
@@ -40,6 +41,9 @@ public class AdvisorController {
         GoalResponse advisors;
         try{
             advisors = advisorService.buildResponse(pageNum, firmId);
+            if (pageNum == totalPages){
+                advisors.setLast(true);
+            }
         }catch (Exception ex){
             logger.error("Error while building response for firms: " + ex);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

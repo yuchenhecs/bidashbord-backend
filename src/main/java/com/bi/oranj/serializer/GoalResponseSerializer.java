@@ -35,6 +35,7 @@ public class GoalResponseSerializer extends StdSerializer<GoalResponse>{
 //        jgen.writeNumberField("totalFirms", value.getTotalFirms());
 //        jgen.writeNumberField("totalAdvisors", value.getTotalAdvisors());
 //        jgen.writeNumberField("totalClients", value.getTotalClients());
+        jgen.writeBooleanField("last", value.isLast());
         jgen.writeNumberField("page", value.getPage());
         jgen.writeNumberField("count", value.getCount());
         jgen.writeObjectField(user.toLowerCase(), value.getUsers());

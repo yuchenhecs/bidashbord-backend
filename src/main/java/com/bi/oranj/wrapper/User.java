@@ -11,25 +11,25 @@ import java.util.HashMap;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class User {
-    private int userId;
+    private long userId;
     private String name;
     private String firstName;
     private String lastName;
-    private int total;
+    private long total;
     private HashMap<String, Integer> goals;
 
     public User(){
         this.goals = new HashMap<>();
     }
 
-    public User(int userId, String name, HashMap<String, Integer> goals, int total){
+    public User(long userId, String name, HashMap<String, Integer> goals, long total){
         this.userId = userId;
         this.name = name;
         this.goals = goals;
         this.total += total;
     }
 
-    public User(int userId, String firstName, String lastName, HashMap<String, Integer> goals, int total){
+    public User(long userId, String firstName, String lastName, HashMap<String, Integer> goals, long total){
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,7 +38,7 @@ public abstract class User {
     }
 
 
-    public User(int userId, String name, HashMap<String, Integer> goals){
+    public User(long userId, String name, HashMap<String, Integer> goals){
         this.userId = userId;
         this.name = name;
         this.goals = goals;
@@ -60,7 +60,7 @@ public abstract class User {
         this.goals = goal;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
@@ -69,7 +69,7 @@ public abstract class User {
     }
 
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
