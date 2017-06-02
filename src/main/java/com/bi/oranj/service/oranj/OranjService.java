@@ -1,6 +1,6 @@
 package com.bi.oranj.service.oranj;
 
-import com.bi.oranj.constant.CommonEnum;
+import com.bi.oranj.constant.Constants;
 import com.bi.oranj.model.bi.Advisor;
 import com.bi.oranj.model.bi.BiGoal;
 import com.bi.oranj.model.bi.Client;
@@ -83,6 +83,6 @@ public class OranjService {
         }catch (Exception e){
             log.error("Error in fecthing goals from Oranj." + e);
         }
-        return CommonEnum.SUCCESS.toString();
+        return Constants.SUCCESS.toString();
     }
 }

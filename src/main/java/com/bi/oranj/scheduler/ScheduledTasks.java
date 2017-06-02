@@ -1,6 +1,6 @@
 package com.bi.oranj.scheduler;
 
-import com.bi.oranj.constant.CommonEnum;
+import com.bi.oranj.constant.Constants;
 import com.bi.oranj.service.oranj.OranjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +35,8 @@ public class ScheduledTasks {
 
         String yesterday = dateFormat.format(yesterday());
         log.info("Yesterday's date was {}", yesterday);
-        String startDate = yesterday + CommonEnum.SPACE +CommonEnum.START_SECOND_OF_THE_DAY;
-        String endDate = yesterday + CommonEnum.SPACE +CommonEnum.LAST_SECOND_OF_THE_DAY;
+        String startDate = yesterday + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
+        String endDate = yesterday + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
         oranjService.getGoals(startDate, endDate);
         log.info("Saved {} goals", yesterday);
     }

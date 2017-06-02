@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-import static com.bi.oranj.constant.ConstantQuery.GET_GOALS_QUERY;
+import static com.bi.oranj.constant.ConstantQueries.GET_GOALS_QUERY;
 
 /**
  * Created by harshavardhanpatil on 5/24/17.
