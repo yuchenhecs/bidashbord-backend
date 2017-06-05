@@ -21,6 +21,7 @@ import java.util.Collection;
  * Created by jaloliddinbakirov on 5/24/17.
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/goals")
 public class GoalController {
 
