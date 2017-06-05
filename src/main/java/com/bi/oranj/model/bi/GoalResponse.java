@@ -1,9 +1,8 @@
-package com.bi.oranj.json;
+package com.bi.oranj.model.bi;
 
-import com.bi.oranj.controller.resp.BIResponse;
+import com.bi.oranj.controller.bi.resp.BIResponse;
 import com.bi.oranj.serializer.GoalResponseSerializer;
-import com.bi.oranj.wrapper.User;
-import com.bi.oranj.wrapper.user.Firm;
+import com.bi.oranj.model.bi.wrapper.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 

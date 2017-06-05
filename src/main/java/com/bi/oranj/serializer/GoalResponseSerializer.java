@@ -1,13 +1,11 @@
 package com.bi.oranj.serializer;
 
-import com.bi.oranj.json.GoalResponse;
-import com.bi.oranj.wrapper.User;
+import com.bi.oranj.model.bi.GoalResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by jaloliddinbakirov on 5/31/17.

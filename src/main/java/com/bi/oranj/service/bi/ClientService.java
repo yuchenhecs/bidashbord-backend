@@ -1,11 +1,10 @@
-package com.bi.oranj.service;
+package com.bi.oranj.service.bi;
 
-import com.bi.oranj.json.GoalResponse;
-import com.bi.oranj.repository.ClientRepository;
-import com.bi.oranj.repository.GoalRepository;
-import com.bi.oranj.wrapper.User;
-import com.bi.oranj.wrapper.user.Advisor;
-import com.bi.oranj.wrapper.user.Client;
+import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.repository.bi.ClientRepository;
+import com.bi.oranj.repository.bi.GoalRepository;
+import com.bi.oranj.model.bi.wrapper.User;
+import com.bi.oranj.model.bi.wrapper.user.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

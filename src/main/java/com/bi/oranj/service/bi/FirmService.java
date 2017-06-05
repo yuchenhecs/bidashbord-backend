@@ -1,17 +1,13 @@
-package com.bi.oranj.service;
+package com.bi.oranj.service.bi;
 
 
-import com.bi.oranj.entity.BiGoal;
-import com.bi.oranj.entity.GoalEntity;
-import com.bi.oranj.json.GoalResponse;
-import com.bi.oranj.repository.FirmRepository;
-import com.bi.oranj.repository.GoalRepository;
-import com.bi.oranj.wrapper.User;
-import com.bi.oranj.wrapper.user.Firm;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.repository.bi.FirmRepository;
+import com.bi.oranj.repository.bi.GoalRepository;
+import com.bi.oranj.model.bi.wrapper.User;
+import com.bi.oranj.model.bi.wrapper.user.Firm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;

@@ -1,19 +1,16 @@
-package com.bi.oranj.controller;
+package com.bi.oranj.controller.bi;
 
-//import com.bi.oranj.dao.GoalDAO;
-import com.bi.oranj.controller.resp.BIResponse;
-import com.bi.oranj.controller.resp.RestResponse;
-import com.bi.oranj.entity.GoalEntity;
-import com.bi.oranj.json.GoalResponse;
-import com.bi.oranj.service.AdvisorService;
-import com.bi.oranj.service.ClientService;
-import com.bi.oranj.service.FirmService;
-import com.bi.oranj.service.GoalService;
-import com.bi.oranj.wrapper.User;
+import com.bi.oranj.controller.bi.resp.BIResponse;
+import com.bi.oranj.controller.bi.resp.RestResponse;
+import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.service.bi.AdvisorService;
+import com.bi.oranj.service.bi.ClientService;
+import com.bi.oranj.service.bi.FirmService;
+import com.bi.oranj.service.bi.GoalService;
+import com.bi.oranj.model.bi.wrapper.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;

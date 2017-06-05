@@ -1,12 +1,8 @@
-package com.bi.oranj.repository;
+package com.bi.oranj.repository.bi;
 
-import com.bi.oranj.entity.BiGoal;
-import com.bi.oranj.entity.GoalEntity;
-import org.springframework.data.domain.Pageable;
+import com.bi.oranj.model.bi.BiGoal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 /**
  * Created by jaloliddinbakirov on 5/30/17.

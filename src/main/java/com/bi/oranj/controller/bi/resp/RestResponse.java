@@ -1,4 +1,4 @@
-package com.bi.oranj.controller.resp;
+package com.bi.oranj.controller.bi.resp;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

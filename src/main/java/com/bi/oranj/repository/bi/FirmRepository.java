@@ -1,14 +1,10 @@
-package com.bi.oranj.repository;
+package com.bi.oranj.repository.bi;
 
-import com.bi.oranj.entity.BiGoal;
-import com.bi.oranj.entity.GoalEntity;
+import com.bi.oranj.model.bi.BiGoal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
-import javax.persistence.SqlResultSetMapping;
 import java.util.List;
 
 /**

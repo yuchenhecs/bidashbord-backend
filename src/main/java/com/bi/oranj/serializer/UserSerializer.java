@@ -1,6 +1,6 @@
 package com.bi.oranj.serializer;
 
-import com.bi.oranj.wrapper.User;
+import com.bi.oranj.model.bi.wrapper.User;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializerProvider;

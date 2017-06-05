@@ -1,4 +1,4 @@
-package com.bi.oranj.entity;
+package com.bi.oranj.model.bi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

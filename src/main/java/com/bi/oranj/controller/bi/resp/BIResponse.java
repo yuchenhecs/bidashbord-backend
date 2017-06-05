@@ -1,4 +1,4 @@
-package com.bi.oranj.controller.resp;
+package com.bi.oranj.controller.bi.resp;
 
 /**
  * Created by jaloliddinbakirov on 5/31/17.
