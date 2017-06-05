@@ -10,7 +10,7 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "firm")
+@Table(name = "firms")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Firm {
 

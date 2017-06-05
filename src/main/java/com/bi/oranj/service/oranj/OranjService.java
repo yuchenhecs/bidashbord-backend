@@ -72,7 +72,7 @@ public class OranjService {
                 clientRepository.save(client);
 
                 BiGoal biGoal = new BiGoal();
-                biGoal.setGoalId(oranjGoalList.get(i).getId());
+                biGoal.setId(oranjGoalList.get(i).getId());
                 biGoal.setName(oranjGoalList.get(i).getName());
                 biGoal.setType(oranjGoalList.get(i).getType());
                 biGoal.setCreationDate(oranjGoalList.get(i).getCreationDate());

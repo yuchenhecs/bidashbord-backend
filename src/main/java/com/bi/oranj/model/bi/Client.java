@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name = "user_table")
+@Table(name = "clients")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Client {
 

@@ -9,5 +9,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface BiGoalRepository extends JpaRepository<BiGoal, Integer> {
 
-    BiGoal findByGoalId(Long id);
+    BiGoal findById(Long id);
 }
