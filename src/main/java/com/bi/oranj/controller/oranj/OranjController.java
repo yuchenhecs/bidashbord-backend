@@ -1,6 +1,8 @@
 package com.bi.oranj.controller.oranj;
 
 import com.bi.oranj.constant.Constants;
+import com.bi.oranj.controller.bi.resp.RestResponse;
+import com.bi.oranj.model.bi.GoalResponse;
 import com.bi.oranj.service.oranj.OranjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,12 +33,8 @@ public class OranjController {
      */
     @ApiOperation(value = "Get Goals created for given date", notes = "date should be in 'yyyy-MM-dd' format")
     @RequestMapping(path="/goals", method = RequestMethod.GET)
-    public @ResponseBody String getGoalsByDate(@RequestParam(value = "date", required = true) String date) {
-
-        String startDate = date + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
-        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
+    public RestResponse getGoalsByDate(@RequestParam(value = "date", required = true) String date) {
         log.info("Saving {} goals", date);
-        return oranjService.getGoals(startDate, endDate);
-
+        return oranjService.getGoals(date);
     }
 }

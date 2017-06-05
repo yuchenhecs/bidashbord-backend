@@ -8,6 +8,8 @@ import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.GoalService;
 import com.bi.oranj.model.bi.wrapper.User;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.Collection;
 /**
  * Created by jaloliddinbakirov on 5/24/17.
  */
+@Api(basePath = "/goals", description = "Operations with BI DB", produces = "application/json")
 @RestController
 @CrossOrigin
 @RequestMapping("/goals")
@@ -37,18 +40,21 @@ public class GoalController {
     @Autowired
     ClientService clientService;
 
+    @ApiOperation(value = "Get Goals at Admin level", notes = "returns goals")
     @RequestMapping (value = "/firms", method = RequestMethod.GET)
     public BIResponse getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response) throws IOException {
         return processRequest("firms", null, pageNum, request, response);
     }
 
+    @ApiOperation(value = "Get Goals at Firm level", notes = "returns goals")
     @RequestMapping (value = "/advisors", method = RequestMethod.GET)
     public BIResponse getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "firmId", required = true) Long firmId) throws IOException {
         return processRequest("advisors", firmId, pageNum, request, response);
     }
 
+    @ApiOperation(value = "Get Goals at Advisor level", notes = "returns goals")
     @RequestMapping (value = "/clients", method = RequestMethod.GET)
     public BIResponse getClientGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "advisorId", required = true) Long advisorId) throws IOException {

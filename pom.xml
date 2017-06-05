@@ -107,28 +107,29 @@
             <!--<scope>provided</scope>-->
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
     <!--<build>-->
-        <!--<finalName>bibackend</finalName>-->
         <!--<plugins>-->
             <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-war-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<manifest>-->
-                        <!--<addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
-                    <!--</manifest>-->
-                <!--</configuration>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
             <!--</plugin>-->
         <!--</plugins>-->
     <!--</build>-->
+
+    <build>
+        <finalName>bibackend</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <manifest>
+                        <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                    </manifest>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

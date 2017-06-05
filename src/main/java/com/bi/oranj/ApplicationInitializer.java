@@ -10,8 +10,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
 @EnableScheduling
-public class ApplicationInitializer {
-//public class ApplicationInitializer extends SpringBootServletInitializer {
+public class ApplicationInitializer extends SpringBootServletInitializer {
 
     private static final Logger log = LoggerFactory.getLogger(ApplicationInitializer.class);
 
@@ -20,8 +19,8 @@ public class ApplicationInitializer {
         SpringApplication.run(ApplicationInitializer.class, args);
     }
 
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-//        return application.sources(ApplicationInitializer.class);
-//    }
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(ApplicationInitializer.class);
+    }
 }

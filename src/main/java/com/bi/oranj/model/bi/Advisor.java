@@ -27,6 +27,9 @@ public class Advisor {
     @Column(name = "advisor_last_name")
     private String advisorLastName;
 
+    @Column(name = "firm_id")
+    private Long firmId;
+
     public Advisor(){
     }
 }

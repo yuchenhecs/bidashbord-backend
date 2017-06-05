@@ -35,9 +35,7 @@ public class ScheduledTasks {
 
         String yesterday = dateFormat.format(yesterday());
         log.info("Yesterday's date was {}", yesterday);
-        String startDate = yesterday + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
-        String endDate = yesterday + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
-        oranjService.getGoals(startDate, endDate);
+        oranjService.getGoals(yesterday);
         log.info("Saved {} goals", yesterday);
     }
 }

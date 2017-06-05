@@ -11,7 +11,9 @@ CREATE TABLE `advisors` (
   `id` bigint(20) NOT NULL,
   `advisor_first_name` varchar(255) DEFAULT NULL,
   `advisor_last_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `firm_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`firm_id`) REFERENCES firms(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
