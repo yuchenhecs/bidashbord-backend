@@ -16,7 +16,7 @@ public interface GoalRepository extends JpaRepository<BiGoal, Integer> {
     @Query(value = "SELECT count(id) FROM BiGoal WHERE firmId = ?1")
     public Integer totalAdvisorGoals (long firmId);
 
-    @Query(value = "SELECT count(id) FROM BiGoal WHERE firmId = ?1 and advisorId = ?2")
-    public Integer totalClientGoals (long firmId, long advisorId);
+    @Query(value = "SELECT count(id) FROM BiGoal WHERE advisorId = ?1")
+    public Integer totalClientGoals (long advisorId);
 
 }

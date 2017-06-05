@@ -94,17 +94,17 @@ public class FirmService implements GoalService{
     }
 
     @Override
-    public Collection<? extends User> findGoals(int pageNum, long firmId, long advisorId) {
+    public Collection<? extends User> findGoals(int pageNum, long userId) {
         return findGoals(pageNum);
     }
 
     @Override
-    public int totalPages(long firmId, long advisorId) {
+    public int totalPages(long userId) {
         return totalPages();
     }
 
     @Override
-    public GoalResponse buildResponse(int pageNum, long firmId, long advisorId, Collection<? extends User> users) {
+    public GoalResponse buildResponse(int pageNum, long userId, Collection<? extends User> users) {
         return buildResponse(pageNum, (Collection<Firm>) users);
     }
 }

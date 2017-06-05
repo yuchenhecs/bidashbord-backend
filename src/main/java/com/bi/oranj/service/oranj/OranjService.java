@@ -79,7 +79,7 @@ public class OranjService {
                 biGoal.setDeleted(oranjGoalList.get(i).isDeleted());
                 biGoal.setFirmId(oranjGoalList.get(i).getFirmId());
                 biGoal.setAdvisorId(oranjGoalList.get(i).getAdvisorId());
-                biGoal.setUserId(oranjGoalList.get(i).getUser());
+                biGoal.setClientId(oranjGoalList.get(i).getUser());
                 biGoalRepository.save(biGoal);
             }
         }catch (Exception e){

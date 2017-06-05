@@ -36,11 +36,11 @@ CREATE TABLE `goals` (
   `firm_id` bigint(20) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   `goal_name` varchar(255) DEFAULT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
+  `client_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`advisor_id`) REFERENCES advisors(`id`),
   FOREIGN KEY (`firm_id`) REFERENCES firms(`id`),
-  FOREIGN KEY (`user_id`) REFERENCES clients(`id`)
+  FOREIGN KEY (`client_id`) REFERENCES clients(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hibernate_sequence`;

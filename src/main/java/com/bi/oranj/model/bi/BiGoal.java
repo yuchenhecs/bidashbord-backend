@@ -33,8 +33,8 @@ public class BiGoal {
     @Column(name = "firm_id")
     private Long firmId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "client_id")
+    private Long clientId;
 
 //    @Column(name = "firm_name")
 //    private String firmName;

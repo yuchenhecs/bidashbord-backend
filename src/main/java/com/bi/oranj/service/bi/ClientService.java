@@ -31,14 +31,14 @@ public class ClientService implements GoalService{
     private Integer pageSize;
 
 
-    public int totalPages (long firmId, long advisorId){
-        return (int) Math.ceil(clientRepository.findDistinctByFirmByAdvisor(firmId, advisorId).size() * 1d / pageSize) - 1;
+    public int totalPages (long advisorId){
+        return (int) Math.ceil(clientRepository.findDistinctByAdvisor(advisorId).size() * 1d / pageSize) - 1;
     }
 
 
-    public Collection<Client> findGoals (int pageNum, long firmId, long advisorId){
+    public Collection<Client> findGoals (int pageNum, long advisorId){
 
-        List<Object[]> goalObjects = (List<Object[]>) clientRepository.findGoalsOrderedByFirmByAdvisor(firmId, advisorId, pageNum * pageSize, pageSize);
+        List<Object[]> goalObjects = (List<Object[]>) clientRepository.findGoalsOrderedByAdvisor(advisorId, pageNum * pageSize, pageSize);
 
         Map<Integer, Client> hashMap = new HashMap<>();
 
@@ -82,9 +82,9 @@ public class ClientService implements GoalService{
     }
 
     @Override
-    public GoalResponse buildResponse (int pageNum, long firmId, long advisorId, Collection<? extends User> users){
-        int totalClients = clientRepository.findDistinctByFirmByAdvisor(firmId, advisorId).size();
-        int totalGoals = goalRepository.totalClientGoals(firmId, advisorId);
+    public GoalResponse buildResponse (int pageNum, long advisorId, Collection<? extends User> users){
+        int totalClients = clientRepository.findDistinctByAdvisor(advisorId).size();
+        int totalGoals = goalRepository.totalClientGoals(advisorId);
 
 
         Collection<Client> clients = (Collection<Client>) users;

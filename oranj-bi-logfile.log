@@ -223,10 +223,10 @@
 2017-May-31 13:35:24.483 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for type
 2017-May-31 13:35:24.483 DEBUG [main] o.h.c.a.PropertyBinder - Building property type
 2017-May-31 13:35:24.483 DEBUG [main] o.h.c.Ejb3Column - Binding column: Ejb3Column{table=org.hibernate.mapping.Table(goals1), mappingColumn=user_id, insertable=true, updatable=true, unique=false}
-2017-May-31 13:35:24.483 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property userId with lazy=false
-2017-May-31 13:35:24.483 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:userId]
-2017-May-31 13:35:24.483 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for userId
-2017-May-31 13:35:24.483 DEBUG [main] o.h.c.a.PropertyBinder - Building property userId
+2017-May-31 13:35:24.483 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property clientId with lazy=false
+2017-May-31 13:35:24.483 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:clientId]
+2017-May-31 13:35:24.483 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for clientId
+2017-May-31 13:35:24.483 DEBUG [main] o.h.c.a.PropertyBinder - Building property clientId
 2017-May-31 13:35:24.484 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:35:24.484 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for advisorId
 2017-May-31 13:35:24.484 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for count
@@ -235,7 +235,7 @@
 2017-May-31 13:35:24.484 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:35:24.484 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for name
 2017-May-31 13:35:24.484 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for type
-2017-May-31 13:35:24.484 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for userId
+2017-May-31 13:35:24.484 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for clientId
 2017-May-31 13:35:24.485 DEBUG [main] o.h.m.PrimaryKey - Forcing column [id] to be non-null as it is part of the primary key for table [goals1]
 2017-May-31 13:35:24.507 DEBUG [main] o.h.i.SessionFactoryImpl - Building session factory
 2017-May-31 13:35:24.508 DEBUG [main] o.h.c.Settings - SessionFactory name : null
@@ -306,7 +306,7 @@
 2017-May-31 13:35:24.679 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.679 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.679 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.679 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.679 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.679 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.690 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.693 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -327,7 +327,7 @@
 2017-May-31 13:35:24.695 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.695 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.695 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.695 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.695 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.695 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.695 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.695 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -348,7 +348,7 @@
 2017-May-31 13:35:24.696 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.696 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.696 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.696 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.696 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.696 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.696 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.696 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -369,7 +369,7 @@
 2017-May-31 13:35:24.697 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.697 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.697 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.697 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.697 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.697 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.697 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.698 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -390,7 +390,7 @@
 2017-May-31 13:35:24.698 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.698 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.698 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.698 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.698 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.698 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.698 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.698 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -411,7 +411,7 @@
 2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.699 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.699 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.699 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -432,7 +432,7 @@
 2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.699 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.699 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.700 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.700 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -453,7 +453,7 @@
 2017-May-31 13:35:24.700 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.700 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.700 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.700 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.700 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.700 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.700 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.701 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -474,7 +474,7 @@
 2017-May-31 13:35:24.701 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.701 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.701 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.701 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.701 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.701 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.701 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.701 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -495,7 +495,7 @@
 2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.702 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.702 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.702 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -516,7 +516,7 @@
 2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:35:24.702 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:35:24.702 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:35:24.702 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:35:24.703 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1027,10 +1027,10 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:33.842 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for type
 2017-May-31 13:45:33.842 DEBUG [main] o.h.c.a.PropertyBinder - Building property type
 2017-May-31 13:45:33.842 DEBUG [main] o.h.c.Ejb3Column - Binding column: Ejb3Column{table=org.hibernate.mapping.Table(goals1), mappingColumn=user_id, insertable=true, updatable=true, unique=false}
-2017-May-31 13:45:33.842 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property userId with lazy=false
-2017-May-31 13:45:33.842 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:userId]
-2017-May-31 13:45:33.842 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for userId
-2017-May-31 13:45:33.842 DEBUG [main] o.h.c.a.PropertyBinder - Building property userId
+2017-May-31 13:45:33.842 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property clientId with lazy=false
+2017-May-31 13:45:33.842 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:clientId]
+2017-May-31 13:45:33.842 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for clientId
+2017-May-31 13:45:33.842 DEBUG [main] o.h.c.a.PropertyBinder - Building property clientId
 2017-May-31 13:45:33.843 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:45:33.843 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for advisorId
 2017-May-31 13:45:33.843 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for count
@@ -1039,7 +1039,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:33.843 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:45:33.844 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for name
 2017-May-31 13:45:33.844 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for type
-2017-May-31 13:45:33.844 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for userId
+2017-May-31 13:45:33.844 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for clientId
 2017-May-31 13:45:33.845 DEBUG [main] o.h.m.PrimaryKey - Forcing column [id] to be non-null as it is part of the primary key for table [goals1]
 2017-May-31 13:45:33.867 DEBUG [main] o.h.i.SessionFactoryImpl - Building session factory
 2017-May-31 13:45:33.867 DEBUG [main] o.h.c.Settings - SessionFactory name : null
@@ -1110,7 +1110,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.038 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.038 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.038 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.038 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.038 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.039 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.050 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.054 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1131,7 +1131,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.056 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.056 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.056 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.056 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.056 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.056 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.056 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.056 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1152,7 +1152,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.057 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.057 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.057 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.057 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.057 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.057 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.057 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.057 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1173,7 +1173,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.057 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.058 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.058 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.058 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1194,7 +1194,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.058 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.058 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.058 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.059 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1215,7 +1215,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.059 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.059 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.059 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.059 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.059 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.059 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.059 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.059 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1236,7 +1236,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.060 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.060 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.060 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.060 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.060 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.060 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.060 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.060 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1257,7 +1257,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.061 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.061 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.061 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1278,7 +1278,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.061 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.061 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.062 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.062 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1299,7 +1299,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.062 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.062 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.062 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.062 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.062 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.062 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.062 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.062 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1320,7 +1320,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:45:34.063 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:45:34.063 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:45:34.063 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:45:34.063 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:45:34.063 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:45:34.063 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:45:34.063 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:45:34.063 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1749,10 +1749,10 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.186 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for type
 2017-May-31 13:48:11.186 DEBUG [main] o.h.c.a.PropertyBinder - Building property type
 2017-May-31 13:48:11.187 DEBUG [main] o.h.c.Ejb3Column - Binding column: Ejb3Column{table=org.hibernate.mapping.Table(goals1), mappingColumn=user_id, insertable=true, updatable=true, unique=false}
-2017-May-31 13:48:11.187 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property userId with lazy=false
-2017-May-31 13:48:11.187 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:userId]
-2017-May-31 13:48:11.187 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for userId
-2017-May-31 13:48:11.187 DEBUG [main] o.h.c.a.PropertyBinder - Building property userId
+2017-May-31 13:48:11.187 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property clientId with lazy=false
+2017-May-31 13:48:11.187 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:clientId]
+2017-May-31 13:48:11.187 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for clientId
+2017-May-31 13:48:11.187 DEBUG [main] o.h.c.a.PropertyBinder - Building property clientId
 2017-May-31 13:48:11.188 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:48:11.188 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for advisorId
 2017-May-31 13:48:11.188 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for count
@@ -1761,7 +1761,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.188 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:48:11.188 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for name
 2017-May-31 13:48:11.188 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for type
-2017-May-31 13:48:11.188 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for userId
+2017-May-31 13:48:11.188 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for clientId
 2017-May-31 13:48:11.189 DEBUG [main] o.h.m.PrimaryKey - Forcing column [id] to be non-null as it is part of the primary key for table [goals1]
 2017-May-31 13:48:11.213 DEBUG [main] o.h.i.SessionFactoryImpl - Building session factory
 2017-May-31 13:48:11.214 DEBUG [main] o.h.c.Settings - SessionFactory name : null
@@ -1832,7 +1832,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.367 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.367 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.367 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.367 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.367 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.367 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.377 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.380 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1853,7 +1853,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.382 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.382 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.382 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.382 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.382 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.382 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.382 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.382 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1874,7 +1874,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.383 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.383 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.383 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.383 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.383 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.383 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.383 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.383 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1895,7 +1895,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.384 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.384 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.384 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.384 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.384 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.384 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.384 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.384 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1916,7 +1916,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.385 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.385 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.385 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1937,7 +1937,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.385 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.385 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.385 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.386 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1958,7 +1958,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.386 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.386 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.386 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.386 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.386 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.386 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.386 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.386 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -1979,7 +1979,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.387 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.387 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.387 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2000,7 +2000,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.387 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.387 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.388 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.388 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2021,7 +2021,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.388 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.388 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.388 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2042,7 +2042,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:48:11.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:48:11.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:48:11.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:48:11.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:48:11.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:48:11.389 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:48:11.389 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:48:11.389 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2466,10 +2466,10 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.396 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for type
 2017-May-31 13:54:54.396 DEBUG [main] o.h.c.a.PropertyBinder - Building property type
 2017-May-31 13:54:54.396 DEBUG [main] o.h.c.Ejb3Column - Binding column: Ejb3Column{table=org.hibernate.mapping.Table(goals1), mappingColumn=user_id, insertable=true, updatable=true, unique=false}
-2017-May-31 13:54:54.396 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property userId with lazy=false
-2017-May-31 13:54:54.396 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:userId]
-2017-May-31 13:54:54.396 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for userId
-2017-May-31 13:54:54.396 DEBUG [main] o.h.c.a.PropertyBinder - Building property userId
+2017-May-31 13:54:54.396 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property clientId with lazy=false
+2017-May-31 13:54:54.396 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:clientId]
+2017-May-31 13:54:54.396 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for clientId
+2017-May-31 13:54:54.396 DEBUG [main] o.h.c.a.PropertyBinder - Building property clientId
 2017-May-31 13:54:54.398 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:54:54.399 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for advisorId
 2017-May-31 13:54:54.399 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for count
@@ -2478,7 +2478,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.400 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:54:54.400 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for name
 2017-May-31 13:54:54.400 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for type
-2017-May-31 13:54:54.400 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for userId
+2017-May-31 13:54:54.400 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for clientId
 2017-May-31 13:54:54.402 DEBUG [main] o.h.m.PrimaryKey - Forcing column [id] to be non-null as it is part of the primary key for table [goals1]
 2017-May-31 13:54:54.424 DEBUG [main] o.h.i.SessionFactoryImpl - Building session factory
 2017-May-31 13:54:54.425 DEBUG [main] o.h.c.Settings - SessionFactory name : null
@@ -2549,7 +2549,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.597 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.597 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.597 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.597 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.597 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.597 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.608 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.612 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2570,7 +2570,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.616 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.616 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.616 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.616 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.616 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.616 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.616 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.617 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2591,7 +2591,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.617 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.617 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.617 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.617 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.617 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.617 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.618 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.618 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2612,7 +2612,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.619 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.619 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.619 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.619 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.619 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.619 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.619 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.619 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2633,7 +2633,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.620 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.620 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.620 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.620 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.620 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.620 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.620 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.620 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2654,7 +2654,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.621 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.621 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.621 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.621 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.621 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.621 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.621 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.621 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2675,7 +2675,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.621 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.621 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.621 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.622 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.622 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.622 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.622 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.622 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2696,7 +2696,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.622 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.622 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.622 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.622 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.622 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.622 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.622 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.623 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2717,7 +2717,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.623 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.623 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.623 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.623 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.623 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.623 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.623 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.624 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2738,7 +2738,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.624 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.624 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.624 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.624 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.624 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.624 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.625 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.625 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -2759,7 +2759,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:54:54.625 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:54:54.625 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:54:54.625 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:54:54.625 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:54:54.625 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:54:54.626 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:54:54.626 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:54:54.626 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3176,10 +3176,10 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.173 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for type
 2017-May-31 13:56:27.173 DEBUG [main] o.h.c.a.PropertyBinder - Building property type
 2017-May-31 13:56:27.173 DEBUG [main] o.h.c.Ejb3Column - Binding column: Ejb3Column{table=org.hibernate.mapping.Table(goals1), mappingColumn=user_id, insertable=true, updatable=true, unique=false}
-2017-May-31 13:56:27.173 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property userId with lazy=false
-2017-May-31 13:56:27.173 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:userId]
-2017-May-31 13:56:27.173 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for userId
-2017-May-31 13:56:27.174 DEBUG [main] o.h.c.a.PropertyBinder - Building property userId
+2017-May-31 13:56:27.173 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property clientId with lazy=false
+2017-May-31 13:56:27.173 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:clientId]
+2017-May-31 13:56:27.173 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for clientId
+2017-May-31 13:56:27.174 DEBUG [main] o.h.c.a.PropertyBinder - Building property clientId
 2017-May-31 13:56:27.175 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:56:27.175 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for advisorId
 2017-May-31 13:56:27.175 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for count
@@ -3188,7 +3188,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.175 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:56:27.175 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for name
 2017-May-31 13:56:27.175 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for type
-2017-May-31 13:56:27.175 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for userId
+2017-May-31 13:56:27.175 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for clientId
 2017-May-31 13:56:27.176 DEBUG [main] o.h.m.PrimaryKey - Forcing column [id] to be non-null as it is part of the primary key for table [goals1]
 2017-May-31 13:56:27.199 DEBUG [main] o.h.i.SessionFactoryImpl - Building session factory
 2017-May-31 13:56:27.200 DEBUG [main] o.h.c.Settings - SessionFactory name : null
@@ -3259,7 +3259,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.372 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.372 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.372 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.372 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.372 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.372 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.383 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.386 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3280,7 +3280,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.388 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.388 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.388 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.388 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3301,7 +3301,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.389 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.389 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.389 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.389 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3322,7 +3322,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.390 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.390 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.390 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.390 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.390 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.390 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.390 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.390 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3343,7 +3343,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.390 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.390 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.390 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.391 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.391 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.391 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.391 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.391 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3364,7 +3364,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.391 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.391 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.391 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.392 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.392 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.392 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.392 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.392 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3385,7 +3385,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.392 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.393 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.393 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.393 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.393 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.393 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.393 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.393 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3406,7 +3406,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.393 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.393 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.394 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.394 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.394 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.394 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.394 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.394 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3427,7 +3427,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.394 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.394 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.395 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.395 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.395 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.395 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.395 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.395 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3448,7 +3448,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.395 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.395 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.395 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.395 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.395 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.396 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.396 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.396 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3469,7 +3469,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:27.396 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:27.396 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:27.396 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:27.396 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:27.396 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:27.396 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:27.397 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:27.397 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3862,10 +3862,10 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:53.962 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for type
 2017-May-31 13:56:53.962 DEBUG [main] o.h.c.a.PropertyBinder - Building property type
 2017-May-31 13:56:53.963 DEBUG [main] o.h.c.Ejb3Column - Binding column: Ejb3Column{table=org.hibernate.mapping.Table(goals1), mappingColumn=user_id, insertable=true, updatable=true, unique=false}
-2017-May-31 13:56:53.963 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property userId with lazy=false
-2017-May-31 13:56:53.963 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:userId]
-2017-May-31 13:56:53.963 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for userId
-2017-May-31 13:56:53.963 DEBUG [main] o.h.c.a.PropertyBinder - Building property userId
+2017-May-31 13:56:53.963 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property clientId with lazy=false
+2017-May-31 13:56:53.963 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:clientId]
+2017-May-31 13:56:53.963 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for clientId
+2017-May-31 13:56:53.963 DEBUG [main] o.h.c.a.PropertyBinder - Building property clientId
 2017-May-31 13:56:53.964 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:56:53.964 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for advisorId
 2017-May-31 13:56:53.964 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for count
@@ -3874,7 +3874,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:53.964 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:56:53.964 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for name
 2017-May-31 13:56:53.964 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for type
-2017-May-31 13:56:53.964 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for userId
+2017-May-31 13:56:53.964 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for clientId
 2017-May-31 13:56:53.966 DEBUG [main] o.h.m.PrimaryKey - Forcing column [id] to be non-null as it is part of the primary key for table [goals1]
 2017-May-31 13:56:53.990 DEBUG [main] o.h.i.SessionFactoryImpl - Building session factory
 2017-May-31 13:56:53.991 DEBUG [main] o.h.c.Settings - SessionFactory name : null
@@ -3945,7 +3945,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.153 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.153 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.153 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.153 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.153 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.154 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.166 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.169 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3966,7 +3966,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.173 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.173 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.173 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.173 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.173 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.173 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.173 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.173 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -3987,7 +3987,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.174 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.174 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.174 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.174 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.174 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.174 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.174 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.174 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4008,7 +4008,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.175 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.175 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.175 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.175 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.175 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.175 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.175 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.175 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4029,7 +4029,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.176 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.176 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.176 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.176 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.176 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.176 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.176 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.177 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4050,7 +4050,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.177 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.177 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.177 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.177 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.177 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.177 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.177 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.178 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4071,7 +4071,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.179 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.179 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.179 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.179 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.179 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.179 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.179 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.179 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4092,7 +4092,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.180 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.180 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.180 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.180 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.180 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.180 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.181 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.181 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4113,7 +4113,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.182 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.182 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.182 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.182 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.182 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.182 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.182 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.182 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4134,7 +4134,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.183 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.183 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.183 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.183 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.183 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.183 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.183 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.183 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4155,7 +4155,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:56:54.184 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:56:54.184 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:56:54.184 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:56:54.184 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:56:54.184 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:56:54.184 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:56:54.184 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:56:54.184 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4548,10 +4548,10 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.681 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for type
 2017-May-31 13:58:21.681 DEBUG [main] o.h.c.a.PropertyBinder - Building property type
 2017-May-31 13:58:21.681 DEBUG [main] o.h.c.Ejb3Column - Binding column: Ejb3Column{table=org.hibernate.mapping.Table(goals1), mappingColumn=user_id, insertable=true, updatable=true, unique=false}
-2017-May-31 13:58:21.681 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property userId with lazy=false
-2017-May-31 13:58:21.681 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:userId]
-2017-May-31 13:58:21.681 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for userId
-2017-May-31 13:58:21.681 DEBUG [main] o.h.c.a.PropertyBinder - Building property userId
+2017-May-31 13:58:21.681 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property clientId with lazy=false
+2017-May-31 13:58:21.681 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:clientId]
+2017-May-31 13:58:21.681 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for clientId
+2017-May-31 13:58:21.681 DEBUG [main] o.h.c.a.PropertyBinder - Building property clientId
 2017-May-31 13:58:21.682 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:58:21.683 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for advisorId
 2017-May-31 13:58:21.683 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for count
@@ -4560,7 +4560,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.683 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:58:21.683 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for name
 2017-May-31 13:58:21.683 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for type
-2017-May-31 13:58:21.683 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for userId
+2017-May-31 13:58:21.683 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for clientId
 2017-May-31 13:58:21.684 DEBUG [main] o.h.m.PrimaryKey - Forcing column [id] to be non-null as it is part of the primary key for table [goals1]
 2017-May-31 13:58:21.706 DEBUG [main] o.h.i.SessionFactoryImpl - Building session factory
 2017-May-31 13:58:21.707 DEBUG [main] o.h.c.Settings - SessionFactory name : null
@@ -4631,7 +4631,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.884 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.884 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.884 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.884 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.884 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.884 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.895 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.898 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4652,7 +4652,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.900 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.900 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.900 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.900 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.900 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.900 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.900 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.900 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4673,7 +4673,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.901 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.901 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.901 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.901 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.901 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.901 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.901 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.901 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4694,7 +4694,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.902 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.902 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.902 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.902 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.902 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.902 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.902 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.902 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4715,7 +4715,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.903 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.903 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.903 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.903 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.903 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.903 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.903 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.904 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4736,7 +4736,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.904 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.904 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.904 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.904 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.904 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.904 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.904 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.905 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4757,7 +4757,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.905 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.905 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.905 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.905 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.905 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.905 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.905 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.905 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4778,7 +4778,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.906 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.906 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.906 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4799,7 +4799,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.906 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.907 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.907 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.907 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4820,7 +4820,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.907 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.907 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.907 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.907 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.907 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.907 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.907 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.907 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -4841,7 +4841,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:58:21.908 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:58:21.908 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:58:21.908 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:58:21.908 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:58:21.908 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:58:21.908 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:58:21.908 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:58:21.908 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5234,10 +5234,10 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:12.874 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for type
 2017-May-31 13:59:12.874 DEBUG [main] o.h.c.a.PropertyBinder - Building property type
 2017-May-31 13:59:12.875 DEBUG [main] o.h.c.Ejb3Column - Binding column: Ejb3Column{table=org.hibernate.mapping.Table(goals1), mappingColumn=user_id, insertable=true, updatable=true, unique=false}
-2017-May-31 13:59:12.875 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property userId with lazy=false
-2017-May-31 13:59:12.875 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:userId]
-2017-May-31 13:59:12.875 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for userId
-2017-May-31 13:59:12.875 DEBUG [main] o.h.c.a.PropertyBinder - Building property userId
+2017-May-31 13:59:12.875 DEBUG [main] o.h.c.a.PropertyBinder - MetadataSourceProcessor property clientId with lazy=false
+2017-May-31 13:59:12.875 DEBUG [main] o.h.c.AbstractPropertyHolder - Attempting to locate auto-apply AttributeConverter for property [com.bi.oranj.entity.GoalEntity:clientId]
+2017-May-31 13:59:12.875 DEBUG [main] o.h.c.a.SimpleValueBinder - building SimpleValue for clientId
+2017-May-31 13:59:12.875 DEBUG [main] o.h.c.a.PropertyBinder - Building property clientId
 2017-May-31 13:59:12.876 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:59:12.876 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for advisorId
 2017-May-31 13:59:12.876 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for count
@@ -5246,7 +5246,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:12.876 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for id
 2017-May-31 13:59:12.876 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for name
 2017-May-31 13:59:12.876 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for type
-2017-May-31 13:59:12.877 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for userId
+2017-May-31 13:59:12.877 DEBUG [main] o.h.c.a.SimpleValueBinder - Starting fillSimpleValue for clientId
 2017-May-31 13:59:12.878 DEBUG [main] o.h.m.PrimaryKey - Forcing column [id] to be non-null as it is part of the primary key for table [goals1]
 2017-May-31 13:59:12.905 DEBUG [main] o.h.i.SessionFactoryImpl - Building session factory
 2017-May-31 13:59:12.907 DEBUG [main] o.h.c.Settings - SessionFactory name : null
@@ -5317,7 +5317,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.068 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.068 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.068 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.068 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.068 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.069 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.085 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.089 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5338,7 +5338,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.092 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.092 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.093 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.093 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.093 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.093 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.093 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.093 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5359,7 +5359,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.094 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.094 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.094 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.094 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.094 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.094 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.094 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.094 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5380,7 +5380,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.095 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.095 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.095 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.095 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.095 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.095 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.095 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.096 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5401,7 +5401,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.096 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.096 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.096 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.096 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.096 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.096 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.096 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.097 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5422,7 +5422,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.097 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.097 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.097 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.097 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.097 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.097 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.098 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.098 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5443,7 +5443,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.099 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.099 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.099 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.099 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.099 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.099 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.100 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.100 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5464,7 +5464,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.102 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.102 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.102 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.102 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.102 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.102 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.102 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.103 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5485,7 +5485,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.104 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.105 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.105 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.105 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.105 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.105 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.105 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.106 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5506,7 +5506,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.107 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.107 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.107 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.107 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.107 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.107 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.107 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.107 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)
@@ -5527,7 +5527,7 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token
 2017-May-31 13:59:13.108 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : id
 2017-May-31 13:59:13.108 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : name
 2017-May-31 13:59:13.108 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : type
-2017-May-31 13:59:13.108 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : userId
+2017-May-31 13:59:13.108 DEBUG [main] o.h.p.w.s.MetamodelGraphWalker - Visiting attribute path : clientId
 2017-May-31 13:59:13.108 DEBUG [main] o.h.l.p.b.i.FetchStyleLoadPlanBuildingAssociationVisitationStrategy - Building LoadPlan...
 2017-May-31 13:59:13.109 DEBUG [main] o.h.l.p.e.i.LoadQueryJoinAndFetchProcessor - processing queryspace <gen:0>
 2017-May-31 13:59:13.109 DEBUG [main] o.h.l.p.b.s.LoadPlanTreePrinter - LoadPlan(entity=com.bi.oranj.entity.GoalEntity)

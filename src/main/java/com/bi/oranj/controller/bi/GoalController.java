@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
@@ -36,18 +37,37 @@ public class GoalController {
     @Autowired
     ClientService clientService;
 
-    @RequestMapping (value = "/{userType}", method = RequestMethod.GET)
-    public BIResponse getGoals (@PathVariable String userType, @RequestParam (value = "advisorId", required = false) Long advisorId,
-                                @RequestParam (value = "firmId", required = false) Long firmId,
-                                @RequestParam (value = "page") int pageNum, HttpServletResponse response) throws IOException {
+    @RequestMapping (value = "/firms", method = RequestMethod.GET)
+    public BIResponse getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+                                HttpServletResponse response) throws IOException {
+        return processRequest("firms", null, pageNum, request, response);
+    }
 
+    @RequestMapping (value = "/advisors", method = RequestMethod.GET)
+    public BIResponse getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+                                HttpServletResponse response, @RequestParam (value = "firmId", required = true) Long firmId) throws IOException {
+        return processRequest("advisors", firmId, pageNum, request, response);
+    }
+
+    @RequestMapping (value = "/clients", method = RequestMethod.GET)
+    public BIResponse getClientGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+                                HttpServletResponse response, @RequestParam (value = "advisorId", required = true) Long advisorId) throws IOException {
+        return processRequest("clients", advisorId, pageNum, request, response);
+    }
+
+
+    private BIResponse processRequest (String userType, Long userId, Integer pageNum, HttpServletRequest request,
+                                       HttpServletResponse response) throws IOException {
         GoalService goalService = getService(userType);
 
         if (goalService != null){
-            if (advisorId == null) advisorId = Long.valueOf(0);
-            if (firmId == null) firmId = Long.valueOf(0);
+//            if (advisorId == null) advisorId = Long.valueOf(0);
+//            if (firmId == null) firmId = Long.valueOf(0);
 
-            int totalPages = goalService.totalPages(firmId, advisorId);
+            if (userId == null) userId = Long.valueOf(0);
+            if (pageNum == null) pageNum = Integer.valueOf(0);
+
+            int totalPages = goalService.totalPages(userId);
 
             if (pageNum < 0){
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -59,9 +79,9 @@ public class GoalController {
             }
 
             GoalResponse goals;
-            Collection <? extends User> users = goalService.findGoals(pageNum, firmId, advisorId);
+            Collection <? extends User> users = goalService.findGoals(pageNum, userId);
             try{
-                goals = goalService.buildResponse(pageNum, firmId, advisorId, users);
+                goals = goalService.buildResponse(pageNum, userId, users);
                 if (pageNum == totalPages){
                     goals.setLast(true);
                 }
@@ -71,7 +91,6 @@ public class GoalController {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 return null;
             }
-
             return goals;
         }
 
@@ -80,7 +99,7 @@ public class GoalController {
     }
 
 
-    public GoalService getService (String userType){
+    private GoalService getService (String userType){
         switch (userType.toLowerCase()){
             case "firms":
                 return firmService;

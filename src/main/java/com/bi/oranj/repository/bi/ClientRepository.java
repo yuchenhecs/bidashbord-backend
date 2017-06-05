@@ -23,10 +23,10 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             "ORDER BY firstName LIMIT ?2, ?3", nativeQuery = true)
     public List<Object[]> findGoalsOrderedByAdvisor (long advisorId, int pageNum, int next);
 
-    @Query(value = "SELECT DISTINCT(userId) FROM BiGoal WHERE firmId = ?1 AND advisorId = ?2")
+    @Query(value = "SELECT DISTINCT(clientId) FROM BiGoal WHERE firmId = ?1 AND advisorId = ?2")
     public List<Client> findDistinctByFirmByAdvisor(long firmId, long advisorId);
 
 
-    @Query(value = "SELECT DISTINCT(userId) FROM BiGoal WHERE advisorId = ?1")
+    @Query(value = "SELECT DISTINCT(clientId) FROM BiGoal WHERE advisorId = ?1")
     public List<Client> findDistinctByAdvisor(long advisorId);
 }

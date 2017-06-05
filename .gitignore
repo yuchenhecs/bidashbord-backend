@@ -6,4 +6,5 @@
 .idea/
 *.iml
 .DS_Store
+.oranj-bi-logfile.log
 catalina.home_IS_UNDEFINED
