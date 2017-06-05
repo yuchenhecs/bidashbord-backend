@@ -13,14 +13,16 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<BiGoal, Integer> {
 
-    @Query (value = "SELECT user_id, user_first_name, user_last_name, GROUP_CONCAT(type separator ','), " +
-            "count(type) as c FROM bi_goal WHERE firm_id = ?1 and advisor_id = ?2 " +
-            "GROUP BY user_id, user_first_name, user_last_name ORDER BY user_first_name LIMIT ?3, ?4", nativeQuery = true)
+    @Query (value = "SELECT c.id clientId, c.client_first_name firstName, c.client_last_name lastName, GROUP_CONCAT(g.type separator ',') type, " +
+            "COUNT(g.goal_id) count FROM goals g " +
+            "JOIN clients c ON g.client_id = c.id WHERE g.advisor_id = ?1 AND g.firm_id = ?2 GROUP BY c.id, c.client_first_name " +
+            "ORDER BY firstName LIMIT ?3, ?4", nativeQuery = true)
     public List<Object[]> findGoalsOrderedByFirmByAdvisor (long firmId, long advisorId, int pageNum, int next);
 
-    @Query (value = "SELECT user_id, user_first_name, user_last_name, GROUP_CONCAT(type separator ','), " +
-            "count(type) as c FROM bi_goal WHERE advisor_id = ?1 " +
-            "GROUP BY user_id, user_first_name, user_last_name ORDER BY user_first_name LIMIT ?2, ?3", nativeQuery = true)
+    @Query (value = "SELECT c.id clientId, c.client_first_name firstName, c.client_last_name lastName, GROUP_CONCAT(g.type separator ',') type, " +
+            "COUNT(g.goal_id) count FROM goals g " +
+            "JOIN clients c ON g.client_id = c.id WHERE g.advisor_id = ?1 GROUP BY c.id, c.client_first_name " +
+            "ORDER BY firstName LIMIT ?2, ?3", nativeQuery = true)
     public List<Object[]> findGoalsOrderedByAdvisor (long advisorId, int pageNum, int next);
 
     @Query(value = "SELECT DISTINCT(userId) FROM BiGoal WHERE firmId = ?1 AND advisorId = ?2")

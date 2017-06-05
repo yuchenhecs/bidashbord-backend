@@ -1,87 +1,98 @@
 package com.bi.oranj.controller;
 
 //import com.bi.oranj.dao.GoalDAO;
+import com.bi.oranj.controller.resp.BIResponse;
+import com.bi.oranj.controller.resp.RestResponse;
 import com.bi.oranj.entity.GoalEntity;
+import com.bi.oranj.json.GoalResponse;
+import com.bi.oranj.service.AdvisorService;
+import com.bi.oranj.service.ClientService;
+import com.bi.oranj.service.FirmService;
+import com.bi.oranj.service.GoalService;
+import com.bi.oranj.wrapper.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Created by jaloliddinbakirov on 5/24/17.
  */
-@Controller
+@RestController
+@RequestMapping("/goals")
 public class GoalController {
 
-//    @Autowired
-//    private GoalDAO goalDao;
+    private final Logger logger = LoggerFactory.getLogger(GoalController.class);
 
+    @Autowired
+    FirmService firmService;
 
-    @RequestMapping("/create")
-    @ResponseBody
-    public String create(String name) {
-        String userId = "";
-        try {
-            GoalEntity goalEntity = new GoalEntity(name);
-//            goalDao.save(goalEntity);
-            userId = String.valueOf(goalEntity.getId());
+    @Autowired
+    AdvisorService advisorService;
+
+    @Autowired
+    ClientService clientService;
+
+    @RequestMapping (value = "/{userType}", method = RequestMethod.GET)
+    public BIResponse getGoals (@PathVariable String userType, @RequestParam (value = "advisorId", required = false) Long advisorId,
+                                @RequestParam (value = "firmId", required = false) Long firmId,
+                                @RequestParam (value = "page") int pageNum, HttpServletResponse response) throws IOException {
+
+        GoalService goalService = getService(userType);
+
+        if (goalService != null){
+            if (advisorId == null) advisorId = Long.valueOf(0);
+            if (firmId == null) firmId = Long.valueOf(0);
+
+            int totalPages = goalService.totalPages(firmId, advisorId);
+
+            if (pageNum < 0){
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return RestResponse.error("Bad input parameter");
+            }
+            if (pageNum > totalPages){
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return RestResponse.success("Data not found");
+            }
+
+            GoalResponse goals;
+            Collection <? extends User> users = goalService.findGoals(pageNum, firmId, advisorId);
+            try{
+                goals = goalService.buildResponse(pageNum, firmId, advisorId, users);
+                if (pageNum == totalPages){
+                    goals.setLast(true);
+                }
+            }catch (Exception ex){
+                logger.error("Error while building response for firms: " + ex);
+                ex.printStackTrace();
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                return null;
+            }
+
+            return goals;
         }
-        catch (Exception ex) {
-            return "Error creating the goal: " + ex.toString();
-        }
-        return "GoalEntity succesfully created with id = " + userId;
+
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return RestResponse.error("Bad input parameter");
     }
 
-    /**
-     * GET /delete  --> Delete the goal having the passed id.
-     */
-    @RequestMapping("/delete")
-    @ResponseBody
-    public String delete(long id) {
-        try {
-            GoalEntity goalEntity = new GoalEntity(id);
-//            goalDao.delete(goalEntity);
+
+    public GoalService getService (String userType){
+        switch (userType.toLowerCase()){
+            case "firms":
+                return firmService;
+            case "advisors":
+                return advisorService;
+            case "clients":
+                return clientService;
         }
-        catch (Exception ex) {
-            return "Error deleting the goal:" + ex.toString();
-        }
-        return "GoalEntity succesfully deleted!";
+        return null;
     }
 
-    /**
-     * GET /get-by-name  --> Return the id for the goal having the passed
-     * name.
-     */
-    @RequestMapping("/get-by-name")
-    @ResponseBody
-    public String getByName(String name) {
-        String goalId = "";
-        try {
-//            GoalEntity goalEntity = goalDao.findByName(name);
-//            goalId = String.valueOf(goalEntity.getId());
-        }
-        catch (Exception ex) {
-            return "GoalEntity not found";
-        }
-        return "The goal id is: " + goalId;
-    }
-
-    /**
-     * GET /update  --> Update the name for the goal in the
-     * database having the passed id.
-     */
-    @RequestMapping("/update")
-    @ResponseBody
-    public String updateGoal(long id, String name) {
-        try {
-//            GoalEntity goalEntity = goalDao.findOne(id);
-//            goalEntity.setName(name);
-//            goalDao.save(goalEntity);
-        }
-        catch (Exception ex) {
-            return "Error updating the goal: " + ex.toString();
-        }
-        return "GoalEntity successfully updated!";
-    }
 
 }

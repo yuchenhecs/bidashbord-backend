@@ -5,4 +5,5 @@
 .project
 .idea/
 *.iml
+.DS_Store
 catalina.home_IS_UNDEFINED

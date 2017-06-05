@@ -6,6 +6,7 @@ import com.bi.oranj.entity.GoalEntity;
 import com.bi.oranj.json.GoalResponse;
 import com.bi.oranj.repository.FirmRepository;
 import com.bi.oranj.repository.GoalRepository;
+import com.bi.oranj.wrapper.User;
 import com.bi.oranj.wrapper.user.Firm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import java.util.*;
  * Created by jaloliddinbakirov on 5/25/17.
  */
 @Service
-public class FirmService {
+public class FirmService implements GoalService{
     @Autowired
     private FirmRepository firmRepository;
 
@@ -31,20 +32,21 @@ public class FirmService {
     private Integer pageSize;
 
     public int totalPages (){
-        return firmRepository.findDistinct().size() / pageSize;
+        return (int) Math.ceil( firmRepository.findDistinct().size() * 1d / pageSize) - 1;
     }
 
-    public Collection<Firm> findFirmsOrdered (int pageNum){
 
-        List<BiGoal> goalObjects = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
+    public Collection<Firm> findGoals (int pageNum){
 
-        Map<Long, Firm> hashMap = new HashMap<>();
+        List<Object[]> goalObjects = (List<Object[]>) firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
 
-        for (BiGoal goal : goalObjects){
-            long firmId = goal.getFirmId();
-            String firmName = goal.getFirmName();
-            String[] types = goal.getType().split(",");
-            int count = goal.getCount().intValue();
+        Map<Integer, Firm> hashMap = new HashMap<>();
+
+        for (Object[] goal : goalObjects){
+            int firmId = ((BigInteger) goal[0]).intValue();
+            String firmName = (String) goal[1];
+            String[] types = ((String) goal[2]).split(",");
+            int count = ((BigInteger) goal[3]).intValue();
 
             if (hashMap.containsKey(firmId)){
                 Firm firm = hashMap.get(firmId);
@@ -77,11 +79,10 @@ public class FirmService {
         return hashMap.values();
     }
 
-    public GoalResponse buildResponse (int pageNum){
+
+    public GoalResponse buildResponse (int pageNum, Collection<Firm> firms){
         int totalFirms = firmRepository.findDistinct().size();
         int totalGoals = goalRepository.totalGoals();
-
-        Collection<Firm> firms = findFirmsOrdered(pageNum);
 
         if (firms == null || firms.isEmpty())
             return null;
@@ -96,4 +97,18 @@ public class FirmService {
         return goalResponse;
     }
 
+    @Override
+    public Collection<? extends User> findGoals(int pageNum, long firmId, long advisorId) {
+        return findGoals(pageNum);
+    }
+
+    @Override
+    public int totalPages(long firmId, long advisorId) {
+        return totalPages();
+    }
+
+    @Override
+    public GoalResponse buildResponse(int pageNum, long firmId, long advisorId, Collection<? extends User> users) {
+        return buildResponse(pageNum, (Collection<Firm>) users);
+    }
 }

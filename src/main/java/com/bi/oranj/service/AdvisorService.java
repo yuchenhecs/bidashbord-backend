@@ -5,6 +5,7 @@ import com.bi.oranj.entity.GoalEntity;
 import com.bi.oranj.json.GoalResponse;
 import com.bi.oranj.repository.AdvisorRepository;
 import com.bi.oranj.repository.GoalRepository;
+import com.bi.oranj.wrapper.User;
 import com.bi.oranj.wrapper.user.Advisor;
 import com.bi.oranj.wrapper.user.Firm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.*;
  * Created by jaloliddinbakirov on 5/24/17.
  */
 @Service
-public class AdvisorService {
+public class AdvisorService implements GoalService{
 
     @Autowired
     private AdvisorRepository advisorRepository;
@@ -31,10 +32,11 @@ public class AdvisorService {
 
 
     public int totalPages (long firmId){
-        return advisorRepository.findDistinct(firmId).size() / pageSize;
+
+        return (int) Math.ceil(advisorRepository.findDistinct(firmId).size() * 1d / pageSize);
     }
 
-    public Collection<Advisor> findAdvisorsOrdered (int pageNum, long firmId){
+    public Collection<Advisor> findGoals (int pageNum, long firmId){
 
         List<Object[]> goalObjects = (List<Object[]>) advisorRepository.findGoalsOrdered(firmId, pageNum * pageSize, pageSize);
 
@@ -79,11 +81,11 @@ public class AdvisorService {
         return hashMap.values();
     }
 
-    public GoalResponse buildResponse (int pageNum, long firmId){
+    public GoalResponse buildResponse (int pageNum, long firmId, Collection<Advisor> advisors){
         int totalAdvisors = advisorRepository.findDistinct(firmId).size();
         int totalGoals = goalRepository.totalAdvisorGoals(firmId);
 
-        Collection<Advisor> advisors = findAdvisorsOrdered(pageNum, firmId);
+//        Collection<Advisor> advisors = findAdvisorsOrdered(pageNum, firmId);
 
         if (advisors == null || advisors.isEmpty())
             return null;
@@ -98,4 +100,18 @@ public class AdvisorService {
         return goalResponse;
     }
 
+    @Override
+    public Collection<? extends User> findGoals(int pageNum, long firmId, long advisorId) {
+        return findGoals(pageNum, firmId);
+    }
+
+    @Override
+    public int totalPages(long firmId, long advisorId) {
+        return totalPages(firmId);
+    }
+
+    @Override
+    public GoalResponse buildResponse(int pageNum, long firmId, long advisorId, Collection<? extends User> users) {
+        return buildResponse(pageNum, firmId, (Collection<Advisor>) users);
+    }
 }

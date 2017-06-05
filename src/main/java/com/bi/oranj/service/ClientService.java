@@ -3,6 +3,7 @@ package com.bi.oranj.service;
 import com.bi.oranj.json.GoalResponse;
 import com.bi.oranj.repository.ClientRepository;
 import com.bi.oranj.repository.GoalRepository;
+import com.bi.oranj.wrapper.User;
 import com.bi.oranj.wrapper.user.Advisor;
 import com.bi.oranj.wrapper.user.Client;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.Map;
  * Created by jaloliddinbakirov on 5/30/17.
  */
 @Service
-public class ClientService {
+public class ClientService implements GoalService{
 
     @Autowired
     ClientRepository clientRepository;
@@ -32,10 +33,11 @@ public class ClientService {
 
 
     public int totalPages (long firmId, long advisorId){
-        return clientRepository.findDistinctByFirmByAdvisor(firmId, advisorId).size() / pageSize;
+        return (int) Math.ceil(clientRepository.findDistinctByFirmByAdvisor(firmId, advisorId).size() * 1d / pageSize) - 1;
     }
 
-    public Collection<Client> findClientsOrdered (int pageNum, long firmId, long advisorId){
+
+    public Collection<Client> findGoals (int pageNum, long firmId, long advisorId){
 
         List<Object[]> goalObjects = (List<Object[]>) clientRepository.findGoalsOrderedByFirmByAdvisor(firmId, advisorId, pageNum * pageSize, pageSize);
 
@@ -80,12 +82,13 @@ public class ClientService {
         return hashMap.values();
     }
 
-    public GoalResponse buildResponse (int pageNum, long firmId, long advisorId){
+    @Override
+    public GoalResponse buildResponse (int pageNum, long firmId, long advisorId, Collection<? extends User> users){
         int totalClients = clientRepository.findDistinctByFirmByAdvisor(firmId, advisorId).size();
         int totalGoals = goalRepository.totalClientGoals(firmId, advisorId);
 
 
-        Collection<Client> clients = findClientsOrdered(pageNum, firmId, advisorId);
+        Collection<Client> clients = (Collection<Client>) users;
 
         if (clients == null || clients.isEmpty()) {
             return null;
