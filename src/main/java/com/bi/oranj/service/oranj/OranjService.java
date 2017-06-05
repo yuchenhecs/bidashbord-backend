@@ -67,6 +67,8 @@ public class OranjService {
                 client.setId(oranjGoalList.get(i).getUser());
                 client.setClientFirstName(oranjGoalList.get(i).getUserLastName());
                 client.setClientLastName(oranjGoalList.get(i).getUserLastName());
+                client.setAdvisorId(oranjGoalList.get(i).getAdvisorId());
+                client.setFirmId(oranjGoalList.get(i).getFirmId());
                 clientRepository.save(client);
 
                 BiGoal biGoal = new BiGoal();

@@ -20,8 +20,12 @@ CREATE TABLE `user_table` (
   `id` bigint(20) NOT NULL,
   `client_first_name` varchar(255) DEFAULT NULL,
   `client_last_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `firm_id` bigint(20) DEFAULT NULL,
+  `advisor_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`advisor_id`) REFERENCES advisor_table(`id`),
+  FOREIGN KEY (`firm_id`) REFERENCES firm(`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `goal`;
 CREATE TABLE `goal` (

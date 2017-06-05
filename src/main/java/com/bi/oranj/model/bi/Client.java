@@ -27,6 +27,12 @@ public class Client {
     @Column(name = "client_last_name")
     private String clientLastName;
 
+    @Column(name = "advisor_id")
+    private Long advisorId;
+
+    @Column(name = "firm_id")
+    private Long firmId;
+
     public Client(){
     }
 }
