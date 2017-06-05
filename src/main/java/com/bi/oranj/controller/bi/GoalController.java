@@ -8,6 +8,8 @@ import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.GoalService;
 import com.bi.oranj.model.bi.wrapper.User;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.util.Collection;
 /**
  * Created by jaloliddinbakirov on 5/24/17.
  */
+@Api(basePath = "/goals", description = "Operations with BI DB", produces = "application/json")
 @RestController
 @CrossOrigin
 @RequestMapping("/goals")
@@ -36,6 +39,7 @@ public class GoalController {
     @Autowired
     ClientService clientService;
 
+    @ApiOperation(value = "Get Firm/Advisor/Client Goals", notes = "returns you all the goals stored")
     @RequestMapping (value = "/{userType}", method = RequestMethod.GET)
     public BIResponse getGoals (@PathVariable String userType, @RequestParam (value = "advisorId", required = false) Long advisorId,
                                 @RequestParam (value = "firmId", required = false) Long firmId,

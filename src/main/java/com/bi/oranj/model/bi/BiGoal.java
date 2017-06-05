@@ -36,27 +36,10 @@ public class BiGoal {
     @Column(name = "user_id")
     private Long userId;
 
-//    @Column(name = "firm_name")
-//    private String firmName;
-
     private boolean deleted;
 
     @Column(name = "creation_date")
     private String creationDate;
-
-//    @Column(name = "user_first_name")
-//    private String userFirstName;
-//
-//    @Column(name = "user_last_name")
-//    private String userLastName;
-
-//    @Column(name = "advisor_first_name")
-//    private String advisorFirstName;
-
-//    @Column(name = "advisor_last_name")
-//    private String advisorLastName;
-
-//    private Long count;
 
     public BiGoal(){
         // For JPA to use
