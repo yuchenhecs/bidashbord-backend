@@ -57,7 +57,7 @@ public class GoalController {
             }
             if (pageNum > totalPages){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return RestResponse.success("Data not found");
+                return RestResponse.error("Data not found");
             }
 
             GoalResponse goals;

@@ -5,7 +5,6 @@ import com.bi.oranj.wrapper.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import javax.jnlp.UnavailableServiceException;
 import java.util.HashMap;
 
 /**

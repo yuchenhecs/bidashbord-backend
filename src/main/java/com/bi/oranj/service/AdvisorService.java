@@ -85,8 +85,6 @@ public class AdvisorService implements GoalService{
         int totalAdvisors = advisorRepository.findDistinct(firmId).size();
         int totalGoals = goalRepository.totalAdvisorGoals(firmId);
 
-//        Collection<Advisor> advisors = findAdvisorsOrdered(pageNum, firmId);
-
         if (advisors == null || advisors.isEmpty())
             return null;
 
