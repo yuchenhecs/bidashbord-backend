@@ -67,8 +67,6 @@ public class GoalController {
         GoalService goalService = getService(userType);
 
         if (goalService != null){
-//            if (advisorId == null) advisorId = Long.valueOf(0);
-//            if (firmId == null) firmId = Long.valueOf(0);
 
             if (userId == null) userId = Long.valueOf(0);
             if (pageNum == null) pageNum = Integer.valueOf(0);

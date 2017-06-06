@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Created by harshavardhanpatil on 5/25/17.
  */
@@ -33,7 +35,7 @@ public class OranjController {
      */
     @ApiOperation(value = "Get Goals created for given date", notes = "date should be in 'yyyy-MM-dd' format")
     @RequestMapping(path="/goals", method = RequestMethod.GET)
-    public RestResponse getGoalsByDate(@RequestParam(value = "date", required = true) String date) {
+    public RestResponse getGoalsByDate(@RequestParam(value = "date", required = true) String date, HttpServletResponse response) {
         log.info("Saving {} goals", date);
         return oranjService.getGoals(date);
     }
