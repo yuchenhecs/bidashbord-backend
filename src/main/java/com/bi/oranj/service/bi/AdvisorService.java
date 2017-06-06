@@ -31,7 +31,7 @@ public class AdvisorService implements GoalService{
     @Override
     public int totalPages (long firmId){
 
-        return (int) Math.ceil(advisorRepository.findDistinct(firmId).size() * 1d / pageSize);
+        return (int) Math.ceil(advisorRepository.findDistinct(firmId).size() * 1d / pageSize) - 1;
     }
 
     @Override
