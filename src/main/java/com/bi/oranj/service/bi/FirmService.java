@@ -49,7 +49,7 @@ public class FirmService implements GoalService{
 
                 HashMap<String, Integer> goalList = firm.getGoals();
                 for (String s : types){
-                    s = s.toLowerCase();
+                    s = s.trim().toLowerCase();
                     if (goalList.containsKey(s)){
                         goalList.put(s, goalList.get(s) + 1);
                     }else {
@@ -61,7 +61,7 @@ public class FirmService implements GoalService{
             } else {
                 HashMap<String, Integer> goalList = new HashMap<>();
                 for (String s : types){
-                    s = s.toLowerCase();
+                    s = s.trim().toLowerCase();
                     if (goalList.containsKey(s)){
                         goalList.put(s, goalList.get(s) + 1);
                     }else {
