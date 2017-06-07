@@ -256,6 +256,10 @@ public class RestResponse implements Map<String, Object>, BIResponse {
 		return new RestResponse().withSuccess(message).add(name, data);
 	}
 
+	public static RestResponse successWithoutMessage(Object data) {
+		return new RestResponse().add(DATA_KEY, data);
+	}
+
 	/**
 	 * Factory method for error response.
 	 *

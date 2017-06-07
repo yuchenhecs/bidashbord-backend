@@ -7,14 +7,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-import static com.bi.oranj.constant.ConstantQueries.GET_GOALS_QUERY;
+import static com.bi.oranj.constant.ConstantQueries.GET_GOALS_FROM_ORANJ_DB_QUERY;
 
 /**
  * Created by harshavardhanpatil on 5/24/17.
  */
 public interface OranjGoalRepository extends JpaRepository<OranjGoal, Integer> {
 
-    @Query(value = GET_GOALS_QUERY, nativeQuery = true)
+    @Query(value = GET_GOALS_FROM_ORANJ_DB_QUERY, nativeQuery = true)
     List<OranjGoal> FindByCreationDate(@Param("start") String start, @Param("end") String end);
 
     List <OranjGoal> findByCreationDateBetween(String start, String end);

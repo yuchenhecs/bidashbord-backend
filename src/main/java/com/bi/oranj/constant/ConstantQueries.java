@@ -7,7 +7,7 @@ public class ConstantQueries {
 
     public static final String FIND_FIRM = "SELECT name FROM Firm where id = ?1";
 
-    public static final String GET_GOALS_QUERY = "select g.*," +
+    public static final String GET_GOALS_FROM_ORANJ_DB_QUERY = "select g.*," +
                                                         "a.first_name as userFirstName, a.last_name as userLastName, a.firm_id as firmId, a.advisor_id as advisorId," +
                                                         "ad.first_name as advisorFirstName, ad.last_name as advisorLastName," +
                                                         "f.name as firmName\n" +
@@ -19,5 +19,7 @@ public class ConstantQueries {
                                                         "inner join firm f " +
                                                             "ON f.id = a.firm_id \n" +
                                                     "where creation_date >= :start and creation_date <= :end";
+
+    public static final String GET_GOALS_GROUPED_BY_TYPE = "select type as type, count(*) as count from BiGoal group by type";
 
 }

@@ -1,8 +1,6 @@
 package com.bi.oranj.controller.oranj;
 
-import com.bi.oranj.constant.Constants;
 import com.bi.oranj.controller.bi.resp.RestResponse;
-import com.bi.oranj.model.bi.GoalResponse;
 import com.bi.oranj.service.oranj.OranjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
