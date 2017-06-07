@@ -51,9 +51,9 @@ public class FirmService implements GoalService{
                 HashMap<String, Integer> goalList = firm.getGoals();
 
                 if (goalList.containsKey(type)){
-                    goalList.put(type, goalList.get(type) + 1);
+                    goalList.put(type, goalList.get(type) + count);
                 }else {
-                    goalList.put(type, 1);
+                    goalList.put(type, count);
                 }
                 firm.setGoals(goalList);
                 firm.setTotal(count);
@@ -61,9 +61,9 @@ public class FirmService implements GoalService{
             } else {
                 HashMap<String, Integer> goalList = new HashMap<>();
                 if (goalList.containsKey(type)){
-                    goalList.put(type, goalList.get(type) + 1);
+                    goalList.put(type, goalList.get(type) + count);
                 }else {
-                    goalList.put(type, 1);
+                    goalList.put(type, count);
                 }
                 hashMap.put(firmId, new Firm(firmId, firmName, goalList, count));
             }

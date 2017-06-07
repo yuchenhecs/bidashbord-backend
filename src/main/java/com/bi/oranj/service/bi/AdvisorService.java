@@ -45,32 +45,28 @@ public class AdvisorService implements GoalService{
             int advisorId = ((BigInteger) goal[0]).intValue();
             String firstName = (String) goal[1];
             String lastName = (String) goal[2];
-            String[] types = ((String) goal[3]).split(",");
+            String type = ((String) goal[3]).trim().toLowerCase();
             int count = ((BigInteger) goal[4]).intValue();
 
             if (hashMap.containsKey(advisorId)){
                 Advisor advisor = hashMap.get(advisorId);
 
                 HashMap<String, Integer> goalList = advisor.getGoals();
-                for (String s : types){
-                    s = s.toLowerCase();
-                    if (goalList.containsKey(s)){
-                        goalList.put(s, goalList.get(s) + 1);
-                    }else {
-                        goalList.put(s, 1);
-                    }
-                }
 
+                if (goalList.containsKey(type)){
+                    goalList.put(type, goalList.get(type) + count);
+                }else {
+                    goalList.put(type, count);
+                }
                 advisor.setGoals(goalList);
+                advisor.setTotal(count);
+
             } else {
                 HashMap<String, Integer> goalList = new HashMap<>();
-                for (String s : types){
-                    s = s.toLowerCase();
-                    if (goalList.containsKey(s)){
-                        goalList.put(s, goalList.get(s) + 1);
-                    }else {
-                        goalList.put(s, 1);
-                    }
+                if (goalList.containsKey(type)){
+                    goalList.put(type, goalList.get(type) + count);
+                }else {
+                    goalList.put(type, count);
                 }
                 hashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, goalList, count));
             }

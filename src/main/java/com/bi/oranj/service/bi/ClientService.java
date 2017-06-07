@@ -1,6 +1,7 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.model.bi.wrapper.user.Firm;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.model.bi.wrapper.User;
@@ -46,32 +47,28 @@ public class ClientService implements GoalService{
             int clientId = ((BigInteger) goal[0]).intValue();
             String firstName = (String) goal[1];
             String lastName = (String) goal[2];
-            String[] types = ((String) goal[3]).split(",");
+            String type = ((String) goal[3]).trim().toLowerCase();
             int count = ((BigInteger) goal[4]).intValue();
 
             if (hashMap.containsKey(clientId)){
                 Client client = hashMap.get(clientId);
 
                 HashMap<String, Integer> goalList = client.getGoals();
-                for (String s : types){
-                    s = s.toLowerCase();
-                    if (goalList.containsKey(s)){
-                        goalList.put(s, goalList.get(s) + 1);
-                    }else {
-                        goalList.put(s, 1);
-                    }
-                }
 
+                if (goalList.containsKey(type)){
+                    goalList.put(type, goalList.get(type) + count);
+                }else {
+                    goalList.put(type, count);
+                }
                 client.setGoals(goalList);
+                client.setTotal(count);
+
             } else {
                 HashMap<String, Integer> goalList = new HashMap<>();
-                for (String s : types){
-                    s = s.toLowerCase();
-                    if (goalList.containsKey(s)){
-                        goalList.put(s, goalList.get(s) + 1);
-                    }else {
-                        goalList.put(s, 1);
-                    }
+                if (goalList.containsKey(type)){
+                    goalList.put(type, goalList.get(type) + count);
+                }else {
+                    goalList.put(type, count);
                 }
                 hashMap.put(clientId, new Client(clientId, firstName, lastName, goalList, count));
             }
