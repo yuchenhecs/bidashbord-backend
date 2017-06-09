@@ -36,6 +36,6 @@ public class ScheduledTasks {
         String yesterday = dateFormat.format(yesterday());
         log.info("Yesterday's date was {}", yesterday);
         oranjService.getGoals(yesterday);
-        log.info("Saved {} goals", yesterday);
+        log.info("Cron Saved {} goals", yesterday);
     }
 }

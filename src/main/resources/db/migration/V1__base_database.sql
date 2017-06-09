@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `goals`;
 CREATE TABLE `goals` (
   `id` bigint(20) NOT NULL,
   `advisor_id` bigint(20) DEFAULT NULL,
-  `creation_date` varchar(255) DEFAULT NULL,
+  `goal_creation_date` varchar(255) DEFAULT NULL,
   `deleted` bit(1) NOT NULL,
   `firm_id` bigint(20) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,

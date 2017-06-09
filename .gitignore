@@ -7,4 +7,5 @@
 *.iml
 .DS_Store
 .oranj-bi-logfile.log
+*.log
 catalina.home_IS_UNDEFINED

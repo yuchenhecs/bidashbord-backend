@@ -38,8 +38,8 @@ public class BiGoal {
 
     private boolean deleted;
 
-    @Column(name = "creation_date")
-    private String creationDate;
+    @Column(name = "goal_creation_date")
+    private String goalCreationDate;
 
     public BiGoal(){
         // For JPA to use
