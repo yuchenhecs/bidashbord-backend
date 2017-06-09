@@ -19,11 +19,7 @@ import java.util.Collection;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GoalResponse implements BIResponse{
 
-    private int totalGoals;     // _
-//    private int totalFirms;     //  |
-//    private int totalAdvisors;  //  | one of them
-//    private int totalClients;   // _|
-
+    private int totalGoals;
     private int totalUsers;
 
     private int page;   //  page number

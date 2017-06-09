@@ -34,7 +34,7 @@ public abstract class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.goals = goals;
-        this.total += total;
+        this.total = total;
     }
 
 
@@ -65,7 +65,7 @@ public abstract class User {
     }
 
     public void setTotal(int total) {
-        this.total = total;
+        this.total += total;
     }
 
 

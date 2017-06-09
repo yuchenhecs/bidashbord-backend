@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 
 /**
  * Created by harshavardhanpatil on 5/24/17.
@@ -32,7 +33,7 @@ public class OranjGoal {
     private Long user;
 
     @Column(name = "creation_date", nullable = true)
-    private String creationDate;
+    private Timestamp creationDate;
 
     @Column(name = "created_by_id", nullable = true)
     private Long createdById;

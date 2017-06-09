@@ -9,6 +9,10 @@ import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.repository.oranj.OranjGoalRepository;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +57,31 @@ public class OranjService {
         String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
         try{
             List<OranjGoal> oranjGoalList = oranjGoalRepository.FindByCreationDate(startDate, endDate);
+            storeGoals(oranjGoalList);
+        }catch (Exception e){
+            log.error("Error in fecthing goals from Oranj." + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Error in fecthing Goals from Oranj DB");
+        }
+        return RestResponse.success(date + " have been saved");
+    }
+
+    public RestResponse getGoalsTillDate(String date){
+
+        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
+        try{
+            List<OranjGoal> oranjGoalList = oranjGoalRepository.FindGoalsTillDate(endDate);
+            storeGoals(oranjGoalList);
+        }catch (Exception e){
+            log.error("Error in fecthing goals from Oranj." + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Error in fecthing Goals from Oranj DB");
+        }
+        return RestResponse.success("Goals created till" + date + " have been saved");
+    }
+
+    public void storeGoals(List<OranjGoal> oranjGoalList){
+        try{
             for(int i=0; i<oranjGoalList.size(); i++){
 
                 Firm firm = new Firm();
@@ -79,7 +108,7 @@ public class OranjService {
                 biGoal.setId(oranjGoalList.get(i).getId());
                 biGoal.setName(oranjGoalList.get(i).getName());
                 biGoal.setType(oranjGoalList.get(i).getType());
-                biGoal.setCreationDate(oranjGoalList.get(i).getCreationDate());
+                biGoal.setGoalCreationDate(oranjGoalList.get(i).getCreationDate());
                 biGoal.setDeleted(oranjGoalList.get(i).isDeleted());
                 biGoal.setFirmId(oranjGoalList.get(i).getFirmId());
                 biGoal.setAdvisorId(oranjGoalList.get(i).getAdvisorId());
@@ -87,10 +116,8 @@ public class OranjService {
                 goalRepository.save(biGoal);
             }
         }catch (Exception e){
-            log.error("Error in fetching goals from Oranj." + e);
+            log.error("Error in storing goals in BI DB" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fecthing Goals from Oranj DB");
         }
-        return RestResponse.success(date + " has been saved");
     }
 }

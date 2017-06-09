@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by harshavardhanpatil on 5/25/17.
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public class OranjController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     OranjService oranjService;
@@ -33,8 +37,23 @@ public class OranjController {
      */
     @ApiOperation(value = "Get Goals created for given date", notes = "date should be in 'yyyy-MM-dd' format")
     @RequestMapping(path="/goals", method = RequestMethod.GET)
-    public RestResponse getGoalsByDate(@RequestParam(value = "date", required = true) String date, HttpServletResponse response) {
+    public RestResponse getGoalsByDate(@RequestParam(value = "date", required = true) String date) {
         log.info("Saving {} goals", date);
         return oranjService.getGoals(date);
+    }
+
+    @ApiOperation(value = "Get All Goals created so far", notes = "Saves all the goals created till today")
+    @RequestMapping(path="/goals/migration", method = RequestMethod.GET)
+    public RestResponse getGoalsTillDate() {
+        String date = today().toString();
+        log.info("Fetching goals till {}", date);
+        return oranjService.getGoalsTillDate(date);
+    }
+
+    public Date today() {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 0);
+        log.info(cal.getTime().toString());
+        return cal.getTime();
     }
 }
