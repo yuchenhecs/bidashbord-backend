@@ -20,20 +20,14 @@ public class ParentAum {
     private Long id;
 
 //    @ManyToOne (fetch = FetchType.LAZY, )
-    @Column (name = "position_id", columnDefinition = "BIGINT")
-    private BigInteger positionId;
+    @Column (name = "account_id", columnDefinition = "BIGINT")
+    private BigInteger accountId;
 
     @Column (name = "portfolio_id", columnDefinition = "BIGINT")
     private BigInteger portfolioId;
 
     @Column (name = "client_id", columnDefinition = "BIGINT")
     private BigInteger clientId;
-
-    @Column (name = "quantity")
-    private Double quantity;
-
-    @Column (name = "value")
-    private BigDecimal value;
 
     @Column (name = "is_inactive")
     private Boolean isInactive;

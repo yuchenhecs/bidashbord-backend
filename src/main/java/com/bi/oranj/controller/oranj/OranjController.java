@@ -42,16 +42,14 @@ public class OranjController {
 
     @ApiOperation(value = "Get AUMs")
     @RequestMapping(path="/aums", method = RequestMethod.GET)
-    public List<Aum> getAums(HttpServletResponse response) {
+    public void getAums(HttpServletResponse response) {
         log.info("Saving aums");
 
-        List<Aum> aums = null;
         try{
-            aums = oranjService.fetchAUMData();
+            oranjService.fetchAUMData();
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        return aums;
     }
 
 }

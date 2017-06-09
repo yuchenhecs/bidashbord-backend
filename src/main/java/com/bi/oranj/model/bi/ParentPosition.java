@@ -34,6 +34,12 @@ public abstract class ParentPosition {
     @Column (name = "price")
     private BigDecimal price;
 
+    @Column (name = "quantity")
+    private Double quantity;
+
+    @Column (name = "amount")
+    private BigDecimal amount;
+
     @Column (name = "currency_code")
     private String currencyCode;
 

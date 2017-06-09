@@ -85,14 +85,12 @@ public class OranjService {
             }
 
             Aum aum = new Aum();
-            aum.setPositionId((BigInteger) o[0]);
             aum.setPortfolioId((BigInteger) o[1]);
             aum.setClientId((BigInteger) o[2]);
-            aum.setQuantity((Double) o[6]);
-            aum.setValue((BigDecimal) o[7]);
             aum.setCreationDate((Date) o[8]);
             aum.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
             aum.setIsInactive((Boolean) o[10]);
+            aum.setAccountId((BigInteger) o[11]);
             aumRepository.save (aum);
 
             Position position = new Position();
@@ -101,9 +99,12 @@ public class OranjService {
             position.setTickerName((String) o[3]);
             position.setAssetClass((String) o[4]);
             position.setPrice((BigDecimal) o[5]);
+            position.setQuantity((Double) o[6]);
+            position.setAmount((BigDecimal) o[7]);
             position.setCurrencyCode("USD");
             position.setCreationDate(aum.getCreationDate());
             position.setUpdatedOn(aum.getUpdatedOn());
+
             positionRepository.save(position);
 
         }
