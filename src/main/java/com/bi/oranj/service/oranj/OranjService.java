@@ -87,7 +87,7 @@ public class OranjService {
                 goalRepository.save(biGoal);
             }
         }catch (Exception e){
-            log.error("Error in fecthing goals from Oranj." + e);
+            log.error("Error in fetching goals from Oranj." + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fecthing Goals from Oranj DB");
         }
