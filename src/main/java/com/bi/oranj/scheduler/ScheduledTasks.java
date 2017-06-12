@@ -38,4 +38,17 @@ public class ScheduledTasks {
         oranjService.getGoals(yesterday);
         log.info("Saved {} goals", yesterday);
     }
+
+    @Scheduled(cron = "")
+    public void triggerGetAUM (){
+
+    }
+
+    @Scheduled(cron = "")
+    public void triggerGetHistory(){
+
+    }
+
+
+
 }

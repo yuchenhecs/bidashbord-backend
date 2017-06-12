@@ -132,8 +132,7 @@ public class OranjService {
     }
 
     public void fetchAUMHistory () throws ParseException {
-//        List<Object[]> history = oranjAumHistoryRepository.fetchAumHistory();
-        List<Object[]> history = oranjAumHistoryRepository.fetchAumHistoryByClientId(Long.valueOf(8591291));
+        List<Object[]> history = oranjAumHistoryRepository.fetchAumHistory();
 
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
 
@@ -153,19 +152,11 @@ public class OranjService {
             aum.setUpdatedOn(dateFormat1.parse((o[5]).toString()));
             aum.setAmount((BigDecimal) o[3]);
 
-
             aumHis.add(aum);
-
-            try{
-                aumHistoryRepository.save(aum);
-            }catch (Exception ex){
-                System.out.println("HERE: " + aum.getClientId());
-                System.exit(0);
-            }
 
         }
 
-//        aumHistoryRepository.save(aumHis);
+        aumHistoryRepository.save(aumHis);
 
 
         history = oranjPositionsHistoryRepository.fetchPositionsHistory();
