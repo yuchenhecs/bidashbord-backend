@@ -1,7 +1,6 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.GoalResponse;
-import com.bi.oranj.model.bi.wrapper.user.Client;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.model.bi.wrapper.User;

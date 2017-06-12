@@ -29,6 +29,9 @@ public class ParentAum {
     @Column (name = "client_id", columnDefinition = "BIGINT")
     private BigInteger clientId;
 
+    @Column (name = "amount")
+    private BigDecimal amount;
+
     @Column (name = "is_inactive")
     private Boolean isInactive;
 

@@ -3,7 +3,7 @@ package com.bi.oranj.service.oranj;
 import com.bi.oranj.constant.Constants;
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
-import com.bi.oranj.model.bi.AUM;
+import com.bi.oranj.model.bi.Aum;
 import com.bi.oranj.model.oranj.OranjGoal;
 import com.bi.oranj.repository.bi.*;
 import com.bi.oranj.repository.oranj.OranjAUMRepository;
@@ -18,11 +18,13 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by harshavardhanpatil on 5/30/17.
@@ -65,7 +67,7 @@ public class OranjService {
     EntityManager entityManager;
 
     /**
-     *
+     *  data for currency column is hard coded
      * @return
      * @throws ParseException
      */
@@ -73,6 +75,9 @@ public class OranjService {
 
         List<Object[]> aumRows = oranjAUMRepository.fetchAUMData();
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
+        List<Position> positions = new ArrayList<>();
+
+        Map<BigInteger, Aum> aums = new HashMap<>();
 
         for (Object[] o : aumRows){
 
@@ -80,14 +85,6 @@ public class OranjService {
             if (client == null){
                 storeGoals(oranjGoalRepository.findByClientId((BigInteger) o[2]));
             }
-
-            AUM aum = new AUM();
-            aum.setPortfolioId((BigInteger) o[1]);
-            aum.setClientId((BigInteger) o[2]);
-            aum.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
-            aum.setIsInactive((Boolean) o[10]);
-            aum.setAccountId((BigInteger) o[11]);
-            aumRepository.save (aum);
 
             Position position = new Position();
             position.setPositionId((BigInteger) o[0]);
@@ -98,20 +95,33 @@ public class OranjService {
             position.setQuantity((Double) o[6]);
             position.setAmount((BigDecimal) o[7]);
             position.setCurrencyCode("USD");
-            position.setUpdatedOn(aum.getUpdatedOn());
+            position.setCreationDate((Date) o[8]);
+            position.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
 
             positionRepository.save(position);
 
+
+            if (aums.containsKey(position.getPortfolioId())){
+                Aum aum = aums.get(position.getPortfolioId());
+                aum.setAmount(aum.getAmount().add(position.getAmount()));
+            } else {
+                Aum aum = new Aum();
+                aum.setPortfolioId(position.getPortfolioId());
+                aum.setClientId((BigInteger) o[2]);
+                aum.setIsInactive((Boolean) o[10]);
+                aum.setAccountId((BigInteger) o[11]);
+                aum.setUpdatedOn(dateFormat1.parse((o[12]).toString()));
+                aum.setAmount(position.getAmount());
+
+                aums.put(position.getPortfolioId(), aum);
+            }
         }
-
+        aumRepository.save(aums.values());
     }
-
 
     public void fetchAUMHistory (){
 
     }
-
-
 
     /**
      * This method gets all the goals created between startDate and endDate
@@ -130,7 +140,7 @@ public class OranjService {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fecthing Goals from Oranj DB");
         }
-        return RestResponse.success(date + " have been saved");
+        return RestResponse.success("Goals created on " + date + " have been saved");
     }
 
     public RestResponse getGoalsTillDate(String date){

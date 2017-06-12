@@ -51,4 +51,15 @@ public class ConstantQueries {
             "ON f.id = a.firm_id " +
             "where a.id = :id";
 
+    public static final String GET_AUM_FOR_ADMIN_QUERY = "select c.firm_id, f.firm_name, p.asset_class, sum(p.amount) as positionAmount, c.id " +
+                                                    "from aum a\n" +
+                                                        "join positions p\n" +
+                                                            "ON p.portfolio_id = a.portfolio_id\n" +
+                                                        "join clients c\n" +
+                                                            "ON c.id = a.client_id\n" +
+                                                        "join firms f\n" +
+                                                            "ON c.firm_id = f.id\n" +
+                                                    "group by p.asset_class, c.firm_id, a.client_id\n" +
+                                                    "order by firm_id";
+
 }

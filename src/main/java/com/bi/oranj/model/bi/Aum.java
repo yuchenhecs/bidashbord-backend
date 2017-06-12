@@ -13,5 +13,5 @@ import javax.persistence.Table;
 @Data
 @Table (name = "aum")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AUM extends ParentAum{
+public class Aum extends ParentAum{
 }

@@ -51,8 +51,8 @@ CREATE TABLE `aum_history` (
   `account_id` bigint(20) NOT NULL,
   `portfolio_id` bigint(20) DEFAULT NULL,
   `client_id` bigint(20)DEFAULT NULL,
-  `is_inactive` bit(1) DEFAULT 0,
   `amount` decimal(19,2) DEFAULT NULL,
+  `is_inactive` bit(1) DEFAULT 0,
   `updated_on` datetime NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`client_id`) REFERENCES clients(`id`)
