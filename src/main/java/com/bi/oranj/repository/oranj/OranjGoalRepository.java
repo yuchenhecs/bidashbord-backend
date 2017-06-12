@@ -21,7 +21,5 @@ public interface OranjGoalRepository extends JpaRepository<OranjGoal, Integer> {
 
     List <OranjGoal> findByCreationDateBetween(String start, String end);
 
-    @Query (value = GET_CLIENT_AND_GOAL_INFO, nativeQuery = true)
-    List<OranjGoal> findByClientId (@Param("id") BigInteger id);
 }
 

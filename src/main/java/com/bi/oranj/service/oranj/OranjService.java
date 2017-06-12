@@ -4,12 +4,10 @@ import com.bi.oranj.constant.Constants;
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.model.bi.Aum;
+import com.bi.oranj.model.oranj.OranjClient;
 import com.bi.oranj.model.oranj.OranjGoal;
 import com.bi.oranj.repository.bi.*;
-import com.bi.oranj.repository.oranj.OranjAUMRepository;
-import com.bi.oranj.repository.oranj.OranjAumHistoryRepository;
-import com.bi.oranj.repository.oranj.OranjGoalRepository;
-import com.bi.oranj.repository.oranj.OranjPositionsHistoryRepository;
+import com.bi.oranj.repository.oranj.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +75,9 @@ public class OranjService {
     @Qualifier ("biEntityManager")
     EntityManager entityManager;
 
+    @Autowired
+    OranjClientRepository oranjClientRepository;
+
     /**
      *  data for currency column is hard coded
      * @return
@@ -93,7 +94,7 @@ public class OranjService {
 
             Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
             if (client == null){
-                saveResults(oranjGoalRepository.findByClientId((BigInteger) o[2]));
+                saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
             }
 
             Position position = new Position();
@@ -130,9 +131,10 @@ public class OranjService {
         aumRepository.save(aums.values());
     }
 
-
     public void fetchAUMHistory () throws ParseException {
-        List<Object[]> history = oranjAumHistoryRepository.fetchAumHistory();
+//        List<Object[]> history = oranjAumHistoryRepository.fetchAumHistory();
+        List<Object[]> history = oranjAumHistoryRepository.fetchAumHistoryByClientId(Long.valueOf(8591291));
+
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
 
         List<AumHistory> aumHis = new ArrayList<>();
@@ -140,7 +142,7 @@ public class OranjService {
 
             Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
             if (client == null){
-                saveResults(oranjGoalRepository.findByClientId((BigInteger) o[2]));
+                saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
             }
 
             AumHistory aum = new AumHistory();
@@ -153,9 +155,17 @@ public class OranjService {
 
 
             aumHis.add(aum);
+
+            try{
+                aumHistoryRepository.save(aum);
+            }catch (Exception ex){
+                System.out.println("HERE: " + aum.getClientId());
+                System.exit(0);
+            }
+
         }
 
-        aumHistoryRepository.save(aumHis);
+//        aumHistoryRepository.save(aumHis);
 
 
         history = oranjPositionsHistoryRepository.fetchPositionsHistory();
@@ -180,6 +190,32 @@ public class OranjService {
         positionsHistoryRepository.save(posHis);
     }
 
+
+    private void saveClients (List<OranjClient> clients){
+        for (OranjClient oranjClient : clients) {
+
+            Firm firm = new Firm();
+            firm.setId(oranjClient.getFirmId());
+            firm.setFirmName(oranjClient.getFirmName());
+            firmRepository.save(firm);
+
+            Advisor advisor = new Advisor();
+            advisor.setId(oranjClient.getAdvisorId());
+            advisor.setAdvisorFirstName(oranjClient.getAdvisorFirstName());
+            advisor.setAdvisorLastName(oranjClient.getAdvisorLastName());
+            advisor.setFirmId(oranjClient.getFirmId());
+            advisorRepository.save(advisor);
+
+            Client client = new Client();
+            client.setId(oranjClient.getId());
+            client.setClientFirstName(oranjClient.getClientFirstName());
+            client.setClientLastName(oranjClient.getClientLastName());
+            client.setAdvisorId(oranjClient.getAdvisorId());
+            client.setFirmId(oranjClient.getFirmId());
+            clientRepository.save(client);
+
+        }
+    }
 
 
     /**
