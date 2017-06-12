@@ -35,13 +35,13 @@ public class BiConfig {
         super();
     }
 
-    @Bean
+    @Bean (name = "biEntityManager")
     @Primary
     @FlywayDataSource
     public LocalContainerEntityManagerFactoryBean biEntityManager() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(biDataSource());
-        em.setPackagesToScan(new String[] { "com.bi.oranj.model.bi" });
+        em.setPackagesToScan(new String[] { "com.bi.oranj.model.bi", "com.bi.oranj.model.bi.OranjAum" });
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

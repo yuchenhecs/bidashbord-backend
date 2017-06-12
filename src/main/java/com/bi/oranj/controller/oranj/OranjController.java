@@ -1,6 +1,7 @@
 package com.bi.oranj.controller.oranj;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
+import com.bi.oranj.model.bi.Aum;
 import com.bi.oranj.service.oranj.OranjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by harshavardhanpatil on 5/25/17.
@@ -55,4 +58,17 @@ public class OranjController {
         log.info(cal.getTime().toString());
         return cal.getTime();
     }
+
+    @ApiOperation(value = "Get AUMs")
+    @RequestMapping(path="/aums", method = RequestMethod.GET)
+    public void getAums(HttpServletResponse response) {
+        log.info("Saving aums");
+
+        try{
+            oranjService.fetchAUMData();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
 }

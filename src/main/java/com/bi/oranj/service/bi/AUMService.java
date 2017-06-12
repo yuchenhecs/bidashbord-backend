@@ -2,7 +2,7 @@ package com.bi.oranj.service.bi;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.GoalSummary;
-import com.bi.oranj.repository.bi.AUMRespository;
+import com.bi.oranj.repository.bi.AumRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +23,13 @@ public class AUMService {
     HttpServletResponse response;
 
     @Autowired
-    private AUMRespository aumRespository;
+    private AumRepository aumRepository;
 
     public RestResponse getAUMForAdmin(Integer pageNumber) {
 
         List<GoalSummary> goalSummaryList = new ArrayList<>();
         try {
-            List<Object[]> goalsGroupedByType = aumRespository.findAUMsForAdmin();
+            List<Object[]> goalsGroupedByType = aumRepository.findAUMsForAdmin();
             for (Object[] goals : goalsGroupedByType) {
                 GoalSummary goalSummary = new GoalSummary(goals[0].toString(), Long.parseLong(goals[1].toString()));
                 log.info(goalSummary.getType() + ":" + goalSummary.getCount());

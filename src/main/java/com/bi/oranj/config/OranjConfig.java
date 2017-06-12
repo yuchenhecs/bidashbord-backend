@@ -29,7 +29,7 @@ public class OranjConfig {
     @Autowired
     private Environment env;
 
-    @Bean
+    @Bean (name = "oranjEntityManager")
     public LocalContainerEntityManagerFactoryBean oranjEntityManager() {
 
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
