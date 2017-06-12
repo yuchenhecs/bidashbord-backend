@@ -1,7 +1,6 @@
 package com.bi.oranj.controller.oranj;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
-import com.bi.oranj.model.bi.Aum;
 import com.bi.oranj.service.oranj.OranjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * Created by harshavardhanpatil on 5/25/17.

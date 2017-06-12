@@ -3,12 +3,11 @@ package com.bi.oranj.service.oranj;
 import com.bi.oranj.constant.Constants;
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
-import com.bi.oranj.model.bi.Aum;
+import com.bi.oranj.model.bi.AUM;
 import com.bi.oranj.model.oranj.OranjGoal;
 import com.bi.oranj.repository.bi.*;
 import com.bi.oranj.repository.oranj.OranjAUMRepository;
 import com.bi.oranj.repository.oranj.OranjGoalRepository;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +18,9 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -84,7 +81,7 @@ public class OranjService {
                 storeGoals(oranjGoalRepository.findByClientId((BigInteger) o[2]));
             }
 
-            Aum aum = new Aum();
+            AUM aum = new AUM();
             aum.setPortfolioId((BigInteger) o[1]);
             aum.setClientId((BigInteger) o[2]);
             aum.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
