@@ -23,9 +23,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by harshavardhanpatil on 5/30/17.
@@ -68,7 +66,7 @@ public class OranjService {
     EntityManager entityManager;
 
     /**
-     *
+     *  data for currency column is hard coded
      * @return
      * @throws ParseException
      */
@@ -76,6 +74,9 @@ public class OranjService {
 
         List<Object[]> aumRows = oranjAUMRepository.fetchAUMData();
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
+        List<Position> positions = new ArrayList<>();
+
+        Map<BigInteger, Aum> aums = new HashMap<>();
 
         for (Object[] o : aumRows){
 
@@ -83,15 +84,6 @@ public class OranjService {
             if (client == null){
                 saveResults(oranjGoalRepository.findByClientId((BigInteger) o[2]));
             }
-
-            Aum aum = new Aum();
-            aum.setPortfolioId((BigInteger) o[1]);
-            aum.setClientId((BigInteger) o[2]);
-            aum.setCreationDate((Date) o[8]);
-            aum.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
-            aum.setIsInactive((Boolean) o[10]);
-            aum.setAccountId((BigInteger) o[11]);
-            aumRepository.save (aum);
 
             Position position = new Position();
             position.setPositionId((BigInteger) o[0]);
@@ -102,13 +94,30 @@ public class OranjService {
             position.setQuantity((Double) o[6]);
             position.setAmount((BigDecimal) o[7]);
             position.setCurrencyCode("USD");
-            position.setCreationDate(aum.getCreationDate());
-            position.setUpdatedOn(aum.getUpdatedOn());
+            position.setCreationDate((Date) o[8]);
+            position.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
 
             positionRepository.save(position);
 
+
+            if (aums.containsKey(position.getPortfolioId())){
+                Aum aum = aums.get(position.getPortfolioId());
+                aum.setAmount(aum.getAmount().add(position.getAmount()));
+            } else {
+                Aum aum = new Aum();
+                aum.setPortfolioId(position.getPortfolioId());
+                aum.setClientId((BigInteger) o[2]);
+                aum.setIsInactive((Boolean) o[10]);
+                aum.setAccountId((BigInteger) o[11]);
+                aum.setUpdatedOn(dateFormat1.parse((o[12]).toString()));
+                aum.setAmount(position.getAmount());
+
+                aums.put(position.getPortfolioId(), aum);
+            }
+
         }
 
+        aumRepository.save(aums.values());
     }
 
 
