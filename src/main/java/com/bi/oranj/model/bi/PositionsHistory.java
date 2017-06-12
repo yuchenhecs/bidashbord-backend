@@ -13,5 +13,5 @@ import javax.persistence.Table;
 @Entity
 @Table (name = "positions_history")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PositionHistory extends ParentPosition {
+public class PositionsHistory extends ParentPosition {
 }

@@ -52,4 +52,16 @@ public class OranjController {
         }
     }
 
+    @ApiOperation( value = "Get historical data")
+    @RequestMapping (path = "/aum-history", method = RequestMethod.GET)
+    public void getHistory (HttpServletResponse response){
+        log.info("Saving history");
+
+        try {
+            oranjService.fetchAUMHistory();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
 }

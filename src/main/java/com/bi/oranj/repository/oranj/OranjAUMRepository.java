@@ -18,9 +18,5 @@ public interface OranjAUMRepository extends JpaRepository <OranjAum, Long>{
             "join quovo_positions qpos on qport.id = qpos.portfolio where oranj_user_id is not null ", nativeQuery = true)
     List<Object[]> fetchAUMData ();
 
-//    @Query (value = "")
-//    List<Object[]> fetchPositionsHistory ();
-//
-//    @Query (value = "")
-//    List<Object[]> fetchPortfolioHistory();
+
 }

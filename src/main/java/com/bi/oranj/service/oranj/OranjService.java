@@ -7,8 +7,9 @@ import com.bi.oranj.model.bi.Aum;
 import com.bi.oranj.model.oranj.OranjGoal;
 import com.bi.oranj.repository.bi.*;
 import com.bi.oranj.repository.oranj.OranjAUMRepository;
+import com.bi.oranj.repository.oranj.OranjAumHistoryRepository;
 import com.bi.oranj.repository.oranj.OranjGoalRepository;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.bi.oranj.repository.oranj.OranjPositionsHistoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,17 @@ public class OranjService {
     @Autowired
     OranjAUMRepository oranjAUMRepository;
 
+    @Autowired
+    AumHistoryRepository aumHistoryRepository;
+
+    @Autowired
+    PositionsHistoryRepository positionsHistoryRepository;
+
+    @Autowired
+    OranjAumHistoryRepository oranjAumHistoryRepository;
+
+    @Autowired
+    OranjPositionsHistoryRepository oranjPositionsHistoryRepository;
 
     @Autowired
     @Qualifier ("biEntityManager")
@@ -74,7 +86,6 @@ public class OranjService {
 
         List<Object[]> aumRows = oranjAUMRepository.fetchAUMData();
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
-        List<Position> positions = new ArrayList<>();
 
         Map<BigInteger, Aum> aums = new HashMap<>();
 
@@ -114,15 +125,59 @@ public class OranjService {
 
                 aums.put(position.getPortfolioId(), aum);
             }
-
         }
 
         aumRepository.save(aums.values());
     }
 
 
-    public void fetchAUMHistory (){
+    public void fetchAUMHistory () throws ParseException {
+        List<Object[]> history = oranjAumHistoryRepository.fetchAumHistory();
+        DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
 
+        List<AumHistory> aumHis = new ArrayList<>();
+        for (Object[] o : history){
+
+            Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
+            if (client == null){
+                saveResults(oranjGoalRepository.findByClientId((BigInteger) o[2]));
+            }
+
+            AumHistory aum = new AumHistory();
+            aum.setPortfolioId((BigInteger) o[1]);
+            aum.setClientId((BigInteger) o[2]);
+            aum.setIsInactive((Boolean) o[4]);
+            aum.setAccountId((BigInteger) o[0]);
+            aum.setUpdatedOn(dateFormat1.parse((o[5]).toString()));
+            aum.setAmount((BigDecimal) o[3]);
+
+
+            aumHis.add(aum);
+        }
+
+        aumHistoryRepository.save(aumHis);
+
+
+        history = oranjPositionsHistoryRepository.fetchPositionsHistory();
+        List<PositionsHistory> posHis = new ArrayList<>();
+
+        for (Object[] o : history){
+            PositionsHistory positionHistory = new PositionsHistory();
+            positionHistory.setPositionId((BigInteger) o[0]);
+            positionHistory.setPortfolioId((BigInteger) o[1]);
+            positionHistory.setTickerName((String) o[2]);
+            positionHistory.setAssetClass((String) o[3]);
+            positionHistory.setPrice((BigDecimal) o[4]);
+            positionHistory.setQuantity((Double) o[5]);
+            positionHistory.setAmount((BigDecimal) o[6]);
+            positionHistory.setCurrencyCode("USD");
+            positionHistory.setCreationDate(dateFormat1.parse((o[7]).toString()));
+            positionHistory.setUpdatedOn(dateFormat1.parse((o[8]).toString()));
+
+            posHis.add(positionHistory);
+        }
+
+        positionsHistoryRepository.save(posHis);
     }
 
 
