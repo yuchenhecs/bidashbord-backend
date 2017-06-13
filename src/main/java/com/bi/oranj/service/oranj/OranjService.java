@@ -83,102 +83,114 @@ public class OranjService {
      * @return
      * @throws ParseException
      */
-    public void fetchAUMData () throws ParseException {
+    public void fetchAUMData () {
 
         List<Object[]> aumRows = oranjAUMRepository.fetchAUMData();
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
 
         Map<BigInteger, Aum> aums = new HashMap<>();
 
-        for (Object[] o : aumRows){
+        try{
+            for (Object[] o : aumRows){
 
-            Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
-            if (client == null){
-                saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
+                Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
+                if (client == null){
+                    saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
+                }
+
+                Position position = new Position();
+                position.setPositionId((BigInteger) o[0]);
+                position.setPortfolioId((BigInteger) o[1]);
+                position.setTickerName((String) o[3]);
+                position.setAssetClass((String) o[4]);
+                position.setPrice((BigDecimal) o[5]);
+                position.setQuantity((Double) o[6]);
+                position.setAmount((BigDecimal) o[7]);
+                position.setCurrencyCode("USD");
+                position.setCreationDate((Date) o[8]);
+                position.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
+
+                positionRepository.save(position);
+
+
+                if (aums.containsKey(position.getPortfolioId())){
+                    Aum aum = aums.get(position.getPortfolioId());
+                    aum.setAmount(aum.getAmount().add(position.getAmount()));
+                } else {
+                    Aum aum = new Aum();
+                    aum.setPortfolioId(position.getPortfolioId());
+                    aum.setClientId((BigInteger) o[2]);
+                    aum.setIsInactive((Boolean) o[10]);
+                    aum.setAccountId((BigInteger) o[11]);
+                    aum.setUpdatedOn(dateFormat1.parse((o[12]).toString()));
+                    aum.setAmount(position.getAmount());
+
+                    aums.put(position.getPortfolioId(), aum);
+                }
             }
-
-            Position position = new Position();
-            position.setPositionId((BigInteger) o[0]);
-            position.setPortfolioId((BigInteger) o[1]);
-            position.setTickerName((String) o[3]);
-            position.setAssetClass((String) o[4]);
-            position.setPrice((BigDecimal) o[5]);
-            position.setQuantity((Double) o[6]);
-            position.setAmount((BigDecimal) o[7]);
-            position.setCurrencyCode("USD");
-            position.setCreationDate((Date) o[8]);
-            position.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
-
-            positionRepository.save(position);
-
-
-            if (aums.containsKey(position.getPortfolioId())){
-                Aum aum = aums.get(position.getPortfolioId());
-                aum.setAmount(aum.getAmount().add(position.getAmount()));
-            } else {
-                Aum aum = new Aum();
-                aum.setPortfolioId(position.getPortfolioId());
-                aum.setClientId((BigInteger) o[2]);
-                aum.setIsInactive((Boolean) o[10]);
-                aum.setAccountId((BigInteger) o[11]);
-                aum.setUpdatedOn(dateFormat1.parse((o[12]).toString()));
-                aum.setAmount(position.getAmount());
-
-                aums.put(position.getPortfolioId(), aum);
-            }
+        } catch (Exception ex){
+            ex.printStackTrace();
         }
+
+
 
         aumRepository.save(aums.values());
     }
 
-    public void fetchAUMHistory () throws ParseException {
+    public void fetchAUMHistory ()  {
         List<Object[]> history = oranjAumHistoryRepository.fetchAumHistory();
 
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
 
         List<AumHistory> aumHis = new ArrayList<>();
-        for (Object[] o : history){
+        try{
+            for (Object[] o : history){
 
-            Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
-            if (client == null){
-                saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
+                Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
+                if (client == null){
+                    saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
+                }
+
+                AumHistory aum = new AumHistory();
+                aum.setPortfolioId((BigInteger) o[1]);
+                aum.setClientId((BigInteger) o[2]);
+                aum.setIsInactive((Boolean) o[4]);
+                aum.setAccountId((BigInteger) o[0]);
+                aum.setUpdatedOn(dateFormat1.parse((o[5]).toString()));
+                aum.setAmount((BigDecimal) o[3]);
+
+                aumHis.add(aum);
+
             }
 
-            AumHistory aum = new AumHistory();
-            aum.setPortfolioId((BigInteger) o[1]);
-            aum.setClientId((BigInteger) o[2]);
-            aum.setIsInactive((Boolean) o[4]);
-            aum.setAccountId((BigInteger) o[0]);
-            aum.setUpdatedOn(dateFormat1.parse((o[5]).toString()));
-            aum.setAmount((BigDecimal) o[3]);
+            aumHistoryRepository.save(aumHis);
 
-            aumHis.add(aum);
 
+            history = oranjPositionsHistoryRepository.fetchPositionsHistory();
+            List<PositionsHistory> posHis = new ArrayList<>();
+
+            for (Object[] o : history){
+                PositionsHistory positionHistory = new PositionsHistory();
+                positionHistory.setPositionId((BigInteger) o[0]);
+                positionHistory.setPortfolioId((BigInteger) o[1]);
+                positionHistory.setTickerName((String) o[2]);
+                positionHistory.setAssetClass((String) o[3]);
+                positionHistory.setPrice((BigDecimal) o[4]);
+                positionHistory.setQuantity((Double) o[5]);
+                positionHistory.setAmount((BigDecimal) o[6]);
+                positionHistory.setCurrencyCode("USD");
+                positionHistory.setCreationDate(dateFormat1.parse((o[7]).toString()));
+                positionHistory.setUpdatedOn(dateFormat1.parse((o[8]).toString()));
+
+                posHis.add(positionHistory);
+            }
+
+            positionsHistoryRepository.save(posHis);
+        } catch (Exception ex){
+            ex.printStackTrace();
         }
 
-        aumHistoryRepository.save(aumHis);
 
-
-        history = oranjPositionsHistoryRepository.fetchPositionsHistory();
-        List<PositionsHistory> posHis = new ArrayList<>();
-
-        for (Object[] o : history){
-            PositionsHistory positionHistory = new PositionsHistory();
-            positionHistory.setPositionId((BigInteger) o[0]);
-            positionHistory.setPortfolioId((BigInteger) o[1]);
-            positionHistory.setTickerName((String) o[2]);
-            positionHistory.setAssetClass((String) o[3]);
-            positionHistory.setPrice((BigDecimal) o[4]);
-            positionHistory.setQuantity((Double) o[5]);
-            positionHistory.setAmount((BigDecimal) o[6]);
-            positionHistory.setCurrencyCode("USD");
-            positionHistory.setCreationDate(dateFormat1.parse((o[7]).toString()));
-            positionHistory.setUpdatedOn(dateFormat1.parse((o[8]).toString()));
-
-            posHis.add(positionHistory);
-        }
-
-        positionsHistoryRepository.save(posHis);
     }
 
 
