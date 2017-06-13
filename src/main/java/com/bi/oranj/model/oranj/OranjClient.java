@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @Table (name = "auth_user")
 public class OranjClient {
 
-
     @Id
     @Column(name = "id")
     private Long id;

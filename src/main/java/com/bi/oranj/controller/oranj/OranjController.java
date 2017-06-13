@@ -1,7 +1,6 @@
 package com.bi.oranj.controller.oranj;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
-import com.bi.oranj.model.bi.Aum;
 import com.bi.oranj.service.oranj.OranjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * Created by harshavardhanpatil on 5/25/17.
@@ -40,28 +38,19 @@ public class OranjController {
         return oranjService.getGoals(date);
     }
 
-    @ApiOperation(value = "Get AUMs")
-    @RequestMapping(path="/aums", method = RequestMethod.GET)
-    public void getAums(HttpServletResponse response) {
-        log.info("Saving aums");
 
+    @ApiOperation( value = "Build initial historical data")
+    @RequestMapping (path = "/aum", method = RequestMethod.GET)
+    public void buildData (HttpServletResponse response){
+        log.info("Building initial data");
         try{
+            oranjService.fetchAUMHistory(0);
             oranjService.fetchAUMData();
         }catch (Exception ex){
+            log.error("Error while building initial data");
             ex.printStackTrace();
         }
-    }
 
-    @ApiOperation( value = "Get historical data")
-    @RequestMapping (path = "/aum-history", method = RequestMethod.GET)
-    public void getHistory (HttpServletResponse response){
-        log.info("Saving history");
-
-        try {
-            oranjService.fetchAUMHistory();
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
     }
 
 }

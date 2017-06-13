@@ -4,22 +4,20 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
 /**
- * Created by jaloliddinbakirov on 6/12/17.
+ * Created by jaloliddinbakirov on 6/13/17.
  */
-
 @Data
 @Entity
-public class OranjPositionsHistory {
+public class OranjPositions {
 
     @Id
-    @Column (name = "position_id", columnDefinition = "BIGINT")
+    @Column(name = "position_id", columnDefinition = "BIGINT")
     private BigInteger positionId;
 
     @Column (name = "portfolio_id", columnDefinition = "BIGINT")
@@ -49,7 +47,7 @@ public class OranjPositionsHistory {
     @Column (name = "updated_on")
     private Date updatedOn;
 
-    OranjPositionsHistory (BigInteger positionId, BigInteger portfolioId, String tickerName, String assetClass,
+    OranjPositions (BigInteger positionId, BigInteger portfolioId, String tickerName, String assetClass,
                            BigDecimal price, Double quantity, BigDecimal amount, String currencyCode, Date creationDate,
                            Date updatedOn){
 
@@ -65,7 +63,7 @@ public class OranjPositionsHistory {
         this.updatedOn = updatedOn;
     }
 
-    OranjPositionsHistory (){
+    OranjPositions (){
 
     }
 
