@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -26,64 +27,215 @@ public class AUMService {
     @Autowired
     private AumRepository aumRepository;
 
-    public RestResponse getAUMForAdmin(Integer pageNumber) {
+    public RestResponse getAUMForAdmin(Integer pageNumber, String sourceDate, String comparisonDate) {
 
-        AUMForAdmin aumForAdmin = new AUMForAdmin();
-        List<FirmAUM> firmsList = new ArrayList<>();
-        HashMap<BigInteger, FirmAUM> mapOfFirmIdToFirmAum = new HashMap<>();
+        boolean validDate = validateInputDate(sourceDate, comparisonDate);
+        if (validDate == false){
+            return RestResponse.error("Date should be in 'yyyy-MM-dd' format");
+        } else {
+            AUMForAdmin aumForAdmin = new AUMForAdmin();
+            List<FirmAUM> firmsList = new ArrayList<>();
+            HashMap<BigInteger, FirmAUM> mapOfFirmIdToFirmAum = new HashMap<>();
+            try {
+                List<Object[]> aumForAdminResultSet = aumRepository.findAUMsForAdmin();
+                for (Object[] aumResultSet : aumForAdminResultSet) {
+
+                    BigInteger readFirmId = (BigInteger) aumResultSet[0];
+                    if(!mapOfFirmIdToFirmAum.containsKey(readFirmId)){
+
+                        FirmAUM firmAUM = new FirmAUM();
+                        firmAUM.setFirmId(readFirmId);
+                        firmAUM.setName(aumResultSet[1].toString());
+
+                        setAUMDiff(aumResultSet, firmAUM, sourceDate, comparisonDate);
+
+                        firmsList.add(firmAUM);
+                        mapOfFirmIdToFirmAum.put(readFirmId, firmAUM);
+                    } else {
+
+                        FirmAUM firmAUM = mapOfFirmIdToFirmAum.get(readFirmId);
+                        AumDiff aumDiffCurrent = firmAUM.getCurrent();
+                        Map<String, BigDecimal> assetClassMap = aumDiffCurrent.getAssetClass();
+                        assetClassMap.put(aumResultSet[2].toString(), (BigDecimal) aumResultSet[3]);
+                        aumDiffCurrent.setTotal(aumDiffCurrent.getTotal().add((BigDecimal) aumResultSet[3]));
+                    }
+                }
+                aumForAdmin.setFirms(firmsList);
+                aumForAdmin.setTotalFirms(firmsList.size());
+                aumForAdmin.setLast(true);
+                aumForAdmin.setPage(0);
+                aumForAdmin.setCount(firmsList.size());
+            }catch (Exception e){
+                log.error("Error in fecthing AUMs" + e);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return RestResponse.error("Error in fetching AUMs from Oranj DB");
+            }
+            return RestResponse.successWithoutMessage(aumForAdmin);
+        }
+    }
+
+
+    public RestResponse getAUMForFirm(Long firmId, Integer pageNumber) {
+
+        AUMForFirm aumForFirm = new AUMForFirm();
+        List<AdvisorAUM> advisorsList = new ArrayList<>();
+        HashMap<BigInteger, AdvisorAUM> mapOfAdvisorIdToAdvisorAum = new HashMap<>();
 
         try {
-            List<Object[]> aumForAdminResultSet = aumRepository.findAUMsForAdmin();
-            for (Object[] aumResultSet : aumForAdminResultSet) {
+            log.info("firmId :::"+firmId);
+            List<Object[]> aumForFirmResultSet = aumRepository.findAUMsForFirm(firmId);
+            for (Object[] aumResultSet : aumForFirmResultSet) {
 
+                BigInteger readAdvisorId = (BigInteger) aumResultSet[0];
+                if(!mapOfAdvisorIdToAdvisorAum.containsKey(readAdvisorId)){
 
-                log.info("Firm ID ::: " + aumResultSet[0]);
-                BigInteger readFirmId = (BigInteger) aumResultSet[0];
-                if(!mapOfFirmIdToFirmAum.containsKey(readFirmId)){
+                    AdvisorAUM advisorAUM = new AdvisorAUM();
+                    advisorAUM.setAdvisorId(readAdvisorId);
+                    advisorAUM.setName(aumResultSet[1].toString());
 
-                    FirmAUM firmAUM = new FirmAUM();
-                    firmAUM.setFirmId(readFirmId);
-                    firmAUM.setName(aumResultSet[1].toString());
+                    setAUMDiff(aumResultSet, advisorAUM);
 
-                    // Set Current values
-                    AumDiff aumDiffCurrent = new AumDiff();
-                    BigDecimal total = (BigDecimal) aumResultSet[3];
-                    aumDiffCurrent.setTotal(total);
-
-                    Map<String, BigDecimal> assetTypeMap = new HashMap<String, BigDecimal>();
-                    assetTypeMap.put(aumResultSet[2].toString(), (BigDecimal) aumResultSet[3]);
-                    aumDiffCurrent.setAssetClass(assetTypeMap);
-
-                    firmAUM.setCurrent(aumDiffCurrent);
-
-                    // Set Source values
-                    AumDiff aumDiffSource = new AumDiff();
-                    // Fecth data from History table and add
-                    firmAUM.setSource(aumDiffSource);
-
-                    firmsList.add(firmAUM);
-                    mapOfFirmIdToFirmAum.put(readFirmId, firmAUM);
-
+                    advisorsList.add(advisorAUM);
+                    mapOfAdvisorIdToAdvisorAum.put(readAdvisorId, advisorAUM);
                 } else {
-
-                    FirmAUM firmAUM = mapOfFirmIdToFirmAum.get(readFirmId);
-                    AumDiff aumDiffCurrent = firmAUM.getCurrent();
+                    AdvisorAUM advisorAUM = mapOfAdvisorIdToAdvisorAum.get(readAdvisorId);
+                    AumDiff aumDiffCurrent = advisorAUM.getCurrent();
                     Map<String, BigDecimal> assetClassMap = aumDiffCurrent.getAssetClass();
                     assetClassMap.put(aumResultSet[2].toString(), (BigDecimal) aumResultSet[3]);
                     aumDiffCurrent.setTotal(aumDiffCurrent.getTotal().add((BigDecimal) aumResultSet[3]));
                 }
             }
-            aumForAdmin.setFirms(firmsList);
-            aumForAdmin.setTotalFirms(firmsList.size());
-            aumForAdmin.setLast(true);
-            aumForAdmin.setPage(0);
-            aumForAdmin.setCount(firmsList.size());
+            aumForFirm.setAdvisors(advisorsList);
+            aumForFirm.setTotalAdvisors(advisorsList.size());
+            aumForFirm.setLast(true);
+            aumForFirm.setPage(0);
+            aumForFirm.setCount(advisorsList.size());
 
         }catch (Exception e){
             log.error("Error in fecthing AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fetching AUMs from Oranj DB");
         }
-        return RestResponse.successWithoutMessage(aumForAdmin);
+        return RestResponse.successWithoutMessage(aumForFirm);
+    }
+
+
+    public RestResponse getAUMForAdvisor(Long advisorId, Integer pageNumber) {
+
+        AUMForAdvisor aumForAdvisor = new AUMForAdvisor();
+        List<ClientAUM> clientList = new ArrayList<>();
+        HashMap<BigInteger, ClientAUM> mapOfClientIdToClientAum = new HashMap<>();
+
+        log.info("advisorId :::" + advisorId);
+        try {
+            List<Object[]> aumForFirmResultSet = aumRepository.findAUMsForAdvisor(advisorId);
+            for (Object[] aumResultSet : aumForFirmResultSet) {
+
+                BigInteger readClientId = (BigInteger) aumResultSet[0];
+                if(!mapOfClientIdToClientAum.containsKey(readClientId)){
+
+                    ClientAUM clientAUM = new ClientAUM();
+                    clientAUM.setClientId(readClientId);
+                    clientAUM.setName(aumResultSet[1].toString());
+
+                    setAUMDiff(aumResultSet, clientAUM);
+
+                    clientList.add(clientAUM);
+                    mapOfClientIdToClientAum.put(readClientId, clientAUM);
+                } else {
+                    ClientAUM clientAUM = mapOfClientIdToClientAum.get(readClientId);
+                    AumDiff aumDiffCurrent = clientAUM.getCurrent();
+                    Map<String, BigDecimal> assetClassMap = aumDiffCurrent.getAssetClass();
+                    assetClassMap.put(aumResultSet[2].toString(), (BigDecimal) aumResultSet[3]);
+                    aumDiffCurrent.setTotal(aumDiffCurrent.getTotal().add((BigDecimal) aumResultSet[3]));
+                }
+            }
+            aumForAdvisor.setClients(clientList);
+            aumForAdvisor.setTotalClients(clientList.size());
+            aumForAdvisor.setLast(true);
+            aumForAdvisor.setPage(0);
+            aumForAdvisor.setCount(clientList.size());
+
+        }catch (Exception e){
+            log.error("Error in fecthing AUMs" + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Error in fetching AUMs from Oranj DB");
+        }
+        return RestResponse.successWithoutMessage(aumForAdvisor);
+    }
+
+
+    public void setAUMDiff(Object[] aumResultSet, AdvisorAUM advisorAUM){
+
+        // Set Current values
+        AumDiff aumDiffCurrent = new AumDiff();
+        BigDecimal total = (BigDecimal) aumResultSet[3];
+        aumDiffCurrent.setTotal(total);
+
+        Map<String, BigDecimal> assetTypeMap = new HashMap<String, BigDecimal>();
+        assetTypeMap.put(aumResultSet[2].toString(), (BigDecimal) aumResultSet[3]);
+        aumDiffCurrent.setAssetClass(assetTypeMap);
+
+        advisorAUM.setCurrent(aumDiffCurrent);
+
+        // Set Source values
+        AumDiff aumDiffSource = new AumDiff();
+        // Fecth data from History table and add
+        advisorAUM.setSource(aumDiffSource);
+    }
+
+    public void setAUMDiff(Object[] aumResultSet, ClientAUM clientAUM){
+
+        // Set Current values
+        AumDiff aumDiffCurrent = new AumDiff();
+        BigDecimal total = (BigDecimal) aumResultSet[3];
+        aumDiffCurrent.setTotal(total);
+
+        Map<String, BigDecimal> assetTypeMap = new HashMap<String, BigDecimal>();
+        assetTypeMap.put(aumResultSet[2].toString(), (BigDecimal) aumResultSet[3]);
+        aumDiffCurrent.setAssetClass(assetTypeMap);
+
+        clientAUM.setCurrent(aumDiffCurrent);
+
+        // Set Source values
+        AumDiff aumDiffSource = new AumDiff();
+        // Fecth data from History table and add
+        clientAUM.setSource(aumDiffSource);
+    }
+
+    public void setAUMDiff(Object[] aumResultSet, FirmAUM firmAUM, String sourceDate, String comparisonDate){
+
+        // Set Current values
+        AumDiff aumDiffCurrent = new AumDiff();
+        aumDiffCurrent.setDate(comparisonDate);
+        BigDecimal total = (BigDecimal) aumResultSet[3];
+        aumDiffCurrent.setTotal(total);
+
+        Map<String, BigDecimal> assetTypeMap = new HashMap<String, BigDecimal>();
+        assetTypeMap.put(aumResultSet[2].toString(), (BigDecimal) aumResultSet[3]);
+        aumDiffCurrent.setAssetClass(assetTypeMap);
+
+        firmAUM.setCurrent(aumDiffCurrent);
+
+        // Set Source values
+        AumDiff aumDiffSource = new AumDiff();
+        aumDiffSource.setDate(sourceDate);
+        // Fecth data from History table and add
+        firmAUM.setSource(aumDiffSource);
+    }
+
+    public boolean validateInputDate(String sourceDate, String comparisonDate){
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date source = sdf.parse(sourceDate);
+            Date dest = sdf.parse(comparisonDate);
+        } catch (Exception e){
+            log.error("Date should be in 'yyyy-MM-dd' format");
+            return false;
+        }
+        return true;
     }
 }
+
+

@@ -14,9 +14,10 @@ CREATE TABLE `positions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 DROP TABLE IF EXISTS `positions_history`;
 CREATE TABLE `positions_history` (
-  `id` bigint(20) AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `position_id` bigint(20) DEFAULT NULL,
   `portfolio_id` bigint(20) DEFAULT NULL,
   `ticker_name` varchar(255) DEFAULT NULL,
@@ -47,13 +48,14 @@ CREATE TABLE `aum` (
 
 DROP TABLE IF EXISTS `aum_history`;
 CREATE TABLE `aum_history` (
-  `id` bigint (20) AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20) NOT NULL,
   `portfolio_id` bigint(20) DEFAULT NULL,
-  `client_id` bigint(20)DEFAULT NULL,
+  `client_id` bigint(20) DEFAULT NULL,
   `amount` decimal(19,2) DEFAULT NULL,
-  `is_inactive` bit(1) DEFAULT 0,
+  `is_inactive` bit(1) DEFAULT b'0',
   `updated_on` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`client_id`) REFERENCES clients(`id`)
+  KEY `client_id` (`client_id`),
+  CONSTRAINT `aum_history_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

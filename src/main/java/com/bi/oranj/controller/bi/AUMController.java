@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+
 /**
  * Created by harshavardhanpatil on 6/9/17.
  */
@@ -23,9 +25,23 @@ public class AUMController {
     @Autowired
     private AUMService aumService;
 
-    @ApiOperation(value = "Get Goals created for given date", notes = "date should be in 'yyyy-MM-dd' format")
+    @ApiOperation(value = "Get AUMs for Oranj Admin", notes = "returns AUM for Oranj Admin, date should be in 'yyyy-MM-dd' format")
+    @RequestMapping(path="/admin", method = RequestMethod.GET)
+    public RestResponse getAUMForAdmin(@RequestParam (value = "page", required = false) Integer pageNumber,
+                                       @RequestParam(value = "sourceDate", required = true) String sourceDate,
+                                       @RequestParam(value = "comparisonDate", required = true) String comparisonDate) {
+        return aumService.getAUMForAdmin(pageNumber, sourceDate, comparisonDate);
+    }
+
+    @ApiOperation(value = "Get AUMs for Firm", notes = "returns AUM for Firm")
     @RequestMapping(path="/firms", method = RequestMethod.GET)
-    public RestResponse getAUMForAdmin(@RequestParam (value = "page", required = false) Integer pageNumber) {
-        return aumService.getAUMForAdmin(pageNumber);
+    public RestResponse getAUMForFirm(@RequestParam (value = "firmId", required = true) Long firmId, @RequestParam (value = "page", required = false) Integer pageNumber) {
+        return aumService.getAUMForFirm(firmId, pageNumber);
+    }
+
+    @ApiOperation(value = "Get AUMs for Advisor", notes = "returns AUM for Advisor")
+    @RequestMapping(path="/advisors", method = RequestMethod.GET)
+    public RestResponse getAUMForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId, @RequestParam (value = "page", required = false) Integer pageNumber) {
+        return aumService.getAUMForAdvisor(advisorId, pageNumber);
     }
 }

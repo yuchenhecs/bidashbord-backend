@@ -10,7 +10,7 @@ import java.math.BigInteger;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FirmAUM extends AUMSummary {
+public class AdvisorAUM extends AUMSummary {
 
-    private BigInteger firmId;
+    private BigInteger advisorId;
 }

@@ -11,12 +11,8 @@ import java.util.List;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AUMForAdmin {
+public class AUMForAdmin extends BaseAum {
 
     private int totalFirms;
-    private boolean last;
-    private int page;
-    private int count;
     private List<FirmAUM> firms = new ArrayList<>();
-
 }

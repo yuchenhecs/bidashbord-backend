@@ -154,7 +154,7 @@ public class OranjService {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fecthing Goals from Oranj DB");
         }
-        return RestResponse.success("Goals created till" + date + " have been saved");
+        return RestResponse.success("Goals created till " + date + " have been saved");
     }
 
     public void storeGoals(List<OranjGoal> oranjGoalList){

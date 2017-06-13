@@ -22,10 +22,10 @@ import java.util.List;
 /**
  * Created by jaloliddinbakirov on 5/24/17.
  */
-@Api(basePath = "/goals", description = "Operations with BI DB", produces = "application/json")
+@Api(basePath = "/bi/goals", description = "Operations with BI DB", produces = "application/json")
 @RestController
 @CrossOrigin
-@RequestMapping("/goals")
+@RequestMapping("/bi/goals")
 public class GoalController {
 
     private final Logger logger = LoggerFactory.getLogger(GoalController.class);

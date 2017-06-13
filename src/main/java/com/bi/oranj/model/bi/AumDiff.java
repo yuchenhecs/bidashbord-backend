@@ -16,7 +16,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AumDiff {
 
-    private String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    private String date;
     private BigDecimal total;
     private Map<String, BigDecimal> assetClass = new HashMap<>();
 }
