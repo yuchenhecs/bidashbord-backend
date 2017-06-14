@@ -23,6 +23,9 @@ public class OranjPositions {
     @Column (name = "portfolio_id", columnDefinition = "BIGINT")
     private BigInteger portfolioId;
 
+    @Column (name = "client_ud", columnDefinition = "BIGINT")
+    private BigInteger client_id;
+
     @Column (name = "ticker_name")
     private String tickerName;
 

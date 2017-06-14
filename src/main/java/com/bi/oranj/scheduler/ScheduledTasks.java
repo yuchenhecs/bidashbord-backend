@@ -40,28 +40,12 @@ public class ScheduledTasks {
     }
 
     @Scheduled(cron = "0 30 2 * * *")
-    public void triggerGetAUM (){
-        log.info("Fetching AUM DATA");
-        oranjService.fetchAUMData();
-        log.info("Fetching AUM DATA: DONE");
+    public void triggerGetPositions (){
+        log.info("Fetching 'Positions' DATA");
+        oranjService.fetchPositionsData();
+        log.info("Fetching 'Positions' DATA: DONE");
     }
 
-
-    /**
-     * for now we stopped with this solution
-     * but ideally, it should be done by moving data from actual tables to historical
-     *
-     * we considered the case of failure of this cron job. If it happens, we may lose
-     * some historical data.
-     *
-     * this solution should be and will be improved !!!
-     */
-    @Scheduled(cron = "0 0 3 * * *")
-    public void triggerGetHistory(){
-        log.info("Fetching AUM History");
-        oranjService.fetchAUMHistory();
-        log.info("Fetching AUM History: DONE");
-    }
 
 
 

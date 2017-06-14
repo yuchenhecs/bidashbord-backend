@@ -6,6 +6,7 @@ import com.bi.oranj.model.bi.*;
 import com.bi.oranj.model.bi.Aum;
 import com.bi.oranj.model.oranj.OranjClient;
 import com.bi.oranj.model.oranj.OranjGoal;
+import com.bi.oranj.model.oranj.OranjPositions;
 import com.bi.oranj.repository.bi.*;
 import com.bi.oranj.repository.oranj.*;
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -78,68 +81,33 @@ public class OranjService {
         List<Object[]> mapping = oranjAUMRepository.fetchPortfolioClientMapping();
         List<Aum> aums = new ArrayList<>();
 
-        for (Object[] o : mapping){
+        try{
+            for (Object[] o : mapping){
+                Client client = entityManager.find(Client.class, ((BigInteger) o[1]).longValue());
+                if (client == null) {
+                    List<OranjClient> clients =oranjClientRepository.findByClientId((BigInteger) o[1]);
+                    if (clients.size() != 0) saveClients(clients);
+                    else continue;
+                }
 
-            Client client = entityManager.find(Client.class, ((BigInteger) o[1]).longValue());
-            if (client == null){
-                saveClients(oranjClientRepository.findByClientId((BigInteger) o[1]));
+                Aum aum = new Aum();
+                aum.setPortfolioId((BigInteger) o[0]);
+                aum.setClientId((BigInteger) o[1]);
+                aums.add(aum);
             }
-
-            Aum aum = new Aum();
-            aum.setPortfolioId((BigInteger) o[0]);
-            aum.setClientId((BigInteger) o[1]);
-            aums.add(aum);
+            aumRepository.save(aums);
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
-
-        aumRepository.save(aums);
-
     }
 
-
-    public void fetchPositionData () {
+    public void fetchPositionsData () {
 
         List<Object[]> positionRows = oranjPositionsRepository.fetchPositionsData();
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
 
-        List<Position> positions = new ArrayList<>();
-
-        try{
-            for (Object[] o : positionRows){
-
-                Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
-                if (client == null){
-                    saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
-                }
-
-                Position position = new Position();
-                position.setPositionId((BigInteger) o[0]);
-                position.setPortfolioId((BigInteger) o[1]);
-                position.setTickerName((String) o[2]);
-                position.setAssetClass((String) o[3]);
-                position.setPrice((BigDecimal) o[4]);
-                position.setQuantity((Double) o[5]);
-                position.setAmount((BigDecimal) o[6]);
-                position.setCurrencyCode("USD");
-                position.setCreationDate((Date) o[7]);
-                position.setUpdatedOn(dateFormat1.parse((o[8]).toString()));
-                positions.add(position);
-
-            }
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-
-        positionRepository.save(positions);
+        savePositions(positionRows, dateFormat1);
     }
-
-//    public void fetchAUMHistory (long limitNum)  {
-//        DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
-//        List<Object[]> history = null;
-//
-//        if (limitNum == 0) history = oranjAumHistoryRepository.fetchAumHistory();
-//        else history = oranjAumHistoryRepository.fetchAumHistoryWithLimit(limitNum);
-//        saveAumHistory(history, dateFormat1);
-//    }
 
     public void fetchPositionsHistory (long limitNum){
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
@@ -147,28 +115,42 @@ public class OranjService {
 
         if (limitNum == 0) history = oranjPositionsHistoryRepository.fetchPositionsHistory();
         else history = oranjPositionsHistoryRepository.fetchPositionsHistoryWithLimit(limitNum);
-        savePositionsHistory(history, dateFormat1);
+        savePositions(history, dateFormat1);
     }
 
-    private void savePositionsHistory (List<Object[]> history, DateFormat dateFormat1){
+    public void fetchPositionsDataByDate(String date) {
+        List<OranjPositions> positions = oranjPositionsHistoryRepository.fetchPositionsHistoryByDate(date);
+        if (positions.size() == 0) log.info("Empty data set for the given data -> {}", date);
+
+    }
+
+    private void savePositions (List<Object[]> history, DateFormat dateFormat1){
+
         List<Position> posHis = new ArrayList<>();
         try {
             for (Object[] o : history) {
 
-                Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
-                if (client == null) saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
+                String assetClass =  (String) o[4];
+                if (assetClass == null) assetClass = getRandomAssetClass();
+
+                String date = "";
+                if (o[8].getClass() == Timestamp.class) date = ((Timestamp) o[8]).toString();
+                else date = ((Date) o[8]).toString();
+
+                if (date.length() <= 10) date += " 00:00:00";
 
                 Position positionHistory = new Position();
                 positionHistory.setPositionId((BigInteger) o[0]);
                 positionHistory.setPortfolioId((BigInteger) o[1]);
-                positionHistory.setTickerName((String) o[2]);
-                positionHistory.setAssetClass((String) o[3]);
-                positionHistory.setPrice((BigDecimal) o[4]);
-                positionHistory.setQuantity((Double) o[5]);
-                positionHistory.setAmount((BigDecimal) o[6]);
+                positionHistory.setClientId((BigInteger) o[2]);
+                positionHistory.setTickerName((String) o[3]);
+                positionHistory.setAssetClass(assetClass);
+                positionHistory.setPrice((BigDecimal) o[5]);
+                positionHistory.setQuantity((Double) o[6]);
+                positionHistory.setAmount((BigDecimal) o[7]);
                 positionHistory.setCurrencyCode("USD");
-                positionHistory.setCreationDate(dateFormat1.parse((o[7]).toString()));
-                positionHistory.setUpdatedOn(dateFormat1.parse((o[8]).toString()));
+                positionHistory.setCreationDate(dateFormat1.parse(date));
+                positionHistory.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
                 posHis.add(positionHistory);
             }
         } catch (ParseException e) {
@@ -176,28 +158,6 @@ public class OranjService {
         }
         positionRepository.save(posHis);
     }
-
-//    private void saveAumHistory (List<Object[]> history, DateFormat dateFormat1){
-//        List<Aum> aumHis = new ArrayList<>();
-//        try {
-//            for (Object[] o : history) {
-//                Client client = entityManager.find(Client.class, ((BigInteger) o[2]).longValue());
-//                if (client == null) saveClients(oranjClientRepository.findByClientId((BigInteger) o[2]));
-//
-//                Aum aum = new Aum();
-//                aum.setPortfolioId((BigInteger) o[1]);
-//                aum.setClientId((BigInteger) o[2]);
-//                aum.setIsInactive((Boolean) o[4]);
-//                aum.setAccountId((BigInteger) o[0]);
-//                aum.setUpdatedOn(dateFormat1.parse((o[5]).toString()));
-//                aum.setAmount((BigDecimal) o[3]);
-//                aumHis.add(aum);
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        aumRepository.save(aumHis);
-//    }
 
     private void saveClients (List<OranjClient> clients){
         for (OranjClient oranjClient : clients) {
@@ -225,12 +185,6 @@ public class OranjService {
         }
     }
 
-
-    /**
-     * This method gets all the goals created between startDate and endDate
-     * @param date
-     * @return
-     */
     public RestResponse getGoals(String date){
 
         String startDate = date + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
@@ -281,5 +235,16 @@ public class OranjService {
             goalRepository.save(biGoal);
 
         }
+    }
+
+    private String getRandomAssetClass (){
+        List<String> assetClasses = new ArrayList<>();
+        assetClasses.add("Cash");
+        assetClasses.add("US Stock");
+        assetClasses.add("Non US Stock");
+        assetClasses.add("US Bond");
+        assetClasses.add("Other");
+
+        return assetClasses.get(new Random().nextInt(assetClasses.size()));
     }
 }

@@ -44,8 +44,9 @@ public class OranjController {
     public void buildData (HttpServletResponse response){
         log.info("Building initial data");
         try{
-            oranjService.fetchAUMHistory(0);
-            oranjService.fetchAUMData();
+//            oranjService.fetchAUMData();
+            oranjService.fetchPositionsHistory(50);
+            oranjService.fetchPositionsData();
         }catch (Exception ex){
             log.error("Error while building initial data");
             ex.printStackTrace();

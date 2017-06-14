@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -29,6 +30,9 @@ public class Position {
 
     @Column (name = "portfolio_id", columnDefinition = "BIGINT")
     private BigInteger portfolioId;
+
+    @Column (name = "client_id", columnDefinition = "BIGINT")
+    private BigInteger clientId;
 
     @Column (name = "ticker_name")
     private String tickerName;
