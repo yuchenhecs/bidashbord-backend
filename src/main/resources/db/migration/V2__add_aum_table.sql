@@ -33,14 +33,14 @@ CREATE TABLE `positions` (
 --) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `aum`;
-CREATE TABLE `aum` (
-  `id` bigint (20) AUTO_INCREMENT,
-  `portfolio_id` bigint(20) DEFAULT NULL,
-  `client_id` bigint(20)DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`client_id`) REFERENCES clients(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+--DROP TABLE IF EXISTS `aum`;
+--CREATE TABLE `aum` (
+--  `id` bigint (20) AUTO_INCREMENT,
+--  `portfolio_id` bigint(20) DEFAULT NULL,
+--  `client_id` bigint(20)DEFAULT NULL,
+--  PRIMARY KEY (`id`),
+--  FOREIGN KEY (`client_id`) REFERENCES clients(`id`)
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 --DROP TABLE IF EXISTS `aum_history`;
