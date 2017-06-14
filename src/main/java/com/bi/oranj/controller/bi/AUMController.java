@@ -28,9 +28,9 @@ public class AUMController {
     @ApiOperation(value = "Get AUMs for Oranj Admin", notes = "returns AUM for Oranj Admin, date should be in 'yyyy-MM-dd' format")
     @RequestMapping(path="/admin", method = RequestMethod.GET)
     public RestResponse getAUMForAdmin(@RequestParam (value = "page", required = false) Integer pageNumber,
-                                       @RequestParam(value = "sourceDate", required = true) String sourceDate,
-                                       @RequestParam(value = "comparisonDate", required = true) String comparisonDate) {
-        return aumService.getAUMForAdmin(pageNumber, sourceDate, comparisonDate);
+                                       @RequestParam(value = "previousDate", required = true) String previousDate,
+                                       @RequestParam(value = "currentDate", required = true) String currentDate) {
+        return aumService.getAUMForAdmin(pageNumber, previousDate, currentDate);
     }
 
     @ApiOperation(value = "Get AUMs for Firm", notes = "returns AUM for Firm")

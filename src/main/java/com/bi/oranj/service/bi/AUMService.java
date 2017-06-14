@@ -1,5 +1,6 @@
 package com.bi.oranj.service.bi;
 
+import com.bi.oranj.constant.Constants;
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.repository.bi.AumRepository;
@@ -27,17 +28,21 @@ public class AUMService {
     @Autowired
     private AumRepository aumRepository;
 
-    public RestResponse getAUMForAdmin(Integer pageNumber, String sourceDate, String comparisonDate) {
+    public RestResponse getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
 
-        boolean validDate = validateInputDate(sourceDate, comparisonDate);
+        boolean validDate = validateInputDate(previousDate, currentDate);
         if (validDate == false){
             return RestResponse.error("Date should be in 'yyyy-MM-dd' format");
         } else {
+
+            String currentStartDate = currentDate + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
+            String currentEndDate = currentDate + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
+
             AUMForAdmin aumForAdmin = new AUMForAdmin();
             List<FirmAUM> firmsList = new ArrayList<>();
             HashMap<BigInteger, FirmAUM> mapOfFirmIdToFirmAum = new HashMap<>();
             try {
-                List<Object[]> aumForAdminResultSet = aumRepository.findAUMsForAdmin();
+                List<Object[]> aumForAdminResultSet = aumRepository.findAUMsForAdmin(currentStartDate, currentEndDate);
                 for (Object[] aumResultSet : aumForAdminResultSet) {
 
                     BigInteger readFirmId = (BigInteger) aumResultSet[0];
@@ -47,7 +52,7 @@ public class AUMService {
                         firmAUM.setFirmId(readFirmId);
                         firmAUM.setName(aumResultSet[1].toString());
 
-                        setAUMDiff(aumResultSet, firmAUM, sourceDate, comparisonDate);
+                        setAUMDiff(aumResultSet, firmAUM, previousDate, currentDate);
 
                         firmsList.add(firmAUM);
                         mapOfFirmIdToFirmAum.put(readFirmId, firmAUM);
@@ -181,7 +186,7 @@ public class AUMService {
         // Set Source values
         AumDiff aumDiffSource = new AumDiff();
         // Fecth data from History table and add
-        advisorAUM.setSource(aumDiffSource);
+        advisorAUM.setPrevious(aumDiffSource);
     }
 
     public void setAUMDiff(Object[] aumResultSet, ClientAUM clientAUM){
@@ -200,7 +205,7 @@ public class AUMService {
         // Set Source values
         AumDiff aumDiffSource = new AumDiff();
         // Fecth data from History table and add
-        clientAUM.setSource(aumDiffSource);
+        clientAUM.setPrevious(aumDiffSource);
     }
 
     public void setAUMDiff(Object[] aumResultSet, FirmAUM firmAUM, String sourceDate, String comparisonDate){
@@ -221,15 +226,15 @@ public class AUMService {
         AumDiff aumDiffSource = new AumDiff();
         aumDiffSource.setDate(sourceDate);
         // Fecth data from History table and add
-        firmAUM.setSource(aumDiffSource);
+        firmAUM.setPrevious(aumDiffSource);
     }
 
-    public boolean validateInputDate(String sourceDate, String comparisonDate){
+    public boolean validateInputDate(String previousDate, String currentDate){
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date source = sdf.parse(sourceDate);
-            Date dest = sdf.parse(comparisonDate);
+            Date previous = sdf.parse(previousDate);
+            Date current = sdf.parse(currentDate);
         } catch (Exception e){
             log.error("Date should be in 'yyyy-MM-dd' format");
             return false;

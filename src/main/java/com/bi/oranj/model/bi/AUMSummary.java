@@ -11,6 +11,6 @@ import lombok.Data;
 public class AUMSummary {
 
     private String name;
-    private AumDiff source;
+    private AumDiff previous;
     private AumDiff current;
 }

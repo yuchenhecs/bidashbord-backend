@@ -59,6 +59,7 @@ public class ConstantQueries {
                                                                     "ON c.id = a.client_id\n" +
                                                                 "join firms f\n" +
                                                                     "ON c.firm_id = f.id\n" +
+                                                            "where a.updated_on >= :start and a.updated_on <= :end\n"+
                                                             "group by p.asset_class, c.firm_id, a.client_id\n" +
                                                             "order by firm_id";
 

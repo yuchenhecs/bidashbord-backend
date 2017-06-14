@@ -17,7 +17,7 @@ import static com.bi.oranj.constant.ConstantQueries.GET_AUM_FOR_FIRM_QUERY;
 public interface AumRepository extends JpaRepository<Aum, Long> {
 
     @Query(value = GET_AUM_FOR_ADMIN_QUERY, nativeQuery = true)
-    public List<Object[]> findAUMsForAdmin();
+    public List<Object[]> findAUMsForAdmin(@Param("start") String start, @Param("end") String end);
 
     @Query(value = GET_AUM_FOR_FIRM_QUERY, nativeQuery = true)
     public List<Object[]> findAUMsForFirm(@Param("firm") Long firm);
