@@ -136,9 +136,9 @@ public class OranjService {
             List<OranjGoal> oranjGoalList = oranjGoalRepository.FindByCreationDate(startDate, endDate);
             storeGoals(oranjGoalList);
         }catch (Exception e){
-            log.error("Error in fecthing goals from Oranj." + e);
+            log.error("Error in fetching goals from Oranj." + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fecthing Goals from Oranj DB");
+            return RestResponse.error("Error in fetching Goals from Oranj DB");
         }
         return RestResponse.success("Goals created on " + date + " have been saved");
     }
@@ -150,9 +150,9 @@ public class OranjService {
             List<OranjGoal> oranjGoalList = oranjGoalRepository.FindGoalsTillDate(endDate);
             storeGoals(oranjGoalList);
         }catch (Exception e){
-            log.error("Error in fecthing goals from Oranj." + e);
+            log.error("Error in fetching goals from Oranj." + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fecthing Goals from Oranj DB");
+            return RestResponse.error("Error in fetching Goals from Oranj DB");
         }
         return RestResponse.success("Goals created till " + date + " have been saved");
     }
@@ -196,5 +196,68 @@ public class OranjService {
             log.error("Error in storing goals in BI DB" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
+    }
+
+    public RestResponse getAllFirms(){
+        try{
+            List<Object[]> oranjFirmList = oranjGoalRepository.FindAllFirms();
+            for (Object[] firmResultSet : oranjFirmList) {
+                Firm firm = new Firm();
+                firm.setId(Long.parseLong(firmResultSet[0].toString()));
+                firm.setFirmName(firmResultSet[1].toString());
+                firmRepository.save(firm);
+            }
+        }catch (Exception e){
+            log.error("Error in fetching Firms from Oranj." + e);
+            return RestResponse.error("Error in fecthing Firms from Oranj DB");
+        }
+        return RestResponse.success("All Firms have been saved");
+    }
+
+    public RestResponse getAllAdvisors(){
+        try{
+            List<Object[]> oranjAdvisorsList = oranjGoalRepository.FindAllAdvisors();
+            for (Object[] advisorsResultSet : oranjAdvisorsList) {
+                Advisor advisor = new Advisor();
+                advisor.setId(Long.parseLong(advisorsResultSet[0].toString()));
+                advisor.setAdvisorFirstName(advisorsResultSet[1].toString());
+                advisor.setAdvisorLastName(advisorsResultSet[2].toString());
+                advisor.setFirmId(Long.parseLong(advisorsResultSet[3].toString()));
+                advisorRepository.save(advisor);
+            }
+        }catch (Exception e){
+            log.error("Error in fetching Advisors from Oranj." + e);
+            return RestResponse.error("Error in fecthing Advisors from Oranj DB");
+        }
+        return RestResponse.success("All Advisors have been saved");
+    }
+
+    public RestResponse getAllClients(){
+        try{
+            List<Object[]> oranjClientsList = oranjGoalRepository.FindAllClients();
+            for (Object[] clientsResultSet : oranjClientsList) {
+                Client client = new Client();
+                client.setId(Long.parseLong(clientsResultSet[0].toString()));
+                client.setClientFirstName(clientsResultSet[1].toString());
+                client.setClientLastName(clientsResultSet[2].toString());
+                client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
+                client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
+                clientRepository.save(client);
+            }
+            List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.FindAllClientsWhoAreAdvisors();
+            for (Object[] clientsResultSet : oranjClientsWhoAreAdvisorsList) {
+                Client client = new Client();
+                client.setId(Long.parseLong(clientsResultSet[0].toString()));
+                client.setClientFirstName(clientsResultSet[1].toString());
+                client.setClientLastName(clientsResultSet[2].toString());
+                client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
+                client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
+                clientRepository.save(client);
+            }
+        }catch (Exception e){
+            log.error("Error in fetching Clients from Oranj." + e);
+            return RestResponse.error("Error in fecthing Clients from Oranj DB");
+        }
+        return RestResponse.success("All Clients have been saved");
     }
 }

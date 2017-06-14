@@ -35,14 +35,14 @@ public class OranjController {
      * @param date
      * @return
      */
-    @ApiOperation(value = "Get Goals created for given date", notes = "date should be in 'yyyy-MM-dd' format")
+    @ApiOperation(value = "Save Goals created from Oranj DB to BI DB for given date", notes = "date should be in 'yyyy-MM-dd' format")
     @RequestMapping(path="/goals", method = RequestMethod.GET)
     public RestResponse getGoalsByDate(@RequestParam(value = "date", required = true) String date) {
         log.info("Saving {} goals", date);
         return oranjService.getGoals(date);
     }
 
-    @ApiOperation(value = "Get All Goals created so far", notes = "Saves all the goals created till today")
+    @ApiOperation(value = "Save All Goals from Oranj DB To BI DB", notes = "Saves all the goals created till today")
     @RequestMapping(path="/goals/migration", method = RequestMethod.GET)
     public RestResponse getGoalsTillDate() {
         String date = today().toString();
@@ -57,7 +57,7 @@ public class OranjController {
         return cal.getTime();
     }
 
-    @ApiOperation(value = "Get AUMs")
+    @ApiOperation(value = "Save All Positions from Oranj DB To BI DB")
     @RequestMapping(path="/aums", method = RequestMethod.GET)
     public void getAums(HttpServletResponse response) {
         log.info("Saving aums");
@@ -67,6 +67,28 @@ public class OranjController {
         }catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    @ApiOperation(value = "Save All Firms from Oranj DB To BI DB", notes = "Saves all the firms created till today")
+    @RequestMapping(path="/firms", method = RequestMethod.GET)
+    public RestResponse getAllFirms() {
+        log.info("Fetching All Firms From Oranj DB");
+        return oranjService.getAllFirms();
+    }
+
+    @ApiOperation(value = "Save All Advisors from Oranj DB To BI DB", notes = "Saves all the advisors created till today")
+    @RequestMapping(path="/advisors", method = RequestMethod.GET)
+    public RestResponse getAllAdvisors() {
+        log.info("Fetching All Firms From Oranj DB");
+        return oranjService.getAllAdvisors();
+    }
+
+
+    @ApiOperation(value = "Save All Clients from Oranj DB To BI DB", notes = "Saves all the clients created till today")
+    @RequestMapping(path="/clients", method = RequestMethod.GET)
+    public RestResponse getAllClients() {
+        log.info("Fetching All Firms From Oranj DB");
+        return oranjService.getAllClients();
     }
 
 }

@@ -5,7 +5,17 @@ package com.bi.oranj.constant;
  */
 public class ConstantQueries {
 
-    public static final String FIND_FIRM = "SELECT name FROM Firm where id = ?1";
+    public static final String GET_ALL_FIRMS_QUERY = "select id, name from firm";
+
+    public static final String GET_ALL_ADVISORS_QUERY = "select ad.id, ad.first_name as advisorFirstName, ad.last_name as advisorLastName, ad.firm_id from advisor ad";
+
+    public static final String GET_ALL_CLIENTS_QUERY = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, a.advisor_id as advisorId, a.firm_id as firmId from auth_user a where advisor_id is not null";
+
+    public static final String GET_ALL_CLIENTS_WHO_ARE_ADVISORS_QUERY = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, ad.id as advisorId, a.firm_id as firmId \n" +
+                                                                        "from auth_user a \n" +
+                                                                            "\tjoin advisor ad\n" +
+                                                                                "\tON ad.advisor_user_id = a.id\n" +
+                                                                        "where a.advisor_id is null;";
 
     public static final String GET_GOALS_FOR_GIVEN_DAY_QUERY = "select g.*," +
                                                                 "a.first_name as userFirstName, a.last_name as userLastName, a.firm_id as firmId, a.advisor_id as advisorId," +
