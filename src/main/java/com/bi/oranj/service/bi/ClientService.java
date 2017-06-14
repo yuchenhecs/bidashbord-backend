@@ -53,7 +53,7 @@ public class ClientService implements GoalService{
             if (hashMap.containsKey(clientId)){
                 Client client = hashMap.get(clientId);
 
-                HashMap<String, Integer> goalList = client.getGoals();
+                HashMap<String, Integer> goalList = (HashMap<String, Integer>) client.getGoals();
 
                 if (goalList.containsKey(type)){
                     goalList.put(type, goalList.get(type) + count);

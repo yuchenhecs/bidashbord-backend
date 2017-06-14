@@ -51,7 +51,7 @@ public class AdvisorService implements GoalService{
             if (hashMap.containsKey(advisorId)){
                 Advisor advisor = hashMap.get(advisorId);
 
-                HashMap<String, Integer> goalList = advisor.getGoals();
+                HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
                 if (goalList.containsKey(type)){
                     goalList.put(type, goalList.get(type) + count);

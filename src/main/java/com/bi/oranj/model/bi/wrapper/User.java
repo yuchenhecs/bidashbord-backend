@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jaloliddinbakirov on 5/24/17.
@@ -16,20 +17,20 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private long total;
-    private HashMap<String, Integer> goals;
+    private Map<String, Integer> goals;
 
     public User(){
         this.goals = new HashMap<>();
     }
 
-    public User(long userId, String name, HashMap<String, Integer> goals, long total){
+    public User(long userId, String name, Map<String, Integer> goals, long total){
         this.userId = userId;
         this.name = name;
         this.goals = goals;
         this.total += total;
     }
 
-    public User(long userId, String firstName, String lastName, HashMap<String, Integer> goals, long total){
+    public User(long userId, String firstName, String lastName, Map<String, Integer> goals, long total){
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,7 +39,7 @@ public abstract class User {
     }
 
 
-    public User(long userId, String name, HashMap<String, Integer> goals){
+    public User(long userId, String name, Map<String, Integer> goals){
         this.userId = userId;
         this.name = name;
         this.goals = goals;
@@ -52,11 +53,11 @@ public abstract class User {
         this.name = name;
     }
 
-    public HashMap<String, Integer> getGoals() {
+    public Map<String, Integer> getGoals() {
         return goals;
     }
 
-    public void setGoals(HashMap<String, Integer> goal) {
+    public void setGoals(Map<String, Integer> goal) {
         this.goals = goal;
     }
 

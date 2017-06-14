@@ -42,32 +42,36 @@ public class FirmService implements GoalService{
         for (Object[] goal : goalObjects){
             int firmId = ((BigInteger) goal[0]).intValue();
             String firmName = (String) goal[1];
-            String type = ((String) goal[2]).trim().toLowerCase();
             int count = ((BigInteger) goal[3]).intValue();
 
-            if (hashMap.containsKey(firmId)){
+            String type = "";
+            if (goal[2] == null) type = null;
+            else type = ((String) goal[2]).trim().toLowerCase();
+
+            if (hashMap.containsKey(firmId)) {
                 Firm firm = hashMap.get(firmId);
+                HashMap<String, Integer> goalList = (HashMap<String, Integer>) firm.getGoals();
 
-                HashMap<String, Integer> goalList = firm.getGoals();
-
-                if (goalList.containsKey(type)){
+                if (goalList.containsKey(type)) {
                     goalList.put(type, goalList.get(type) + count);
-                }else {
+                } else {
                     goalList.put(type, count);
                 }
                 firm.setGoals(goalList);
                 firm.setTotal(count);
-
             } else {
-                HashMap<String, Integer> goalList = new HashMap<>();
-                if (goalList.containsKey(type)){
-                    goalList.put(type, goalList.get(type) + count);
-                }else {
-                    goalList.put(type, count);
+
+                if (type == null) {
+                    hashMap.put(firmId, new Firm(firmId, firmName, Collections.emptyMap(), count));
+                    continue;
                 }
+
+                HashMap<String, Integer> goalList = new HashMap<>();
+                goalList.put(type, count);
                 hashMap.put(firmId, new Firm(firmId, firmName, goalList, count));
             }
         }
+
 
         return hashMap.values();
     }
