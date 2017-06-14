@@ -12,5 +12,5 @@ import java.math.BigInteger;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FirmAUM extends AUMSummary {
 
-    private BigInteger firmId;
+    private Long firmId;
 }

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+import static com.bi.oranj.constant.ConstantQueries.GET_ALL_ADVISORS_AND_THEIR_CLIENTS;
+
 
 /**
  * Created by harshavardhanpatil on 6/2/17.
@@ -22,5 +24,7 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long> {
             "JOIN advisors a ON g.advisor_id = a.id WHERE g.firm_id = ?1 GROUP BY g.type, a.id, a.advisor_first_name " +
             "ORDER BY firstName LIMIT ?2, ?3", nativeQuery = true)
     public List<Object[]> findGoalsOrdered (long firmId, int start, int next);
+
+    public List<Advisor> findByFirmIdOrderByAdvisorFirstName(Long firmId);
 
 }

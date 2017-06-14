@@ -1,7 +1,6 @@
 package com.bi.oranj.repository.bi;
 
 import com.bi.oranj.model.bi.BiGoal;
-import com.bi.oranj.model.bi.GoalSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

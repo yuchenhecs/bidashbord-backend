@@ -35,13 +35,19 @@ public class AUMController {
 
     @ApiOperation(value = "Get AUMs for Firm", notes = "returns AUM for Firm")
     @RequestMapping(path="/firms", method = RequestMethod.GET)
-    public RestResponse getAUMForFirm(@RequestParam (value = "firmId", required = true) Long firmId, @RequestParam (value = "page", required = false) Integer pageNumber) {
-        return aumService.getAUMForFirm(firmId, pageNumber);
+    public RestResponse getAUMForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
+                                      @RequestParam (value = "page", required = false) Integer pageNumber,
+                                      @RequestParam(value = "previousDate", required = true) String previousDate,
+                                      @RequestParam(value = "currentDate", required = true) String currentDate) {
+        return aumService.getAUMForFirm(firmId, previousDate, currentDate, pageNumber);
     }
 
     @ApiOperation(value = "Get AUMs for Advisor", notes = "returns AUM for Advisor")
     @RequestMapping(path="/advisors", method = RequestMethod.GET)
-    public RestResponse getAUMForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId, @RequestParam (value = "page", required = false) Integer pageNumber) {
-        return aumService.getAUMForAdvisor(advisorId, pageNumber);
+    public RestResponse getAUMForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId,
+                                         @RequestParam (value = "page", required = false) Integer pageNumber,
+                                         @RequestParam(value = "previousDate", required = true) String previousDate,
+                                         @RequestParam(value = "currentDate", required = true) String currentDate) {
+        return aumService.getAUMForAdvisor(advisorId, previousDate, currentDate, pageNumber);
     }
 }

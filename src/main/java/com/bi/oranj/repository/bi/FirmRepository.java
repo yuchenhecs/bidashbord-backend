@@ -20,4 +20,6 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
             "JOIN firms f ON g.firm_id = f.id  GROUP BY f.id, f.firm_name, g.type ORDER BY firmName LIMIT :start, :next", nativeQuery = true)
     public List<Object[]> findGoalsOrdered (@Param("start") int start, @Param("next") int next);
 
+//    public List<Firm> findAllOrderByFirmName();
+
 }

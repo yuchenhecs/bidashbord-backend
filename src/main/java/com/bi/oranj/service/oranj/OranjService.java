@@ -95,8 +95,8 @@ public class OranjService {
             position.setQuantity((Double) o[6]);
             position.setAmount((BigDecimal) o[7]);
             position.setCurrencyCode("USD");
-            position.setCreationDate((Date) o[8]);
-            position.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
+            position.setPositionCreationDate((Date) o[8]);
+            position.setPositionUpdatedOn(dateFormat1.parse((o[9]).toString()));
 
             positionRepository.save(position);
 

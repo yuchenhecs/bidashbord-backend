@@ -43,9 +43,9 @@ public abstract class ParentPosition {
     @Column (name = "currency_code")
     private String currencyCode;
 
-    @Column (name = "creation_date")
-    private Date creationDate;
+    @Column (name = "position_creation_date")
+    private Date positionCreationDate;
 
-    @Column (name = "updated_on")
-    private Date updatedOn;
+    @Column (name = "position_updated_on")
+    private Date positionUpdatedOn;
 }
