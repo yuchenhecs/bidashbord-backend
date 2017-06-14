@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jaloliddinbakirov on 5/24/17.
@@ -14,7 +15,7 @@ import java.util.HashMap;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Advisor extends User{
 
-    public Advisor (int advisorId, String firstName, String lastName, HashMap<String, Integer> goals, int total){
+    public Advisor (int advisorId, String firstName, String lastName, Map<String, Integer> goals, int total){
         super(advisorId, firstName, lastName, goals, total);
     }
 }

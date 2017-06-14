@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jaloliddinbakirov on 5/31/17.
@@ -14,7 +15,7 @@ import java.util.HashMap;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Client extends User {
 
-    public Client (int clientId, String firstName, String lastName, HashMap<String, Integer> goals, int total){
+    public Client (int clientId, String firstName, String lastName, Map<String, Integer> goals, int total){
         super(clientId, firstName, lastName, goals, total);
     }
 

@@ -15,6 +15,9 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
     @Query(value = "SELECT DISTINCT(firmId) FROM BiGoal")
     public List<Firm> findDistinct();
 
+    @Query(value = "SELECT DISTINCT(id) FROM firms", nativeQuery = true)
+    public List<Object[]> findDistinctFromFirm();
+
 //    @Query(value = "SELECT f.id firmId, f.firm_name firmName, g.type type, " +
 //            "COUNT(g.id) count FROM goals g \n" +
 //            "JOIN firms f ON g.firm_id = f.id  GROUP BY f.id, f.firm_name, g.type ORDER BY firmName LIMIT :start, :next", nativeQuery = true)

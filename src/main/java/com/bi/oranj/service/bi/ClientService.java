@@ -1,6 +1,7 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.model.bi.wrapper.user.Advisor;
 import com.bi.oranj.model.bi.wrapper.user.Firm;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jaloliddinbakirov on 5/30/17.
@@ -33,7 +31,7 @@ public class ClientService implements GoalService{
 
 
     public int totalPages (long advisorId){
-        return (int) Math.ceil(clientRepository.findDistinctByAdvisor(advisorId).size() * 1d / pageSize) - 1;
+        return (int) Math.ceil(clientRepository.findDistinctByAdvisorFromClients(advisorId).size() * 1d / pageSize) - 1;
     }
 
 
@@ -47,8 +45,11 @@ public class ClientService implements GoalService{
             int clientId = ((BigInteger) goal[0]).intValue();
             String firstName = (String) goal[1];
             String lastName = (String) goal[2];
-            String type = ((String) goal[3]).trim().toLowerCase();
             int count = ((BigInteger) goal[4]).intValue();
+
+            String type = "";
+            if (goal[3] == null) type = null;
+            else type = ((String) goal[3]).trim().toLowerCase();
 
             if (hashMap.containsKey(clientId)){
                 Client client = hashMap.get(clientId);
@@ -64,6 +65,11 @@ public class ClientService implements GoalService{
                 client.setTotal(count);
 
             } else {
+                if (type == null){
+                    hashMap.put(clientId, new Client(clientId, firstName, lastName, Collections.emptyMap(), count));
+                    continue;
+                }
+
                 HashMap<String, Integer> goalList = new HashMap<>();
                 if (goalList.containsKey(type)){
                     goalList.put(type, goalList.get(type) + count);
@@ -80,7 +86,7 @@ public class ClientService implements GoalService{
 
     @Override
     public GoalResponse buildResponse (int pageNum, long advisorId, Collection<? extends User> users){
-        int totalClients = clientRepository.findDistinctByAdvisor(advisorId).size();
+        int totalClients = clientRepository.findDistinctByAdvisorFromClients(advisorId).size();
         int totalGoals = goalRepository.totalClientGoals(advisorId);
 
 

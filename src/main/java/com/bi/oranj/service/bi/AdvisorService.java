@@ -31,7 +31,7 @@ public class AdvisorService implements GoalService{
     @Override
     public int totalPages (long firmId){
 
-        return (int) Math.ceil(advisorRepository.findDistinct(firmId).size() * 1d / pageSize) - 1;
+        return (int) Math.ceil(advisorRepository.findDistinctFromFirm(firmId).size() * 1d / pageSize) - 1;
     }
 
     @Override
@@ -45,8 +45,12 @@ public class AdvisorService implements GoalService{
             int advisorId = ((BigInteger) goal[0]).intValue();
             String firstName = (String) goal[1];
             String lastName = (String) goal[2];
-            String type = ((String) goal[3]).trim().toLowerCase();
             int count = ((BigInteger) goal[4]).intValue();
+
+            String type = "";
+            if (goal[3] == null) type = null;
+            else type = ((String) goal[3]).trim().toLowerCase();
+
 
             if (hashMap.containsKey(advisorId)){
                 Advisor advisor = hashMap.get(advisorId);
@@ -62,12 +66,15 @@ public class AdvisorService implements GoalService{
                 advisor.setTotal(count);
 
             } else {
-                HashMap<String, Integer> goalList = new HashMap<>();
-                if (goalList.containsKey(type)){
-                    goalList.put(type, goalList.get(type) + count);
-                }else {
-                    goalList.put(type, count);
+
+                if (type == null){
+                    hashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, Collections.emptyMap(), count));
+                    continue;
                 }
+
+                HashMap<String, Integer> goalList = new HashMap<>();
+                goalList.put(type, count);
+
                 hashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, goalList, count));
             }
         }
@@ -78,7 +85,7 @@ public class AdvisorService implements GoalService{
 
     @Override
     public GoalResponse buildResponse (int pageNum, long firmId, Collection<? extends User> users){
-        int totalAdvisors = advisorRepository.findDistinct(firmId).size();
+        int totalAdvisors = advisorRepository.findDistinctFromFirm(firmId).size();
         int totalGoals = goalRepository.totalAdvisorGoals(firmId);
 
         Collection<Advisor> clients = (Collection<Advisor>) users;

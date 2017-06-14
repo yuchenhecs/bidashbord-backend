@@ -78,7 +78,7 @@ public class FirmService implements GoalService{
 
 
     public GoalResponse buildResponse (int pageNum, Collection<Firm> firms){
-        int totalFirms = firmRepository.findDistinct().size();
+        int totalFirms = firmRepository.findDistinctFromFirm().size();
         int totalGoals = goalRepository.totalGoals();
 
         if (firms == null || firms.isEmpty())
