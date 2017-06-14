@@ -9,6 +9,7 @@ import com.bi.oranj.model.oranj.OranjGoal;
 import com.bi.oranj.model.oranj.OranjPositions;
 import com.bi.oranj.repository.bi.*;
 import com.bi.oranj.repository.oranj.*;
+import com.bi.oranj.utils.DateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,8 @@ public class OranjService {
     @Autowired
     OranjPositionsRepository oranjPositionsRepository;
 
+    @Autowired
+    DateValidator dateValidator;
 
     public void fetchAUMData(){
         List<Object[]> mapping = oranjAUMRepository.fetchPortfolioClientMapping();
@@ -119,6 +122,8 @@ public class OranjService {
     }
 
     public void fetchPositionsDataByDate(String date) {
+        if (!dateValidator.validate(date)) return;
+
         List<OranjPositions> positions = oranjPositionsHistoryRepository.fetchPositionsHistoryByDate(date);
         if (positions.size() == 0) log.info("Empty data set for the given data -> {}", date);
 
