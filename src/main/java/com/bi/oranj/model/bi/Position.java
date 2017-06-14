@@ -52,9 +52,9 @@ public class Position {
     @Column (name = "currency_code")
     private String currencyCode;
 
-    @Column (name = "creation_date")
+    @Column (name = "position_creation_date")
     private Date creationDate;
 
-    @Column (name = "updated_on")
+    @Column (name = "position_updated_on")
     private Date updatedOn;
 }
