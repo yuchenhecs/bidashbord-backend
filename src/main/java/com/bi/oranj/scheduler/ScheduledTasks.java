@@ -30,12 +30,29 @@ public class ScheduledTasks {
         return cal.getTime();
     }
 
-    @Scheduled(cron = "0 10 1 * * *")
+    @Scheduled(cron = "0 40 1 * * *")
     public void triggerGetGoals() {
-
         String yesterday = dateFormat.format(yesterday());
         log.info("Yesterday's date was {}", yesterday);
         oranjService.getGoals(yesterday);
         log.info("Cron Saved {} goals", yesterday);
+    }
+
+    @Scheduled(cron = "0 05 1 * * *")
+    public void fetchFirms() {
+        oranjService.getAllFirms();
+        log.info("Cron Saved All Newly added Firms");
+    }
+
+    @Scheduled(cron = "0 10 1 * * *")
+    public void fetchAdvisors() {
+        oranjService.getAllAdvisors();
+        log.info("Cron Saved All Newly added Advisors");
+    }
+
+    @Scheduled(cron = "0 15 1 * * *")
+    public void fetchClients() {
+        oranjService.getAllClients();
+        log.info("Cron Saved All Newly added Clients");
     }
 }
