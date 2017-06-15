@@ -7,9 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.HashMap;
 
-/**
- * Created by jaloliddinbakirov on 5/31/17.
- */
 @JsonSerialize(using = UserSerializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Client extends User {

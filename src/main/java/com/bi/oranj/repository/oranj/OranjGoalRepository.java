@@ -10,9 +10,6 @@ import java.util.List;
 
 import static com.bi.oranj.constant.ConstantQueries.*;
 
-/**
- * Created by harshavardhanpatil on 5/24/17.
- */
 public interface OranjGoalRepository extends JpaRepository<OranjGoal, Integer> {
 
     @Query(value = GET_GOALS_FOR_GIVEN_DAY_QUERY, nativeQuery = true)

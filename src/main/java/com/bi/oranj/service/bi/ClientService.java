@@ -16,9 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by jaloliddinbakirov on 5/30/17.
- */
 @Service
 public class ClientService implements GoalService{
 

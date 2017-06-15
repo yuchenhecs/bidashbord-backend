@@ -7,9 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * Created by harshavardhanpatil on 6/2/17.
- */
 public interface FirmRepository extends JpaRepository<Firm, Integer> {
 
     @Query(value = "SELECT DISTINCT(firmId) FROM BiGoal")
@@ -19,7 +16,4 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
             "COUNT(g.id) count FROM goals g \n" +
             "JOIN firms f ON g.firm_id = f.id  GROUP BY f.id, f.firm_name, g.type ORDER BY firmName LIMIT :start, :next", nativeQuery = true)
     public List<Object[]> findGoalsOrdered (@Param("start") int start, @Param("next") int next);
-
-//    public List<Firm> findAllOrderByFirmName();
-
 }

@@ -8,9 +8,6 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by harshavardhanpatil on 6/13/17.
- */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AUMForAdvisor extends BaseAum {

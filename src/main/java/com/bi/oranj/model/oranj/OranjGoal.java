@@ -8,10 +8,6 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 /**
- * Created by harshavardhanpatil on 5/24/17.
- */
-
-/**
  * Model class user_goal table
  */
 @Entity

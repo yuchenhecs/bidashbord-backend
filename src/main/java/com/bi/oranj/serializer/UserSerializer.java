@@ -8,9 +8,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-/**
- * Created by jaloliddinbakirov on 5/31/17.
- */
 public class UserSerializer extends StdSerializer<User>{
 
     public UserSerializer(){

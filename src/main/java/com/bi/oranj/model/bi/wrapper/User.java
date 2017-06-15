@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.HashMap;
 
-/**
- * Created by jaloliddinbakirov on 5/24/17.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class User {

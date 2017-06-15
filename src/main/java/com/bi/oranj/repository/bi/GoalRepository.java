@@ -8,10 +8,6 @@ import java.util.List;
 
 import static com.bi.oranj.constant.ConstantQueries.GET_GOALS_GROUPED_BY_TYPE;
 
-/**
- * Created by jaloliddinbakirov on 5/30/17.
- * returns next given num of records from db
- */
 public interface GoalRepository extends JpaRepository<BiGoal, Integer> {
 
     @Query(value = "SELECT count(id) FROM BiGoal")

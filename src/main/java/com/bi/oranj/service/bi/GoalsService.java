@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by harshavardhanpatil on 6/6/17.
- */
 @Service
 public class GoalsService {
 
@@ -38,7 +35,7 @@ public class GoalsService {
         }catch (Exception e){
             log.error("Error in fecthing goals" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fecthing Goals from Oranj DB");
+            return RestResponse.error("Error in fecthing Goals");
         }
         return RestResponse.successWithoutMessage(goalSummaryList);
     }

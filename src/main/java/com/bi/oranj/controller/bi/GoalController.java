@@ -19,9 +19,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by jaloliddinbakirov on 5/24/17.
- */
 @Api(basePath = "/bi/goals", description = "Operations with BI DB", produces = "application/json")
 @RestController
 @CrossOrigin

@@ -5,9 +5,6 @@ import lombok.Data;
 
 import java.math.BigInteger;
 
-/**
- * Created by harshavardhanpatil on 6/12/17.
- */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FirmAUM extends AUMSummary {

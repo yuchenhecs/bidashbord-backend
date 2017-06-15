@@ -15,9 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Created by harshavardhanpatil on 5/25/17.
- */
 @Api(basePath = "/oranj", description = "Operations with Oranj DB", produces = "application/json")
 @RestController
 @RequestMapping(value = "/oranj", produces=MediaType.APPLICATION_JSON_VALUE)

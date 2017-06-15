@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Created by harshavardhanpatil on 6/2/17.
- */
 @Data
 @Entity
 @Table(name = "clients")

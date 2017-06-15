@@ -8,13 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Collection;
 
-/**
- * Created by jaloliddinbakirov on 5/30/17.
- *
- * User is an abstract class extended by Client, Advisor, Firm classes
- *
- */
-
 @JsonSerialize(using = GoalResponseSerializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GoalResponse implements BIResponse{

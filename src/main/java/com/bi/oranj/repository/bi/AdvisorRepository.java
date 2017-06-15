@@ -12,10 +12,6 @@ import java.util.List;
 
 import static com.bi.oranj.constant.ConstantQueries.GET_ALL_ADVISORS_AND_THEIR_CLIENTS;
 
-
-/**
- * Created by harshavardhanpatil on 6/2/17.
- */
 public interface AdvisorRepository extends JpaRepository<Advisor, Long> {
 
     @Query(value = "SELECT DISTINCT(advisorId) FROM BiGoal WHERE firmId = ?1")

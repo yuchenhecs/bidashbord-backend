@@ -15,9 +15,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 import java.util.HashMap;
 
-/**
- * Created by harshavardhanpatil on 5/25/17.
- */
 @Configuration
 @PropertySource({ "classpath:application.properties" })
 @EnableJpaRepositories(

@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-/**
- * Created by jaloliddinbakirov on 6/8/17.
- */
 public interface OranjAUMRepository extends JpaRepository <OranjAum, Long>{
 
     @Query (value = "select qpos.id assetId, qport.id portfolioId, qport.oranj_user_id clientId, qpos.ticker_name tickerName, " +

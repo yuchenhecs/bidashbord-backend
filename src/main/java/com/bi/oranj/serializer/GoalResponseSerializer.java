@@ -7,10 +7,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-/**
- * Created by jaloliddinbakirov on 5/31/17.
- */
-
 public class GoalResponseSerializer extends StdSerializer<GoalResponse>{
 
     public GoalResponseSerializer(){
@@ -30,9 +26,6 @@ public class GoalResponseSerializer extends StdSerializer<GoalResponse>{
         jgen.writeStartObject();
         jgen.writeNumberField("totalGoals", value.getTotalGoals());
         jgen.writeNumberField("total" + user, value.getTotalUsers());
-//        jgen.writeNumberField("totalFirms", value.getTotalFirms());
-//        jgen.writeNumberField("totalAdvisors", value.getTotalAdvisors());
-//        jgen.writeNumberField("totalClients", value.getTotalClients());
         jgen.writeBooleanField("last", value.isLast());
         jgen.writeNumberField("page", value.getPage());
         jgen.writeNumberField("count", value.getCount());

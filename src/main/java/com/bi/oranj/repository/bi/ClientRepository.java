@@ -8,9 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-/**
- * Created by harshavardhanpatil on 6/2/17.
- */
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
 
@@ -24,6 +21,5 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "SELECT DISTINCT(clientId) FROM BiGoal WHERE advisorId = ?1")
     public List<Client> findDistinctByAdvisor(long advisorId);
 
-//    public List<Client> findByAdvisorId(Long advisorId);
     public Page<Client> findByAdvisorId(Long advisorId, Pageable pageable);
 }

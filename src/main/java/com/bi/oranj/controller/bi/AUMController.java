@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 
-/**
- * Created by harshavardhanpatil on 6/9/17.
- */
-@Api(basePath = "/bi/aum", description = "Operations with BI DB", produces = "application/json")
+@Api(basePath = "/bi/aums", description = "Operations with BI DB", produces = "application/json")
 @RestController
 @CrossOrigin
-@RequestMapping("/bi/aum")
+@RequestMapping("/bi/aums")
 public class AUMController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -49,5 +46,11 @@ public class AUMController {
                                          @RequestParam(value = "previousDate", required = true) String previousDate,
                                          @RequestParam(value = "currentDate", required = true) String currentDate) {
         return aumService.getAUMForAdvisor(advisorId, previousDate, currentDate, pageNumber);
+    }
+
+    @ApiOperation(value = "Get AUMs for Summary Page", notes = "returns AUMs in Oranj Platform")
+    @RequestMapping(method = RequestMethod.GET)
+    public RestResponse getAUMSummary() {
+        return aumService.getAUMSummary();
     }
 }

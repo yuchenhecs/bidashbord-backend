@@ -7,9 +7,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
-/**
- * Created by jaloliddinbakirov on 6/9/17.
- */
 @Data
 @MappedSuperclass
 public class ParentAum {

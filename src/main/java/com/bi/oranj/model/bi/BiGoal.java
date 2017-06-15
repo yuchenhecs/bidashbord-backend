@@ -8,10 +8,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Created by harshavardhanpatil on 5/24/17.
- */
-
-/**
  * Model class bi_goal table
  */
 @Data

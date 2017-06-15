@@ -6,9 +6,6 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-/**
- * Created by jaloliddinbakirov on 6/8/17.
- */
 @Entity
 @Data
 @Table (name = "aum")

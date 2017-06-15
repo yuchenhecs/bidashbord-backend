@@ -9,9 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by harshavardhanpatil on 6/12/17.
- */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AumDiff {

@@ -12,9 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by harshavardhanpatil on 5/31/17.
- */
 @Component
 public class ScheduledTasks {
 

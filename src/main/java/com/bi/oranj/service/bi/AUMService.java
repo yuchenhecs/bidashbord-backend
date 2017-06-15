@@ -18,11 +18,15 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.*;
 
-/**
- * Created by harshavardhanpatil on 6/9/17.
- */
+import static com.bi.oranj.constant.Constants.START_DAY;
+import static com.bi.oranj.constant.Constants.START_MONTH;
+import static com.bi.oranj.constant.Constants.START_YEAR;
+import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
+
 @Service
 public class AUMService {
 
@@ -48,11 +52,16 @@ public class AUMService {
         if (validDate == false) {
             return RestResponse.error("Date should be in 'yyyy-MM-dd' format");
         }
+
+        boolean validPageNumber = validateInputPageNumber(pageNumber);
+        if(validPageNumber == false){
+            return RestResponse.error("Page number should be a positive integer");
+        }
+
         try {
             AUMForAdmin aumForAdmin = new AUMForAdmin();
             List<FirmAUM> firmAUMList = new ArrayList<>();
-            Page<Firm> firmList;
-            firmList = firmRepository.findAll(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
+            Page<Firm> firmList = firmRepository.findAll(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
             for (int i=0; i<firmList.getContent().size(); i++){
 
                 FirmAUM firmAUM = new FirmAUM();
@@ -64,14 +73,14 @@ public class AUMService {
             }
             aumForAdmin.setFirms(firmAUMList);
             aumForAdmin.setTotalFirms(firmList.getTotalElements());
-            aumForAdmin.setLast(!firmList.hasNext());
+            aumForAdmin.setHasNext(firmList.hasNext());
             aumForAdmin.setPage(pageNumber);
             aumForAdmin.setCount(firmAUMList.size());
             return RestResponse.successWithoutMessage(aumForAdmin);
         } catch (Exception e) {
             log.error("Error in fecthing AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs from Oranj DB");
+            return RestResponse.error("Error in fetching AUMs");
         }
     }
 
@@ -81,11 +90,16 @@ public class AUMService {
         if (validDate == false) {
             return RestResponse.error("Date should be in 'yyyy-MM-dd' format");
         }
+
+        boolean validPageNumber = validateInputPageNumber(pageNumber);
+        if(validPageNumber == false){
+            return RestResponse.error("Page number should be a positive integer");
+        }
+
         try {
             AUMForFirm aumForFirm = new AUMForFirm();
             List<AdvisorAUM> advisorAUMList = new ArrayList<>();
-            Page<Advisor> advisorList;
-            advisorList = advisorRepository.findByFirmId(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
+            Page<Advisor> advisorList = advisorRepository.findByFirmId(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
             for (int i=0; i<advisorList.getContent().size(); i++){
 
                 AdvisorAUM advisorAUM = new AdvisorAUM();
@@ -97,14 +111,14 @@ public class AUMService {
             }
             aumForFirm.setAdvisors(advisorAUMList);
             aumForFirm.setTotalAdvisors(advisorList.getTotalElements());
-            aumForFirm.setLast(!advisorList.hasNext());
+            aumForFirm.setHasNext(advisorList.hasNext());
             aumForFirm.setPage(0);
             aumForFirm.setCount(advisorAUMList.size());
             return RestResponse.successWithoutMessage(aumForFirm);
         } catch (Exception e) {
             log.error("Error in fecthing AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs from Oranj DB");
+            return RestResponse.error("Error in fetching AUMs");
         }
     }
 
@@ -114,11 +128,16 @@ public class AUMService {
         if (validDate == false){
             return RestResponse.error("Date should be in 'yyyy-MM-dd' format");
         }
+
+        boolean validPageNumber = validateInputPageNumber(pageNumber);
+        if(validPageNumber == false){
+            return RestResponse.error("Page number should be a positive integer");
+        }
+
         try {
             AUMForAdvisor aumForAdvisor = new AUMForAdvisor();
             List<ClientAUM> clientAUMList = new ArrayList<>();
-            Page<Client> clientList;
-            clientList = clientRepository.findByAdvisorId(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
+            Page<Client> clientList = clientRepository.findByAdvisorId(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
             for (int i=0; i<clientList.getContent().size(); i++){
 
                 ClientAUM clientAUM = new ClientAUM();
@@ -130,14 +149,14 @@ public class AUMService {
             }
             aumForAdvisor.setClients(clientAUMList);
             aumForAdvisor.setTotalClients(clientList.getTotalElements());
-            aumForAdvisor.setLast(!clientList.hasNext());
+            aumForAdvisor.setHasNext(clientList.hasNext());
             aumForAdvisor.setPage(pageNumber);
             aumForAdvisor.setCount(clientAUMList.size());
             return RestResponse.successWithoutMessage(aumForAdvisor);
         } catch (Exception e) {
             log.error("Error in fecthing AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs from Oranj DB");
+            return RestResponse.error("Error in fetching AUMs");
         }
     }
 
@@ -174,6 +193,37 @@ public class AUMService {
         return aumDiff;
     }
 
+    public RestResponse getAUMSummary() {
+
+        try {
+            List<AumDiff> aumDiffList = new ArrayList<AumDiff>();
+            List<String> dateList = getQuarterFirstDates();
+            for (int i=0; i<dateList.size(); i++){
+                String startDate = dateList.get(i) + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
+                String endDate = dateList.get(i) + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
+
+                List<Object[]> aumSummaryResultSet = aumRepository.findAUMsSummary(startDate, endDate);
+
+                AumDiff aumDiff = new AumDiff();
+                aumDiff.setDate(dateList.get(i));
+                aumDiff.setTotal(new BigDecimal(0));
+                Map<String, BigDecimal> assetClass = new HashMap<>();
+
+                for (Object[] resultSet : aumSummaryResultSet){
+                    assetClass.put(resultSet[0].toString(), (BigDecimal) resultSet[1]);
+                    aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[1]));
+                }
+                aumDiff.setAssetClass(assetClass);
+                aumDiffList.add(aumDiff);
+            }
+            return RestResponse.successWithoutMessage(aumDiffList);
+        } catch (Exception e) {
+            log.error("Error in fecthing AUMs" + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Error in fetching AUMs");
+        }
+    }
+
     public boolean validateInputDate(String previousDate, String currentDate){
 
         try {
@@ -185,6 +235,37 @@ public class AUMService {
             return false;
         }
         return true;
+    }
+
+    public boolean validateInputPageNumber(Integer pageNumber) {
+
+        if(pageNumber >= 0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public List<String> getQuarterFirstDates(){
+
+        List<String> dateList = new ArrayList<>();
+        long totalNumberOfQuarters = IsoFields.QUARTER_YEARS.between(
+                        LocalDate.of(START_YEAR, START_MONTH, START_DAY),
+                        LocalDate.of(Calendar.getInstance().get(Calendar.YEAR),
+                                     (Calendar.getInstance().get(Calendar.MONTH)+1),
+                                      Calendar.getInstance().get(Calendar.DAY_OF_MONTH)))+1;
+        log.info("totalNumberOfQuarters ::: " + totalNumberOfQuarters);
+
+        LocalDate beginningYear = LocalDate.parse(START_YEAR + "-0" + START_MONTH + "-0" + START_DAY);
+        LocalDate firstQuarter = beginningYear.with(firstDayOfYear());
+
+        int monthsToAdd=0;
+        for(int i=0; i<totalNumberOfQuarters; i++){
+            dateList.add(firstQuarter.plusMonths(monthsToAdd).toString());
+            monthsToAdd = monthsToAdd + 3;
+        }
+        dateList.add(LocalDate.now().toString());
+        return dateList;
     }
 }
 

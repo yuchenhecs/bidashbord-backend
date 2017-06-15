@@ -10,9 +10,6 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by jaloliddinbakirov on 6/8/17.
- */
 @Entity
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

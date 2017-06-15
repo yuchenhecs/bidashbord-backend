@@ -10,10 +10,6 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by jaloliddinbakirov on 6/9/17.
- */
-
 @Entity
 @Data
 @Table(name = "positions")
