@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Api(basePath = "/oranj", description = "Operations with Oranj DB", produces = "application/json")
 @RestController
-@RequestMapping(value = "/oranj", produces=MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/bi/oranj", produces=MediaType.APPLICATION_JSON_VALUE)
 public class OranjController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());

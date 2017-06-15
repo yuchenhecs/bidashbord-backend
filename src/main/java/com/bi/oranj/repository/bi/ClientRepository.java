@@ -17,7 +17,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             "ORDER BY firstName LIMIT ?2, ?3", nativeQuery = true)
     public List<Object[]> findGoalsOrderedByAdvisor (long advisorId, int pageNum, int next);
 
-
     @Query(value = "SELECT DISTINCT(clientId) FROM BiGoal WHERE advisorId = ?1")
     public List<Client> findDistinctByAdvisor(long advisorId);
 
