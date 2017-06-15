@@ -1,8 +1,6 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.GoalResponse;
-import com.bi.oranj.model.bi.wrapper.user.Advisor;
-import com.bi.oranj.model.bi.wrapper.user.Firm;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.model.bi.wrapper.User;
@@ -18,7 +16,7 @@ import java.util.*;
  * Created by jaloliddinbakirov on 5/30/17.
  */
 @Service
-public class ClientService implements GoalService{
+public class ClientService extends GoalService{
 
     @Autowired
     ClientRepository clientRepository;
@@ -30,71 +28,63 @@ public class ClientService implements GoalService{
     private Integer pageSize;
 
 
-    public int totalPages (long advisorId){
-        return (int) Math.ceil(clientRepository.findDistinctByAdvisorFromClients(advisorId).size() * 1d / pageSize) - 1;
+    @Override
+    public int totalPages (long clientId){
+        return (int) Math.ceil(clientRepository.findDistinctByAdvisorFromClients(clientId).size() * 1d / pageSize) - 1;
     }
 
 
-    public Collection<Client> findGoals (int pageNum, long advisorId){
-
-        List<Object[]> goalObjects = (List<Object[]>) clientRepository.findGoalsOrderedByAdvisor(advisorId, pageNum * pageSize, pageSize);
-
-        Map<Integer, Client> hashMap = new HashMap<>();
-
-        for (Object[] goal : goalObjects){
-            int clientId = ((BigInteger) goal[0]).intValue();
-            String firstName = (String) goal[1];
-            String lastName = (String) goal[2];
-            int count = ((BigInteger) goal[4]).intValue();
-
-            String type = "";
-            if (goal[3] == null) type = null;
-            else type = ((String) goal[3]).trim().toLowerCase();
-
-            if (hashMap.containsKey(clientId)){
-                Client client = hashMap.get(clientId);
-
-                HashMap<String, Integer> goalList = (HashMap<String, Integer>) client.getGoals();
-
-                if (goalList.containsKey(type)){
-                    goalList.put(type, goalList.get(type) + count);
-                }else {
-                    goalList.put(type, count);
-                }
-                client.setGoals(goalList);
-                client.setTotal(count);
-
-            } else {
-                if (type == null){
-                    hashMap.put(clientId, new Client(clientId, firstName, lastName, Collections.emptyMap(), count));
-                    continue;
-                }
-
-                HashMap<String, Integer> goalList = new HashMap<>();
-                if (goalList.containsKey(type)){
-                    goalList.put(type, goalList.get(type) + count);
-                }else {
-                    goalList.put(type, count);
-                }
-                hashMap.put(clientId, new Client(clientId, firstName, lastName, goalList, count));
-            }
-        }
-
-
-        return hashMap.values();
+    @Override
+    public GoalResponse buildResponse(int pageNum, long advisorId) {
+        Collection<Client> advisors = findGoals(advisorId, pageNum);
+        return processGoalresponse(advisors, advisorId, pageNum);
     }
 
     @Override
-    public GoalResponse buildResponse (int pageNum, long advisorId, Collection<? extends User> users){
+    public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long advisorId){
+        Collection<Client> advisors = findGoalsWithStartDate(advisorId, startDate, pageNum);
+        return processGoalresponse(advisors, advisorId, pageNum);
+    }
+
+    @Override
+    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long advisorId){
+        Collection<Client> advisors = findGoalsWithEndDate(advisorId, endDate, pageNum);
+        return processGoalresponse(advisors, advisorId, pageNum);
+    }
+
+    @Override
+    public GoalResponse buildResponseWithDate (String startDate, String endDate, int pageNum, long advisorId){
+        Collection<Client> advisors = findGoalsByDate(advisorId, startDate, endDate, pageNum);
+        return processGoalresponse(advisors, advisorId, pageNum);
+    }
+
+
+    private Collection<Client> findGoals (long advisorId, int pageNum){
+        List<Object[]> goalObjects = clientRepository.findGoalsOrdered(advisorId, pageNum * pageSize, pageSize);
+        return processResults(goalObjects);
+    }
+
+    private Collection<Client> findGoalsByDate (long advisorId, String startDate, String endDate, int pageNum){
+        List<Object[]> goalObjects = clientRepository.findGoalsByDateBetween(advisorId, startDate, endDate, pageNum * pageSize, pageSize);
+        return processResults(goalObjects);
+    }
+
+    private Collection<Client> findGoalsWithStartDate (long advisorId, String startDate, int pageNum){
+        List<Object[]> goalObjects = clientRepository.findGoalsWithStartDate(advisorId, startDate, pageNum * pageSize, pageSize);
+        return processResults(goalObjects);
+    }
+
+    private Collection<Client> findGoalsWithEndDate (long advisorId, String endDate, int pageNum){
+        List<Object[]> goalObjects = clientRepository.findGoalsWithEndDate(advisorId, endDate, pageNum * pageSize, pageSize);
+        return processResults(goalObjects);
+    }
+
+    private GoalResponse processGoalresponse (Collection<Client> clients, long advisorId, int pageNum){
         int totalClients = clientRepository.findDistinctByAdvisorFromClients(advisorId).size();
         int totalGoals = goalRepository.totalClientGoals(advisorId);
 
-
-        Collection<Client> clients = (Collection<Client>) users;
-
-        if (clients == null || clients.isEmpty()) {
+        if (clients == null || clients.isEmpty())
             return null;
-        }
 
         GoalResponse goalResponse = new GoalResponse();
         goalResponse.setTotalUsers(totalClients);
@@ -105,4 +95,50 @@ public class ClientService implements GoalService{
 
         return goalResponse;
     }
+
+    private Collection<Client> processResults (List<Object[]> goalObjects){
+        Map<Integer, Client> hashMap = new HashMap<>();
+
+        for (Object[] goal : goalObjects){
+            int advisorId = ((BigInteger) goal[0]).intValue();
+            String firstName = (String) goal[1];
+            String lastName = (String) goal[2];
+            int count = ((BigInteger) goal[4]).intValue();
+
+            String type = "";
+            if (goal[3] == null) type = null;
+            else type = ((String) goal[3]).trim().toLowerCase();
+
+
+            if (hashMap.containsKey(advisorId)){
+                Client advisor = hashMap.get(advisorId);
+
+                HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
+
+                if (goalList.containsKey(type)){
+                    goalList.put(type, goalList.get(type) + count);
+                }else {
+                    goalList.put(type, count);
+                }
+                advisor.setGoals(goalList);
+                advisor.setTotal(count);
+
+            } else {
+
+                if (type == null){
+                    hashMap.put(advisorId, new Client(advisorId, firstName, lastName, Collections.emptyMap(), count));
+                    continue;
+                }
+
+                HashMap<String, Integer> goalList = new HashMap<>();
+                goalList.put(type, count);
+
+                hashMap.put(advisorId, new Client(advisorId, firstName, lastName, goalList, count));
+            }
+        }
+
+
+        return hashMap.values();
+    }
+
 }

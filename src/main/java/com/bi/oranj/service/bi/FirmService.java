@@ -6,6 +6,7 @@ import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.model.bi.wrapper.User;
 import com.bi.oranj.model.bi.wrapper.user.Firm;
+import com.bi.oranj.utils.DateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.*;
  * Created by jaloliddinbakirov on 5/25/17.
  */
 @Service
-public class FirmService implements GoalService{
+public class FirmService extends GoalService{
     @Autowired
     private FirmRepository firmRepository;
 
@@ -27,17 +28,59 @@ public class FirmService implements GoalService{
     @Value("${page.size}")
     private Integer pageSize;
 
-    public int totalPages (){
-        return (int) Math.ceil( firmRepository.findDistinct().size() * 1d / pageSize) - 1;
+
+    @Override
+    public int totalPages(long userId) {
+        return totalPages();
     }
 
 
-    public Collection<Firm> findGoals (int pageNum){
+    @Override
+    public GoalResponse buildResponse(int pageNum, long userId) {
+        Collection<Firm> firms = findGoals(pageNum);
+        return processGoalresponse(firms, pageNum);
+    }
 
+    @Override
+    public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long userId){
+        Collection<Firm> firms = findGoalsWithStartDate(startDate, pageNum);
+        return processGoalresponse(firms, pageNum);
+    }
+
+    @Override
+    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long userId){
+        Collection<Firm> firms = findGoalsWithEndDate(endDate, pageNum);
+        return processGoalresponse(firms, pageNum);
+    }
+
+    @Override
+    public GoalResponse buildResponseWithDate (String startDate, String endDate, int pageNum, long userId){
+        Collection<Firm> firms = findGoalsByDate(startDate, endDate, totalPages());
+        return processGoalresponse(firms, pageNum);
+    }
+
+    private Collection<Firm> findGoals (int pageNum){
         List<Object[]> goalObjects = (List<Object[]>) firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
+        return processResults(goalObjects);
+    }
 
+    private Collection<Firm> findGoalsByDate (String startDate, String endDate, int pageNum){
+        List<Object[]> goalObjects = firmRepository.findGoalsByDateBetween(startDate, endDate, pageNum * pageSize, pageSize);
+        return processResults(goalObjects);
+    }
+
+    private Collection<Firm> findGoalsWithStartDate (String startDate, int pageNum){
+        List<Object[]> goalObjects = firmRepository.findGoalsWithStartDate(startDate, pageNum * pageSize, pageSize);
+        return processResults(goalObjects);
+    }
+
+    private Collection<Firm> findGoalsWithEndDate (String endDate, int pageNum){
+        List<Object[]> goalObjects = firmRepository.findGoalsWithEndDate(endDate, pageNum * pageSize, pageSize);
+        return processResults(goalObjects);
+    }
+
+    private Collection<Firm> processResults (List<Object[]> goalObjects){
         Map<Integer, Firm> hashMap = new HashMap<>();
-
 
         for (Object[] goal : goalObjects){
             int firmId = ((BigInteger) goal[0]).intValue();
@@ -72,12 +115,10 @@ public class FirmService implements GoalService{
             }
         }
 
-
         return hashMap.values();
     }
 
-
-    public GoalResponse buildResponse (int pageNum, Collection<Firm> firms){
+    private GoalResponse processGoalresponse (Collection<Firm> firms, int pageNum){
         int totalFirms = firmRepository.findDistinctFromFirm().size();
         int totalGoals = goalRepository.totalGoals();
 
@@ -94,18 +135,9 @@ public class FirmService implements GoalService{
         return goalResponse;
     }
 
-    @Override
-    public Collection<? extends User> findGoals(int pageNum, long userId) {
-        return findGoals(pageNum);
+    private int totalPages (){
+        return (int) Math.ceil( firmRepository.findDistinct().size() * 1d / pageSize) - 1;
     }
 
-    @Override
-    public int totalPages(long userId) {
-        return totalPages();
-    }
 
-    @Override
-    public GoalResponse buildResponse(int pageNum, long userId, Collection<? extends User> users) {
-        return buildResponse(pageNum, (Collection<Firm>) users);
-    }
 }

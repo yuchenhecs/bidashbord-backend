@@ -2,6 +2,9 @@ package com.bi.oranj.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +25,7 @@ public class DateValidator {
         pattern = Pattern.compile(DATE_PATTERN);
     }
 
-    public boolean validate(final String date){
+    private boolean validatePattern(final String date){
 
         matcher = pattern.matcher(date);
 
@@ -65,6 +68,22 @@ public class DateValidator {
         }else{
             return false;
         }
+    }
+
+    private boolean isLess (String date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+        Date input = null;
+        try{
+            input = simpleDateFormat.parse(date);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return input.before(today);
+    }
+
+    public boolean validate (String date){
+        return validatePattern(date) && isLess(date);
     }
 
 }

@@ -8,8 +8,24 @@ import java.util.Collection;
 /**
  * Created by jaloliddinbakirov on 5/30/17.
  */
-public interface GoalService {
-    public Collection<? extends User> findGoals(int pageNum, long userId);
-    public int totalPages (long userId);
-    public GoalResponse buildResponse (int pageNum, long userId, Collection<? extends User> users);
+public abstract class GoalService {
+    public int totalPages (long userId){
+        return 0;
+    }
+
+    public GoalResponse buildResponseWithDate (String startDate, String endDate, int pageNum, long userId){
+        return null;
+    }
+
+    public GoalResponse buildResponseWithStartDate (String startdate, int pageNum, long userId){
+        return null;
+    }
+
+    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long userId){
+        return null;
+    }
+
+    public GoalResponse buildResponse (int pageNum, long userId){
+        return null;
+    }
 }
