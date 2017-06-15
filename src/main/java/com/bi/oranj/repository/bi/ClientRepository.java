@@ -1,6 +1,8 @@
 package com.bi.oranj.repository.bi;
 
 import com.bi.oranj.model.bi.Client;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,5 +24,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "SELECT DISTINCT(clientId) FROM BiGoal WHERE advisorId = ?1")
     public List<Client> findDistinctByAdvisor(long advisorId);
 
-    public List<Client> findByAdvisorIdOrderByClientFirstName(Long advisorId);
+//    public List<Client> findByAdvisorId(Long advisorId);
+    public Page<Client> findByAdvisorId(Long advisorId, Pageable pageable);
 }

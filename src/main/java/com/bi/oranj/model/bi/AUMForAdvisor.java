@@ -15,6 +15,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AUMForAdvisor extends BaseAum {
 
-    private int totalClients;
+    private long totalClients;
     private List<ClientAUM> clients = new ArrayList<>();
 }

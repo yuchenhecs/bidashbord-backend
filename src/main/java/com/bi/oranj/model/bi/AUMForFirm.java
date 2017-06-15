@@ -13,6 +13,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AUMForFirm extends BaseAum {
 
-    private int totalAdvisors;
+    private long totalAdvisors;
     private List<AdvisorAUM> advisors = new ArrayList<>();
 }

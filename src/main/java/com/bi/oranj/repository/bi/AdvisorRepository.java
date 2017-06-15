@@ -1,6 +1,8 @@
 package com.bi.oranj.repository.bi;
 
 import com.bi.oranj.model.bi.Advisor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.bi.oranj.model.bi.BiGoal;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +27,6 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long> {
             "ORDER BY firstName LIMIT ?2, ?3", nativeQuery = true)
     public List<Object[]> findGoalsOrdered (long firmId, int start, int next);
 
-    public List<Advisor> findByFirmIdOrderByAdvisorFirstName(Long firmId);
+    public Page<Advisor> findByFirmId(Long firmId, Pageable pageable);
 
 }

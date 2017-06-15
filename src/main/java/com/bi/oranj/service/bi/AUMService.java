@@ -10,6 +10,9 @@ import com.bi.oranj.repository.bi.FirmRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,21 +51,21 @@ public class AUMService {
         try {
             AUMForAdmin aumForAdmin = new AUMForAdmin();
             List<FirmAUM> firmAUMList = new ArrayList<>();
-//            List<Firm> firmList = firmRepository.findAllOrderById();
-            List<Firm> firmList = firmRepository.findAll();
-            for (int i=0; i<firmList.size(); i++){
+            Page<Firm> firmList;
+            firmList = firmRepository.findAll(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
+            for (int i=0; i<firmList.getContent().size(); i++){
 
                 FirmAUM firmAUM = new FirmAUM();
-                firmAUM.setFirmId(firmList.get(i).getId());
-                firmAUM.setName(firmList.get(i).getFirmName());
-                firmAUM.setPrevious(getAUM(firmList.get(i).getId(), previousDate, "firm"));
-                firmAUM.setCurrent(getAUM(firmList.get(i).getId(), currentDate, "firm"));
+                firmAUM.setFirmId(firmList.getContent().get(i).getId());
+                firmAUM.setName(firmList.getContent().get(i).getFirmName());
+                firmAUM.setPrevious(getAUM(firmList.getContent().get(i).getId(), previousDate, "firm"));
+                firmAUM.setCurrent(getAUM(firmList.getContent().get(i).getId(), currentDate, "firm"));
                 firmAUMList.add(firmAUM);
             }
             aumForAdmin.setFirms(firmAUMList);
-            aumForAdmin.setTotalFirms(firmAUMList.size());
-            aumForAdmin.setLast(true);
-            aumForAdmin.setPage(0);
+            aumForAdmin.setTotalFirms(firmList.getTotalElements());
+            aumForAdmin.setLast(!firmList.hasNext());
+            aumForAdmin.setPage(pageNumber);
             aumForAdmin.setCount(firmAUMList.size());
             return RestResponse.successWithoutMessage(aumForAdmin);
         } catch (Exception e) {
@@ -81,19 +84,20 @@ public class AUMService {
         try {
             AUMForFirm aumForFirm = new AUMForFirm();
             List<AdvisorAUM> advisorAUMList = new ArrayList<>();
-            List<Advisor> advisorList = advisorRepository.findByFirmIdOrderByAdvisorFirstName(firmId);
-            for (int i=0; i<advisorList.size(); i++){
+            Page<Advisor> advisorList;
+            advisorList = advisorRepository.findByFirmId(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
+            for (int i=0; i<advisorList.getContent().size(); i++){
 
                 AdvisorAUM advisorAUM = new AdvisorAUM();
-                advisorAUM.setAdvisorId(advisorList.get(i).getId());
-                advisorAUM.setName(advisorList.get(i).getAdvisorFirstName() + " " + advisorList.get(i).getAdvisorLastName());
-                advisorAUM.setPrevious(getAUM(advisorList.get(i).getId(), previousDate, "advisor"));
-                advisorAUM.setCurrent(getAUM(advisorList.get(i).getId(), currentDate, "advisor"));
+                advisorAUM.setAdvisorId(advisorList.getContent().get(i).getId());
+                advisorAUM.setName(advisorList.getContent().get(i).getAdvisorFirstName() + " " + advisorList.getContent().get(i).getAdvisorLastName());
+                advisorAUM.setPrevious(getAUM(advisorList.getContent().get(i).getId(), previousDate, "advisor"));
+                advisorAUM.setCurrent(getAUM(advisorList.getContent().get(i).getId(), currentDate, "advisor"));
                 advisorAUMList.add(advisorAUM);
             }
             aumForFirm.setAdvisors(advisorAUMList);
-            aumForFirm.setTotalAdvisors(advisorAUMList.size());
-            aumForFirm.setLast(true);
+            aumForFirm.setTotalAdvisors(advisorList.getTotalElements());
+            aumForFirm.setLast(!advisorList.hasNext());
             aumForFirm.setPage(0);
             aumForFirm.setCount(advisorAUMList.size());
             return RestResponse.successWithoutMessage(aumForFirm);
@@ -113,20 +117,21 @@ public class AUMService {
         try {
             AUMForAdvisor aumForAdvisor = new AUMForAdvisor();
             List<ClientAUM> clientAUMList = new ArrayList<>();
-            List<Client> clientList= clientRepository.findByAdvisorIdOrderByClientFirstName(advisorId);
-            for (int i=0; i<clientList.size(); i++){
+            Page<Client> clientList;
+            clientList = clientRepository.findByAdvisorId(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
+            for (int i=0; i<clientList.getContent().size(); i++){
 
                 ClientAUM clientAUM = new ClientAUM();
-                clientAUM.setClientId(clientList.get(i).getId());
-                clientAUM.setName(clientList.get(i).getClientFirstName() + " " + clientList.get(i).getClientLastName());
-                clientAUM.setPrevious(getAUM(clientList.get(i).getId(), previousDate, "client"));
-                clientAUM.setCurrent(getAUM(clientList.get(i).getId(), currentDate, "client"));
+                clientAUM.setClientId(clientList.getContent().get(i).getId());
+                clientAUM.setName(clientList.getContent().get(i).getClientFirstName() + " " + clientList.getContent().get(i).getClientLastName());
+                clientAUM.setPrevious(getAUM(clientList.getContent().get(i).getId(), previousDate, "client"));
+                clientAUM.setCurrent(getAUM(clientList.getContent().get(i).getId(), currentDate, "client"));
                 clientAUMList.add(clientAUM);
             }
             aumForAdvisor.setClients(clientAUMList);
-            aumForAdvisor.setTotalClients(clientAUMList.size());
-            aumForAdvisor.setLast(true);
-            aumForAdvisor.setPage(0);
+            aumForAdvisor.setTotalClients(clientList.getTotalElements());
+            aumForAdvisor.setLast(!clientList.hasNext());
+            aumForAdvisor.setPage(pageNumber);
             aumForAdvisor.setCount(clientAUMList.size());
             return RestResponse.successWithoutMessage(aumForAdvisor);
         } catch (Exception e) {
