@@ -12,4 +12,12 @@ public class AUMForAdmin extends BaseAum {
 
     private long totalFirms;
     private List<FirmAUM> firms = new ArrayList<>();
+
+    public AUMForAdmin(){
+    }
+
+    public AUMForAdmin(long totalFirms, List<FirmAUM> firms){
+        this.totalFirms = totalFirms;
+        this.firms = firms;
+    }
 }

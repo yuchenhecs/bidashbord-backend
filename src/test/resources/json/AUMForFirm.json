@@ -1,0 +1,51 @@
+{
+  "data": {
+    "hasNext": false,
+    "page": 0,
+    "count": 0,
+    "totalAdvisors": 2,
+    "advisors": [{
+      "name": "UnitTest Advisor",
+      "previous": {
+        "date": "2017-06-11",
+        "total": 287346,
+        "assetClass": {
+          "US Stocks": 1782,
+          "Non US Stocks": 12345,
+          "Cash": 1234
+        }
+      },
+      "current": {
+        "date": "2017-06-11",
+        "total": 287346,
+        "assetClass": {
+          "US Stocks": 1782,
+          "Non US Stocks": 12345,
+          "Cash": 1234
+        }
+      },
+      "advisorId": 123
+    }, {
+      "name": "UnitTest Advisor",
+      "previous": {
+        "date": "2017-06-11",
+        "total": 287346,
+        "assetClass": {
+          "US Stocks": 1782,
+          "Non US Stocks": 12345,
+          "Cash": 1234
+        }
+      },
+      "current": {
+        "date": "2017-06-11",
+        "total": 287346,
+        "assetClass": {
+          "US Stocks": 1782,
+          "Non US Stocks": 12345,
+          "Cash": 1234
+        }
+      },
+      "advisorId": 123
+    }]
+  }
+}

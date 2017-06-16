@@ -1,0 +1,27 @@
+{
+  "data": [{
+    "date": "2017-06-11",
+    "total": 287346,
+    "assetClass": {
+      "US Stocks": 1782,
+      "Non US Stocks": 12345,
+      "Cash": 1234
+    }
+  }, {
+    "date": "2017-06-11",
+    "total": 287346,
+    "assetClass": {
+      "US Stocks": 1782,
+      "Non US Stocks": 12345,
+      "Cash": 1234
+    }
+  }, {
+    "date": "2017-06-11",
+    "total": 287346,
+    "assetClass": {
+      "US Stocks": 1782,
+      "Non US Stocks": 12345,
+      "Cash": 1234
+    }
+  }]
+}
