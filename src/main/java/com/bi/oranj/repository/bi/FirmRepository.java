@@ -12,9 +12,6 @@ import java.util.List;
  */
 public interface FirmRepository extends JpaRepository<Firm, Integer> {
 
-    @Query(value = "SELECT DISTINCT(firmId) FROM BiGoal")
-    public List<Firm> findDistinct();
-
     @Query(value = "SELECT COUNT(DISTINCT(id)) FROM firms", nativeQuery = true)
     public Integer findDistinctFromFirm();
 
@@ -58,6 +55,7 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
             "WHERE g.creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
             "ORDER BY f.firm_name LIMIT :start, :next) a " +
             "on a.firm_name = f.firm_name " +
+            "WHERE g.creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
             "GROUP BY f.id, f.firm_name, g.type " +
             "ORDER BY firmName", nativeQuery = true)
     public List<Object[]> findGoalsByDateBetween (@Param("startDate") String startDate,
@@ -76,6 +74,7 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
             "WHERE g.creation_date <= :endDate' 23:59:59' " +
             "ORDER BY f.firm_name LIMIT :start, :next) a " +
             "on a.firm_name = f.firm_name " +
+            "WHERE g.creation_date <= :endDate' 23:59:59' " +
             "GROUP BY f.id, f.firm_name, g.type " +
             "ORDER BY firmName", nativeQuery = true)
     public List<Object[]> findGoalsWithEndDate (@Param("endDate") String endDate,
@@ -94,6 +93,7 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
             "WHERE g.creation_date >= :startDate ' 00:00:00' " +
             "ORDER BY f.firm_name LIMIT :start, :next) a " +
             "on a.firm_name = f.firm_name " +
+            "WHERE g.creation_date >= :startDate ' 00:00:00' " +
             "GROUP BY f.id, f.firm_name, g.type " +
             "ORDER BY firmName", nativeQuery = true)
     public List<Object[]> findGoalsWithStartDate (@Param(value = "startDate") String startDate,

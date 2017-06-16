@@ -18,33 +18,39 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query(value = "select count(distinct(c.id)) from clients c " +
             "left join goals g " +
-            "on c.id = g.advisor_id " +
+            "on c.id = g.client_id " +
             "where c.advisor_id = :advisorId AND g.creation_date >= :startDate' 00:00:00'", nativeQuery = true)
-    public Integer findDistinctAdvisorsWithStartDate(@Param(value = "startDate") String startDate,
+    public Integer findDistinctClientsWithStartDate(@Param(value = "startDate") String startDate,
                                                      @Param(value = "advisorId") long advisorId);
 
     @Query(value = "select count(distinct(c.id)) from clients c " +
             "left join goals g " +
-            "on c.id = g.advisor_id " +
+            "on c.id = g.client_id " +
             "where c.advisor_id = :advisorId AND g.creation_date BETWEEN :startDate' 00:00:00' AND :endDate' 23:59:59'", nativeQuery = true)
-    public Integer findDistinctAdvisorsByDateBetween(@Param(value = "startDate") String startDate,
+    public Integer findDistinctClientsByDateBetween(@Param(value = "startDate") String startDate,
                                                      @Param(value = "endDate") String endDate,
                                                      @Param(value = "advisorId") long advisorId);
 
     @Query(value = "select count(distinct(c.id)) from clients c " +
             "left join goals g " +
-            "on c.id = g.advisor_id " +
+            "on c.id = g.client_id " +
             "where c.advisor_id = :advisorId AND g.creation_date <= :endDate' 23:59:59'", nativeQuery = true)
-    public Integer findDistinctAdvisorsWithEndDate(@Param(value = "endDate") String endDate,
+    public Integer findDistinctClientsWithEndDate(@Param(value = "endDate") String endDate,
                                                    @Param(value = "advisorId") long advisorId);
 
 
     @Query (value = "SELECT c.id clientId, c.client_first_name firstName, c.client_last_name lastName, g.type type, " +
             "COUNT(g.id) count FROM clients c " +
             "LEFT JOIN goals g ON g.client_id = c.id " +
+            "INNER JOIN ( " +
+            "SELECT DISTINCT(client_first_name) FROM clients c " +
+            "inner join goals g on " +
+            "g.client_id = c.id " +
             "WHERE c.advisor_id = :advisorId " +
-            "GROUP BY c.id, g.type, c.client_first_name " +
-            "ORDER BY firstName LIMIT :start, :next", nativeQuery = true)
+            "ORDER BY c.client_first_name LIMIT :start, :next) t " +
+            "on t.client_first_name = c.client_first_name " +
+            "GROUP BY c.id, c.client_first_name, g.type " +
+            "ORDER BY firstName;", nativeQuery = true)
     public List<Object[]> findGoalsOrdered (@Param("advisorId") Long advisorId,
                                             @Param("start") int start,
                                             @Param("next") int next);
@@ -53,10 +59,16 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query (value = "SELECT c.id clientId, c.client_first_name firstName, c.client_last_name lastName, g.type type, " +
             "COUNT(g.id) count FROM clients c " +
             "LEFT JOIN goals g ON g.client_id = c.id " +
-            "WHERE c.advisor_id = :advisorId " +
-            "AND g.creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
-            "GROUP BY c.id, g.type, c.client_first_name " +
-            "ORDER BY firstName LIMIT :start, :next", nativeQuery = true)
+            "INNER JOIN ( " +
+            "SELECT DISTINCT(client_first_name) FROM clients c " +
+            "inner join goals g on " +
+            "g.client_id = c.id " +
+            "WHERE c.advisor_id = :advisorId AND g.creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
+            "ORDER BY c.client_first_name LIMIT :start, :next) t " +
+            "on t.client_first_name = c.client_first_name " +
+            "WHERE g.creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
+            "GROUP BY c.id, c.client_first_name, g.type " +
+            "ORDER BY firstName;", nativeQuery = true)
     public List<Object[]> findGoalsByDateBetween (@Param("advisorId") Long advisorId,
                                                   @Param("startDate") String startDate,
                                                   @Param("endDate") String endDate,
@@ -66,10 +78,16 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query (value = "SELECT c.id clientId, c.client_first_name firstName, c.client_last_name lastName, g.type type, " +
             "COUNT(g.id) count FROM clients c " +
             "LEFT JOIN goals g ON g.client_id = c.id " +
-            "WHERE c.advisor_id = :advisorId " +
-            "AND g.creation_date <= :endDate' 23:59:59' " +
-            "GROUP BY c.id, g.type, c.client_first_name " +
-            "ORDER BY firstName LIMIT :start, :next", nativeQuery = true)
+            "INNER JOIN ( " +
+            "SELECT DISTINCT(client_first_name) FROM clients c " +
+            "inner join goals g on " +
+            "g.client_id = c.id " +
+            "WHERE c.advisor_id = :advisorId AND g.creation_date <= :endDate' 23:59:59' " +
+            "ORDER BY c.client_first_name LIMIT :start, :next) t " +
+            "on t.client_first_name = c.client_first_name " +
+            "WHERE g.creation_date <= :endDate' 23:59:59' " +
+            "GROUP BY c.id, c.client_first_name, g.type " +
+            "ORDER BY firstName;", nativeQuery = true)
     public List<Object[]> findGoalsWithEndDate (@Param("advisorId") Long advisorId,
                                                 @Param("endDate") String endDate,
                                                 @Param("start") int start,
@@ -79,10 +97,16 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query (value = "SELECT c.id clientId, c.client_first_name firstName, c.client_last_name lastName, g.type type, " +
             "COUNT(g.id) count FROM clients c " +
             "LEFT JOIN goals g ON g.client_id = c.id " +
-            "WHERE c.advisor_id = :advisorId " +
-            "AND g.creation_date >= :startDate' 00:00:00' " +
-            "GROUP BY c.id, g.type, c.client_first_name " +
-            "ORDER BY firstName LIMIT :start, :next", nativeQuery = true)
+            "INNER JOIN ( " +
+            "SELECT DISTINCT(client_first_name) FROM clients c " +
+            "inner join goals g on " +
+            "g.client_id = c.id " +
+            "WHERE c.advisor_id = :advisorId AND g.creation_date >= :startDate' 00:00:00' " +
+            "ORDER BY c.client_first_name LIMIT :start, :next) t " +
+            "on t.client_first_name = c.client_first_name " +
+            "WHERE g.creation_date >= :startDate' 00:00:00'" +
+            "GROUP BY c.id, c.client_first_name, g.type " +
+            "ORDER BY firstName;", nativeQuery = true)
     public List<Object[]> findGoalsWithStartDate (@Param("advisorId") Long advisorId,
                                                   @Param("startDate") String startDate,
                                                   @Param("start") int start,

@@ -75,29 +75,6 @@ public class OranjService {
     @Autowired
     DateValidator dateValidator;
 
-//    public void fetchAUMData(){
-//        List<Object[]> mapping = oranjAUMRepository.fetchPortfolioClientMapping();
-//        List<Aum> aums = new ArrayList<>();
-//
-//        try{
-//            for (Object[] o : mapping){
-//                Client client = entityManager.find(Client.class, ((BigInteger) o[1]).longValue());
-//                if (client == null) {
-//                    List<OranjClient> clients =oranjClientRepository.findByClientId((BigInteger) o[1]);
-//                    if (clients.size() != 0) saveClients(clients);
-//                    else continue;
-//                }
-//
-//                Aum aum = new Aum();
-//                aum.setPortfolioId((BigInteger) o[0]);
-//                aum.setClientId((BigInteger) o[1]);
-//                aums.add(aum);
-//            }
-//            aumRepository.save(aums);
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-//    }
 
     public void fetchPositionsData () {
 

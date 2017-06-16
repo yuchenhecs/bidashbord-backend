@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -35,59 +36,83 @@ public class AdvisorService extends GoalService{
     }
 
     @Override
-    public GoalResponse buildResponse(int pageNum, long firmId) {
+    public GoalResponse buildResponse(int pageNum, long firmId, HttpServletResponse response) {
+        int totalPages = totalPages(firmId);
+        if (pageNum > totalPages) return null;
+
         Collection<Advisor> advisors = findGoals(firmId, pageNum);
         int totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
         int totalGoals = goalRepository.totalAdvisorGoals(firmId);
-        return processGoalresponse(advisors, firmId, pageNum, totalAdvisors, totalGoals);
+        GoalResponse goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
+        if (goals != null && pageNum == totalPages) goals.setLast(true);
+        response.setStatus(HttpServletResponse.SC_OK);
+        return goals;
     }
 
     @Override
-    public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long firmId){
+    public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long firmId, HttpServletResponse response){
+        int totalPages = totalPagesWithStartDate(firmId, startDate);
+        if (pageNum > totalPages) return null;
+
         Collection<Advisor> advisors = findGoalsWithStartDate(firmId, startDate, pageNum);
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId);
         int totalGoals = goalRepository.totalAdvisorGoalsWithStartDate(startDate, firmId);
-        return processGoalresponse(advisors,firmId, pageNum, totalAdvisors, totalGoals);
+        GoalResponse goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
+        if (goals != null && pageNum == totalPages) goals.setLast(true);
+        response.setStatus(HttpServletResponse.SC_OK);
+        return goals;
     }
 
     @Override
-    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long firmId){
+    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long firmId, HttpServletResponse response){
+        int totalPages = totalPagesWithEndDate(firmId, endDate);
+        if (pageNum > totalPages) return null;
+
         Collection<Advisor> advisors = findGoalsWithEndDate(firmId, endDate, pageNum);
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId);
         int totalGoals = goalRepository.totalAdvisorGoalsWithEndDate(endDate, firmId);
-        return processGoalresponse(advisors, firmId, pageNum, totalAdvisors, totalGoals);
+        GoalResponse goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
+        if (goals != null && pageNum == totalPages) goals.setLast(true);
+        response.setStatus(HttpServletResponse.SC_OK);
+        return goals;
     }
 
     @Override
-    public GoalResponse buildResponseWithDate (String startDate, String endDate, int pageNum, long firmId){
+    public GoalResponse buildResponseByDateBetween (String startDate, String endDate, int pageNum, long firmId, HttpServletResponse response){
+        int totalPages = totalPagesByDateBetween(firmId, startDate, endDate);
+        if (pageNum > totalPages) return null;
+
         Collection<Advisor> advisors = findGoalsByDate(firmId, startDate, endDate, pageNum);
         int totalAdvisors = advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId);
         int totalGoals = goalRepository.totalAdvisorGoalsByDateBetween(startDate, endDate, firmId);
-        return processGoalresponse(advisors, firmId, pageNum, totalAdvisors, totalGoals);
+        GoalResponse goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
+        if (goals != null && pageNum == totalPages) goals.setLast(true);
+        response.setStatus(HttpServletResponse.SC_OK);
+        return goals;
     }
 
 
     private Collection<Advisor> findGoals (long firmId, int pageNum){
         List<Object[]> goalObjects = advisorRepository.findGoalsOrdered(firmId, pageNum * pageSize, pageSize);
-        return processResults(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Advisor> findGoalsByDate (long firmId, String startDate, String endDate, int pageNum){
         List<Object[]> goalObjects = advisorRepository.findGoalsByDateBetween(firmId, startDate, endDate, pageNum * pageSize, pageSize);
-        return processResults(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Advisor> findGoalsWithStartDate (long firmId, String startDate, int pageNum){
         List<Object[]> goalObjects = advisorRepository.findGoalsWithStartDate(firmId, startDate, pageNum * pageSize, pageSize);
-        return processResults(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Advisor> findGoalsWithEndDate (long firmId, String endDate, int pageNum){
         List<Object[]> goalObjects = advisorRepository.findGoalsWithEndDate(firmId, endDate, pageNum * pageSize, pageSize);
-        return processResults(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
-    private GoalResponse processGoalresponse (Collection<Advisor> advisors, long firmId, int pageNum, int totalAdvisors, int totalGoals){
+    private GoalResponse processGoalresponse (Collection<Advisor> advisors, int pageNum, int totalAdvisors, int totalGoals){
         if (advisors == null || advisors.isEmpty())
             return null;
 
@@ -101,8 +126,8 @@ public class AdvisorService extends GoalService{
         return goalResponse;
     }
 
-    private Collection<Advisor> processResults (List<Object[]> goalObjects){
-        Map<Integer, Advisor> hashMap = new HashMap<>();
+    private Collection<Advisor> processObjectArrays (List<Object[]> goalObjects){
+        Map<Integer, Advisor> linkedHashMap = new LinkedHashMap<>();
 
         for (Object[] goal : goalObjects){
             int advisorId = ((BigInteger) goal[0]).intValue();
@@ -115,8 +140,8 @@ public class AdvisorService extends GoalService{
             else type = ((String) goal[3]).trim().toLowerCase();
 
 
-            if (hashMap.containsKey(advisorId)){
-                Advisor advisor = hashMap.get(advisorId);
+            if (linkedHashMap.containsKey(advisorId)){
+                Advisor advisor = linkedHashMap.get(advisorId);
 
                 HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
@@ -131,19 +156,36 @@ public class AdvisorService extends GoalService{
             } else {
 
                 if (type == null){
-                    hashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, Collections.emptyMap(), count));
+                    linkedHashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, Collections.emptyMap(), count));
                     continue;
                 }
 
                 HashMap<String, Integer> goalList = new HashMap<>();
                 goalList.put(type, count);
 
-                hashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, goalList, count));
+                linkedHashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, goalList, count));
             }
         }
 
 
-        return hashMap.values();
+        return linkedHashMap.values();
     }
+
+
+    @Override
+    public int totalPagesWithStartDate (long firmId, String startDate) {
+        return (int) Math.ceil(advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId) * 1d / pageSize) - 1;
+    }
+
+    @Override
+    public int totalPagesWithEndDate (long firmId, String endDate) {
+        return (int) Math.ceil(advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId) * 1d / pageSize) - 1;
+    }
+
+    @Override
+    public int totalPagesByDateBetween (long firmId, String startDate, String endDate) {
+        return (int) Math.ceil(advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId) * 1d / pageSize) - 1;
+    }
+
 
 }

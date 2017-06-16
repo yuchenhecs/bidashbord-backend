@@ -3,6 +3,7 @@ package com.bi.oranj.service.bi;
 import com.bi.oranj.model.bi.GoalResponse;
 import com.bi.oranj.model.bi.wrapper.User;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 /**
@@ -13,19 +14,25 @@ public abstract class GoalService {
         return 0;
     }
 
-    public GoalResponse buildResponseWithDate (String startDate, String endDate, int pageNum, long userId){
+    public int totalPagesWithStartDate (long userId, String startDate) {return 0;}
+
+    public int totalPagesWithEndDate (long userId, String endDate) {return 0;}
+
+    public int totalPagesByDateBetween (long userId, String startDate, String endDate) {return 0;}
+
+    public GoalResponse buildResponseByDateBetween(String startDate, String endDate, int pageNum, long userId, HttpServletResponse response){
         return null;
     }
 
-    public GoalResponse buildResponseWithStartDate (String startdate, int pageNum, long userId){
+    public GoalResponse buildResponseWithStartDate (String startdate, int pageNum, long userId, HttpServletResponse response){
         return null;
     }
 
-    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long userId){
+    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long userId, HttpServletResponse response){
         return null;
     }
 
-    public GoalResponse buildResponse (int pageNum, long userId){
+    public GoalResponse buildResponse (int pageNum, long userId, HttpServletResponse response){
         return null;
     }
 }
