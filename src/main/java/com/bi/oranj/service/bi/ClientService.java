@@ -30,32 +30,44 @@ public class ClientService extends GoalService{
 
     @Override
     public int totalPages (long clientId){
-        return (int) Math.ceil(clientRepository.findDistinctByAdvisorFromClients(clientId).size() * 1d / pageSize) - 1;
+        return (int) Math.ceil(clientRepository.findDistinctByAdvisor(clientId) * 1d / pageSize) - 1;
     }
 
 
     @Override
     public GoalResponse buildResponse(int pageNum, long advisorId) {
-        Collection<Client> advisors = findGoals(advisorId, pageNum);
-        return processGoalresponse(advisors, advisorId, pageNum);
+        int totalClients = clientRepository.findDistinctByAdvisor(advisorId);
+        int totalGoals = goalRepository.totalClientGoals(advisorId);
+
+        Collection<Client> clients = findGoals(advisorId, pageNum);
+        return processGoalresponse(clients, pageNum, totalClients, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long advisorId){
-        Collection<Client> advisors = findGoalsWithStartDate(advisorId, startDate, pageNum);
-        return processGoalresponse(advisors, advisorId, pageNum);
+        int totalClients = clientRepository.findDistinctAdvisorsWithStartDate(startDate, advisorId);
+        int totalGoals = goalRepository.totalClientGoalsWithStartDate(startDate, advisorId);
+
+        Collection<Client> clients = findGoalsWithStartDate(advisorId, startDate, pageNum);
+        return processGoalresponse(clients, pageNum, totalClients, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long advisorId){
-        Collection<Client> advisors = findGoalsWithEndDate(advisorId, endDate, pageNum);
-        return processGoalresponse(advisors, advisorId, pageNum);
+        int totalClients = clientRepository.findDistinctAdvisorsWithEndDate(endDate, advisorId);
+        int totalGoals = goalRepository.totalClientGoalsWithEndDate(endDate, advisorId);
+
+        Collection<Client> clients = findGoalsWithEndDate(advisorId, endDate, pageNum);
+        return processGoalresponse(clients, pageNum, totalClients, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithDate (String startDate, String endDate, int pageNum, long advisorId){
-        Collection<Client> advisors = findGoalsByDate(advisorId, startDate, endDate, pageNum);
-        return processGoalresponse(advisors, advisorId, pageNum);
+        int totalClients = clientRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, advisorId);
+        int totalGoals = goalRepository.totalClientGoalsByDateBetween(startDate, endDate, advisorId);
+
+        Collection<Client> clients = findGoalsByDate(advisorId, startDate, endDate, pageNum);
+        return processGoalresponse(clients, pageNum, totalClients, totalGoals);
     }
 
 
@@ -79,9 +91,7 @@ public class ClientService extends GoalService{
         return processResults(goalObjects);
     }
 
-    private GoalResponse processGoalresponse (Collection<Client> clients, long advisorId, int pageNum){
-        int totalClients = clientRepository.findDistinctByAdvisorFromClients(advisorId).size();
-        int totalGoals = goalRepository.totalClientGoals(advisorId);
+    private GoalResponse processGoalresponse (Collection<Client> clients, int pageNum, int totalClients, int totalGoals){
 
         if (clients == null || clients.isEmpty())
             return null;

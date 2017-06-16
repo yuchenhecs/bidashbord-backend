@@ -31,31 +31,39 @@ public class AdvisorService extends GoalService{
 
     @Override
     public int totalPages (long firmId){
-        return (int) Math.ceil(advisorRepository.findDistinctFromFirm(firmId).size() * 1d / pageSize) - 1;
+        return (int) Math.ceil(advisorRepository.findDistinctByFirm(firmId) * 1d / pageSize) - 1;
     }
 
     @Override
     public GoalResponse buildResponse(int pageNum, long firmId) {
         Collection<Advisor> advisors = findGoals(firmId, pageNum);
-        return processGoalresponse(advisors, firmId, pageNum);
+        int totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
+        int totalGoals = goalRepository.totalAdvisorGoals(firmId);
+        return processGoalresponse(advisors, firmId, pageNum, totalAdvisors, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long firmId){
         Collection<Advisor> advisors = findGoalsWithStartDate(firmId, startDate, pageNum);
-        return processGoalresponse(advisors,firmId, pageNum);
+        int totalAdvisors = advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId);
+        int totalGoals = goalRepository.totalAdvisorGoalsWithStartDate(startDate, firmId);
+        return processGoalresponse(advisors,firmId, pageNum, totalAdvisors, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long firmId){
         Collection<Advisor> advisors = findGoalsWithEndDate(firmId, endDate, pageNum);
-        return processGoalresponse(advisors, firmId, pageNum);
+        int totalAdvisors = advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId);
+        int totalGoals = goalRepository.totalAdvisorGoalsWithEndDate(endDate, firmId);
+        return processGoalresponse(advisors, firmId, pageNum, totalAdvisors, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithDate (String startDate, String endDate, int pageNum, long firmId){
         Collection<Advisor> advisors = findGoalsByDate(firmId, startDate, endDate, pageNum);
-        return processGoalresponse(advisors, firmId, pageNum);
+        int totalAdvisors = advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId);
+        int totalGoals = goalRepository.totalAdvisorGoalsByDateBetween(startDate, endDate, firmId);
+        return processGoalresponse(advisors, firmId, pageNum, totalAdvisors, totalGoals);
     }
 
 
@@ -79,10 +87,7 @@ public class AdvisorService extends GoalService{
         return processResults(goalObjects);
     }
 
-    private GoalResponse processGoalresponse (Collection<Advisor> advisors, long firmId, int pageNum){
-        int totalAdvisors = advisorRepository.findDistinctFromFirm(firmId).size();
-        int totalGoals = goalRepository.totalAdvisorGoals(firmId);
-
+    private GoalResponse processGoalresponse (Collection<Advisor> advisors, long firmId, int pageNum, int totalAdvisors, int totalGoals){
         if (advisors == null || advisors.isEmpty())
             return null;
 

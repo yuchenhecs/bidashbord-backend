@@ -4,9 +4,7 @@ package com.bi.oranj.service.bi;
 import com.bi.oranj.model.bi.GoalResponse;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
-import com.bi.oranj.model.bi.wrapper.User;
 import com.bi.oranj.model.bi.wrapper.user.Firm;
-import com.bi.oranj.utils.DateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,30 +36,38 @@ public class FirmService extends GoalService{
     @Override
     public GoalResponse buildResponse(int pageNum, long userId) {
         Collection<Firm> firms = findGoals(pageNum);
-        return processGoalresponse(firms, pageNum);
+        int totalFirms = firmRepository.findDistinctFromFirm();
+        int totalGoals = goalRepository.totalGoals();
+        return processGoalresponse(firms, pageNum, totalFirms, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long userId){
         Collection<Firm> firms = findGoalsWithStartDate(startDate, pageNum);
-        return processGoalresponse(firms, pageNum);
+        int totalFirms = firmRepository.findDistinctFirmsWithStartDate(startDate);
+        int totalGoals = goalRepository.totalGoalsWithStartDate(startDate);
+        return processGoalresponse(firms, pageNum, totalFirms, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long userId){
         Collection<Firm> firms = findGoalsWithEndDate(endDate, pageNum);
-        return processGoalresponse(firms, pageNum);
+        int totalFirms = firmRepository.findDistinctFirmsWithEndDate(endDate);
+        int totalGoals = goalRepository.totalGoalsWithEndDate(endDate);
+        return processGoalresponse(firms, pageNum, totalFirms, totalGoals);
     }
 
     @Override
     public GoalResponse buildResponseWithDate (String startDate, String endDate, int pageNum, long userId){
         Collection<Firm> firms = findGoalsByDate(startDate, endDate, totalPages());
-        return processGoalresponse(firms, pageNum);
+        int totalFirms = firmRepository.findDistinctFirmsByDateBetween(startDate, endDate);
+        int totalGoals = goalRepository.totalGoalsByDateBetween(startDate, endDate);
+        return processGoalresponse(firms, pageNum, totalFirms, totalGoals);
     }
 
     private Collection<Firm> findGoals (int pageNum){
-        List<Object[]> goalObjects = (List<Object[]>) firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
-        return processResults(goalObjects);
+        List<Object[]> firms = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
+        return processResults(firms);
     }
 
     private Collection<Firm> findGoalsByDate (String startDate, String endDate, int pageNum){
@@ -118,9 +124,7 @@ public class FirmService extends GoalService{
         return hashMap.values();
     }
 
-    private GoalResponse processGoalresponse (Collection<Firm> firms, int pageNum){
-        int totalFirms = firmRepository.findDistinctFromFirm().size();
-        int totalGoals = goalRepository.totalGoals();
+    private GoalResponse processGoalresponse (Collection<Firm> firms, int pageNum, int totalFirms, int totalGoals){
 
         if (firms == null || firms.isEmpty())
             return null;
@@ -136,7 +140,7 @@ public class FirmService extends GoalService{
     }
 
     private int totalPages (){
-        return (int) Math.ceil( firmRepository.findDistinct().size() * 1d / pageSize) - 1;
+        return (int) Math.ceil( firmRepository.findDistinctFromFirm() * 1d / pageSize) - 1;
     }
 
 

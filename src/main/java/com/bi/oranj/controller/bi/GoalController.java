@@ -95,24 +95,27 @@ public class GoalController {
             return RestResponse.error("Data not found");
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+        GoalResponse goalResponse = null;
         if (startDate == null && endDate == null)
-            return requestDefault(goalService, pageNum, userId, totalPages, response);
-        else if (startDate == null && dateValidator.validate(endDate)){
-            response.setStatus(HttpServletResponse.SC_OK);
-            return requestWithEndDate(goalService, pageNum, userId, totalPages, response, simpleDateFormat.format(new Date()));
-        } else if (endDate == null && dateValidator.validate(startDate)){
-            response.setStatus(HttpServletResponse.SC_OK);
-            return requestWithStartDate(goalService, pageNum, userId, totalPages, response, startDate);
-        } else if (startDate != null && startDate != null){
-            response.setStatus(HttpServletResponse.SC_OK);
-            return requestWithDate(goalService, pageNum, userId, totalPages, response, startDate, endDate);
-        } else {
+            goalResponse = requestDefault(goalService, pageNum, userId, totalPages, response);
+        else if (startDate == null && dateValidator.validate(endDate))
+            goalResponse = requestWithEndDate(goalService, pageNum, userId, totalPages, response, endDate);
+        else if (endDate == null && dateValidator.validate(startDate))
+            goalResponse = requestWithStartDate(goalService, pageNum, userId, totalPages, response, startDate);
+        else if (startDate != null && startDate != null)
+            goalResponse = requestWithDate(goalService, pageNum, userId, totalPages, response, startDate, endDate);
+        else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Bad input parameter");
         }
 
+        if (goalResponse == null){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return RestResponse.error("Data not found");
+        }else{
+            response.setStatus(HttpServletResponse.SC_OK);
+            return goalResponse;
+        }
     }
 
 
@@ -121,9 +124,8 @@ public class GoalController {
         GoalResponse goals;
         try{
             goals = goalService.buildResponseWithDate(startDate, endDate, pageNum, userId);
-            if (pageNum == totalPages){
+            if (goals != null && pageNum == totalPages)
                 goals.setLast(true);
-            }
         }catch (Exception ex){
             logger.error("Error while building response for firms: " + ex);
             ex.printStackTrace();
@@ -138,9 +140,8 @@ public class GoalController {
         GoalResponse goals;
         try{
             goals = goalService.buildResponseWithEndDate(endDate, pageNum, userId);
-            if (pageNum == totalPages){
-                goals.setLast(true);
-            }
+
+            if (goals != null && pageNum == totalPages) goals.setLast(true);
         }catch (Exception ex){
             logger.error("Error while building response for firms: " + ex);
             ex.printStackTrace();
@@ -155,7 +156,7 @@ public class GoalController {
         GoalResponse goals;
         try{
             goals = goalService.buildResponseWithStartDate(startDate, pageNum, userId);
-            if (pageNum == totalPages){
+            if ( goals!=null && pageNum == totalPages){
                 goals.setLast(true);
             }
         }catch (Exception ex){
@@ -173,7 +174,7 @@ public class GoalController {
         GoalResponse goals;
         try{
             goals = goalService.buildResponse(pageNum, userId);
-            if (pageNum == totalPages){
+            if (goals != null && pageNum == totalPages){
                 goals.setLast(true);
             }
         }catch (Exception ex){
