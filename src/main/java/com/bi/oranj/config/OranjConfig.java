@@ -21,7 +21,7 @@ import java.util.HashMap;
 @Configuration
 @PropertySource({ "classpath:application.properties" })
 @EnableJpaRepositories(
-        basePackages = "com.bi.oranj.repository.oranj",
+        basePackages = "com.bi.oranj.com.bi.oranj.repository.oranj",
         entityManagerFactoryRef = "oranjEntityManager",
         transactionManagerRef = "oranjTransactionManager")
 public class OranjConfig {

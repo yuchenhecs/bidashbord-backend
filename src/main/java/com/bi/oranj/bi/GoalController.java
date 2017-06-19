@@ -1,13 +1,12 @@
-package com.bi.oranj.controller.bi;
+package com.bi.oranj.bi;
 
-import com.bi.oranj.controller.bi.resp.BIResponse;
-import com.bi.oranj.controller.bi.resp.RestResponse;
+import com.bi.oranj.bi.resp.BIResponse;
+import com.bi.oranj.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.GoalResponse;
 import com.bi.oranj.service.bi.AdvisorService;
 import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.GoalService;
-import com.bi.oranj.model.bi.wrapper.User;
 import com.bi.oranj.utils.DateValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
 
 /**
  * Created by jaloliddinbakirov on 5/24/17.

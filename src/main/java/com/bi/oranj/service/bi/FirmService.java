@@ -1,7 +1,6 @@
 package com.bi.oranj.service.bi;
 
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.GoalResponse;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.repository.bi.GoalRepository;

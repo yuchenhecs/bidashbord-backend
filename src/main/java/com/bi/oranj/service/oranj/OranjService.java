@@ -1,7 +1,7 @@
 package com.bi.oranj.service.oranj;
 
 import com.bi.oranj.constant.Constants;
-import com.bi.oranj.controller.bi.resp.RestResponse;
+import com.bi.oranj.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.model.oranj.OranjClient;
 import com.bi.oranj.model.oranj.OranjGoal;

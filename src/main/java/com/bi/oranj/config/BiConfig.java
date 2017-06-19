@@ -23,7 +23,7 @@ import java.util.HashMap;
  */
 @Configuration
 @PropertySource({ "classpath:application.properties" })
-@EnableJpaRepositories(basePackages = "com.bi.oranj.repository.bi",
+@EnableJpaRepositories(basePackages = "com.bi.oranj.com.bi.oranj.repository.bi",
         entityManagerFactoryRef = "biEntityManager",
         transactionManagerRef = "biTransactionManager")
 public class BiConfig {
