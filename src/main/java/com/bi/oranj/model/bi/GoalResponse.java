@@ -8,12 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Collection;
 
-/**
- * Created by jaloliddinbakirov on 5/30/17.
- *
- *
- */
-
 @JsonSerialize(using = GoalResponseSerializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GoalResponse implements BIResponse{

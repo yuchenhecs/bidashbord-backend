@@ -7,9 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * Created by harshavardhanpatil on 6/2/17.
- */
 public interface FirmRepository extends JpaRepository<Firm, Integer> {
 
     @Query(value = "SELECT COUNT(DISTINCT(id)) FROM firms", nativeQuery = true)
@@ -18,20 +15,20 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
     @Query(value = "select count(distinct(f.id)) from firms f " +
                     "left join goals g " +
                     "on f.id = g.firm_id " +
-                    "where g.creation_date >= :startDate' 00:00:00'", nativeQuery = true)
+                    "where g.goal_creation_date >= :startDate' 00:00:00'", nativeQuery = true)
     public Integer findDistinctFirmsWithStartDate(@Param(value = "startDate") String startDate);
 
     @Query(value = "select count(distinct(f.id)) from firms f " +
             "left join goals g " +
             "on f.id = g.firm_id " +
-            "where g.creation_date BETWEEN :startDate' 00:00:00' AND :endDate' 23:59:59'", nativeQuery = true)
+            "where g.goal_creation_date BETWEEN :startDate' 00:00:00' AND :endDate' 23:59:59'", nativeQuery = true)
     public Integer findDistinctFirmsByDateBetween(@Param(value = "startDate") String startDate,
                                                   @Param(value = "endDate") String endDate);
 
     @Query(value = "select count(distinct(f.id)) from firms f " +
             "left join goals g " +
             "on f.id = g.firm_id " +
-            "where g.creation_date <= :endDate' 23:59:59'", nativeQuery = true)
+            "where g.goal_creation_date <= :endDate' 23:59:59'", nativeQuery = true)
     public Integer findDistinctFirmsWithEndDate(@Param(value = "endDate") String endDate);
 
     @Query (value = "select f.id firmId, f.firm_name firmName, g.type, count(g.id) " +
@@ -52,10 +49,10 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
             "SELECT DISTINCT(firm_name) FROM firms f " +
             "inner join goals g on " +
             "g.firm_id = f.id " +
-            "WHERE g.creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
+            "WHERE g.goal_creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
             "ORDER BY f.firm_name LIMIT :start, :next) a " +
             "on a.firm_name = f.firm_name " +
-            "WHERE g.creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
+            "WHERE g.goal_creation_date BETWEEN :startDate' 00:00:00' and :endDate' 23:59:59' " +
             "GROUP BY f.id, f.firm_name, g.type " +
             "ORDER BY firmName", nativeQuery = true)
     public List<Object[]> findGoalsByDateBetween (@Param("startDate") String startDate,
@@ -71,10 +68,10 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
             "SELECT DISTINCT(firm_name) FROM firms f " +
             "inner join goals g on " +
             "g.firm_id = f.id " +
-            "WHERE g.creation_date <= :endDate' 23:59:59' " +
+            "WHERE g.goal_creation_date <= :endDate' 23:59:59' " +
             "ORDER BY f.firm_name LIMIT :start, :next) a " +
             "on a.firm_name = f.firm_name " +
-            "WHERE g.creation_date <= :endDate' 23:59:59' " +
+            "WHERE g.goal_creation_date <= :endDate' 23:59:59' " +
             "GROUP BY f.id, f.firm_name, g.type " +
             "ORDER BY firmName", nativeQuery = true)
     public List<Object[]> findGoalsWithEndDate (@Param("endDate") String endDate,
@@ -90,10 +87,10 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
             "SELECT DISTINCT(firm_name) FROM firms f " +
             "inner join goals g on " +
             "g.firm_id = f.id " +
-            "WHERE g.creation_date >= :startDate ' 00:00:00' " +
+            "WHERE g.goal_creation_date >= :startDate ' 00:00:00' " +
             "ORDER BY f.firm_name LIMIT :start, :next) a " +
             "on a.firm_name = f.firm_name " +
-            "WHERE g.creation_date >= :startDate ' 00:00:00' " +
+            "WHERE g.goal_creation_date >= :startDate ' 00:00:00' " +
             "GROUP BY f.id, f.firm_name, g.type " +
             "ORDER BY firmName", nativeQuery = true)
     public List<Object[]> findGoalsWithStartDate (@Param(value = "startDate") String startDate,

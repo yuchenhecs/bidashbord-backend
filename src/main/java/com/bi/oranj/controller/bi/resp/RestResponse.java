@@ -8,9 +8,6 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-/**
- * Wrap a map to be used as a response in JSON REST Controllers.
- */
 public class RestResponse implements Map<String, Object>, BIResponse {
 
 	public static final String EMPTY = "";
@@ -254,6 +251,10 @@ public class RestResponse implements Map<String, Object>, BIResponse {
 	 */
 	public static RestResponse success(String message, String name, Object data) {
 		return new RestResponse().withSuccess(message).add(name, data);
+	}
+
+	public static RestResponse successWithoutMessage(Object data) {
+		return new RestResponse().add(DATA_KEY, data);
 	}
 
 	/**

@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigInteger;
 import java.util.*;
 
-/**
- * Created by jaloliddinbakirov on 5/25/17.
- */
 @Service
 public class FirmService extends GoalService{
     @Autowired

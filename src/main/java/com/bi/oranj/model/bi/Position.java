@@ -10,10 +10,6 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 
-/**
- * Created by jaloliddinbakirov on 6/9/17.
- */
-
 @Entity
 @Data
 @Table(name = "positions")

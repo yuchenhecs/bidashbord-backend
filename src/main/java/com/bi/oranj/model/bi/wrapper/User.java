@@ -6,10 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by jaloliddinbakirov on 5/24/17.
- * User is an abstract class extended by Client, Advisor, Firm classes
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class User {

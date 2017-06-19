@@ -10,17 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Created by harshavardhanpatil on 5/25/17.
- */
 @Api(basePath = "/oranj", description = "Operations with Oranj DB", produces = "application/json")
 @RestController
-@RequestMapping(value = "/oranj", produces=MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/bi/oranj", produces=MediaType.APPLICATION_JSON_VALUE)
 public class OranjController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     OranjService oranjService;
@@ -31,11 +32,26 @@ public class OranjController {
      * @param date
      * @return
      */
-    @ApiOperation(value = "Get Goals created for given date", notes = "date should be in 'yyyy-MM-dd' format")
+    @ApiOperation(value = "Save Goals created from Oranj DB to BI DB for given date", notes = "date should be in 'yyyy-MM-dd' format")
     @RequestMapping(path="/goals", method = RequestMethod.GET)
-    public RestResponse getGoalsByDate(@RequestParam(value = "date", required = true) String date, HttpServletResponse response) {
+    public RestResponse getGoalsByDate(@RequestParam(value = "date", required = true) String date) {
         log.info("Saving {} goals", date);
         return oranjService.getGoals(date);
+    }
+
+    @ApiOperation(value = "Save All Goals from Oranj DB To BI DB", notes = "Saves all the goals created till today")
+    @RequestMapping(path="/goals/migration", method = RequestMethod.GET)
+    public RestResponse getGoalsTillDate() {
+        String date = today().toString();
+        log.info("Fetching goals till {}", date);
+        return oranjService.getGoalsTillDate(date);
+    }
+
+    public Date today() {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 0);
+        log.info(cal.getTime().toString());
+        return cal.getTime();
     }
 
 
@@ -44,7 +60,6 @@ public class OranjController {
     public void buildData (HttpServletResponse response){
         log.info("Building initial data");
         try{
-//            oranjService.fetchAUMData();
             oranjService.fetchPositionsHistory(50);
             oranjService.fetchPositionsData();
         }catch (Exception ex){
@@ -52,6 +67,28 @@ public class OranjController {
             ex.printStackTrace();
         }
 
+    }
+
+    @ApiOperation(value = "Save All Firms from Oranj DB To BI DB", notes = "Saves all the firms created till today")
+    @RequestMapping(path="/firms", method = RequestMethod.GET)
+    public RestResponse getAllFirms() {
+        log.info("Fetching All Firms From Oranj DB");
+        return oranjService.getAllFirms();
+    }
+
+    @ApiOperation(value = "Save All Advisors from Oranj DB To BI DB", notes = "Saves all the advisors created till today")
+    @RequestMapping(path="/advisors", method = RequestMethod.GET)
+    public RestResponse getAllAdvisors() {
+        log.info("Fetching All Firms From Oranj DB");
+        return oranjService.getAllAdvisors();
+    }
+
+
+    @ApiOperation(value = "Save All Clients from Oranj DB To BI DB", notes = "Saves all the clients created till today")
+    @RequestMapping(path="/clients", method = RequestMethod.GET)
+    public RestResponse getAllClients() {
+        log.info("Fetching All Firms From Oranj DB");
+        return oranjService.getAllClients();
     }
 
 }

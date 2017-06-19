@@ -8,6 +8,9 @@ import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.GoalService;
 import com.bi.oranj.utils.DateValidator;
+import com.bi.oranj.model.bi.GoalSummary;
+import com.bi.oranj.service.bi.*;
+import com.bi.oranj.model.bi.wrapper.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -18,14 +21,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
-/**
- * Created by jaloliddinbakirov on 5/24/17.
- */
-@Api(basePath = "bi/v0/goals", description = "Operations with BI DB", produces = "application/json")
+@Api(basePath = "/bi/goals", description = "Operations with BI DB", produces = "application/json")
 @RestController
 @CrossOrigin
-@RequestMapping("bi/v0/goals")
+@RequestMapping("bi/goals")
 public class GoalController {
 
     private final Logger logger = LoggerFactory.getLogger(GoalController.class);
@@ -40,6 +42,9 @@ public class GoalController {
     ClientService clientService;
 
     @Autowired
+    GoalsService goalsService;
+
+    @Autowired
     DateValidator dateValidator;
 
     @ApiOperation(value = "Get Goals at Admin level", notes = "returns goals")
@@ -50,7 +55,7 @@ public class GoalController {
         return processRequest("firms", null, pageNum, request, response, startDate, endDate);
     }
 
-    @ApiOperation(value = "Get Goals at Firm level", notes = "returns goals")
+    @ApiOperation(value = "Get Goals for Firm", notes = "returns goals")
     @RequestMapping (value = "/advisors", method = RequestMethod.GET)
     public BIResponse getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "firmId", required = true) Long firmId,
@@ -59,7 +64,7 @@ public class GoalController {
         return processRequest("advisors", firmId, pageNum, request, response, startDate, endDate);
     }
 
-    @ApiOperation(value = "Get Goals at Advisor level", notes = "returns goals")
+    @ApiOperation(value = "Get Goals for Advisor", notes = "returns goals")
     @RequestMapping (value = "/clients", method = RequestMethod.GET)
     public BIResponse getClientGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "advisorId", required = true) Long advisorId,
@@ -178,5 +183,9 @@ public class GoalController {
         return null;
     }
 
-
+    @ApiOperation(value = "Get All Goals grouped by type", notes = "returns all goals grouped by type")
+    @RequestMapping (method = RequestMethod.GET)
+    public RestResponse getGoalsSummary () throws IOException {
+        return goalsService.getGoalsSummary();
+    }
 }

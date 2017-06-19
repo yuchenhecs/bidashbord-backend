@@ -8,9 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by jaloliddinbakirov on 5/30/17.
- */
 @JsonSerialize(using = UserSerializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Firm extends User{

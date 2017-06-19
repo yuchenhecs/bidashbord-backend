@@ -7,6 +7,8 @@ import com.bi.oranj.model.oranj.OranjClient;
 import com.bi.oranj.model.oranj.OranjGoal;
 import com.bi.oranj.model.oranj.OranjPositions;
 import com.bi.oranj.repository.bi.*;
+import com.bi.oranj.repository.oranj.OranjAUMRepository;
+import com.bi.oranj.repository.oranj.OranjGoalRepository;
 import com.bi.oranj.repository.oranj.*;
 import com.bi.oranj.utils.DateValidator;
 import org.slf4j.Logger;
@@ -24,11 +26,10 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 import java.util.*;
 
-/**
- * Created by harshavardhanpatil on 5/30/17.
- */
 @Service
 public class OranjService {
 
@@ -84,6 +85,10 @@ public class OranjService {
         savePositions(positionRows, dateFormat1);
     }
 
+    /**
+     *
+     * @param limitNum - is how many rows of history to fetch from ORANJ DB
+     */
     public void fetchPositionsHistory (long limitNum){
         DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
         List<Object[]> history = null;
@@ -167,51 +172,132 @@ public class OranjService {
         String startDate = date + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
         String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
         try{
-            saveResults(oranjGoalRepository.FindByCreationDate(startDate, endDate));
+            List<OranjGoal> oranjGoalList = oranjGoalRepository.FindByCreationDate(startDate, endDate);
+            storeGoals(oranjGoalList);
         }catch (Exception e){
-            log.error("Error in fecthing goals from Oranj." + e);
+            log.error("Error in fetching goals from Oranj." + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fecthing Goals from Oranj DB");
+            return RestResponse.error("Error in fetching Goals from Oranj DB");
         }
-        return RestResponse.success(date + " has been saved");
+        return RestResponse.success("Goals created on " + date + " have been saved");
     }
 
-    public void saveResults (List<OranjGoal> oranjGoalList) {
+    public RestResponse getGoalsTillDate(String date){
 
-        for (int i = 0; i < oranjGoalList.size(); i++) {
-
-            Firm firm = new Firm();
-            firm.setId(oranjGoalList.get(i).getFirmId());
-            firm.setFirmName(oranjGoalList.get(i).getFirmName());
-            firmRepository.save(firm);
-
-            Advisor advisor = new Advisor();
-            advisor.setId(oranjGoalList.get(i).getAdvisorId());
-            advisor.setAdvisorFirstName(oranjGoalList.get(i).getAdvisorFirstName());
-            advisor.setAdvisorLastName(oranjGoalList.get(i).getAdvisorLastName());
-            advisor.setFirmId(oranjGoalList.get(i).getFirmId());
-            advisorRepository.save(advisor);
-
-            Client client = new Client();
-            client.setId(oranjGoalList.get(i).getUser());
-            client.setClientFirstName(oranjGoalList.get(i).getUserLastName());
-            client.setClientLastName(oranjGoalList.get(i).getUserLastName());
-            client.setAdvisorId(oranjGoalList.get(i).getAdvisorId());
-            client.setFirmId(oranjGoalList.get(i).getFirmId());
-            clientRepository.save(client);
-
-            BiGoal biGoal = new BiGoal();
-            biGoal.setId(oranjGoalList.get(i).getId());
-            biGoal.setName(oranjGoalList.get(i).getName());
-            biGoal.setType(oranjGoalList.get(i).getType());
-            biGoal.setCreationDate(oranjGoalList.get(i).getCreationDate());
-            biGoal.setDeleted(oranjGoalList.get(i).isDeleted());
-            biGoal.setFirmId(oranjGoalList.get(i).getFirmId());
-            biGoal.setAdvisorId(oranjGoalList.get(i).getAdvisorId());
-            biGoal.setClientId(oranjGoalList.get(i).getUser());
-            goalRepository.save(biGoal);
-
+        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
+        try{
+            List<OranjGoal> oranjGoalList = oranjGoalRepository.FindGoalsTillDate(endDate);
+            storeGoals(oranjGoalList);
+        }catch (Exception e){
+            log.error("Error in fetching goals from Oranj." + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Error in fetching Goals from Oranj DB");
         }
+        return RestResponse.success("Goals created till " + date + " have been saved");
+    }
+
+    public void storeGoals(List<OranjGoal> oranjGoalList){
+        try{
+            for(int i=0; i<oranjGoalList.size(); i++){
+
+                Firm firm = new Firm();
+                firm.setId(oranjGoalList.get(i).getFirmId());
+                firm.setFirmName(oranjGoalList.get(i).getFirmName());
+                firmRepository.save(firm);
+
+                Advisor advisor = new Advisor();
+                advisor.setId(oranjGoalList.get(i).getAdvisorId());
+                advisor.setAdvisorFirstName(oranjGoalList.get(i).getAdvisorFirstName());
+                advisor.setAdvisorLastName(oranjGoalList.get(i).getAdvisorLastName());
+                advisor.setFirmId(oranjGoalList.get(i).getFirmId());
+                advisorRepository.save(advisor);
+
+                Client client = new Client();
+                client.setId(oranjGoalList.get(i).getUser());
+                client.setClientFirstName(oranjGoalList.get(i).getUserLastName());
+                client.setClientLastName(oranjGoalList.get(i).getUserLastName());
+                client.setAdvisorId(oranjGoalList.get(i).getAdvisorId());
+                client.setFirmId(oranjGoalList.get(i).getFirmId());
+                clientRepository.save(client);
+
+                BiGoal biGoal = new BiGoal();
+                biGoal.setId(oranjGoalList.get(i).getId());
+                biGoal.setName(oranjGoalList.get(i).getName());
+                biGoal.setType(oranjGoalList.get(i).getType());
+                biGoal.setGoalCreationDate(oranjGoalList.get(i).getCreationDate());
+                biGoal.setDeleted(oranjGoalList.get(i).isDeleted());
+                biGoal.setFirmId(oranjGoalList.get(i).getFirmId());
+                biGoal.setAdvisorId(oranjGoalList.get(i).getAdvisorId());
+                biGoal.setClientId(oranjGoalList.get(i).getUser());
+                goalRepository.save(biGoal);
+            }
+        }catch (Exception e){
+            log.error("Error in storing goals in BI DB" + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
+    public RestResponse getAllFirms(){
+        try{
+            List<Object[]> oranjFirmList = oranjGoalRepository.FindAllFirms();
+            for (Object[] firmResultSet : oranjFirmList) {
+                Firm firm = new Firm();
+                firm.setId(Long.parseLong(firmResultSet[0].toString()));
+                firm.setFirmName(firmResultSet[1].toString());
+                firmRepository.save(firm);
+            }
+        }catch (Exception e){
+            log.error("Error in fetching Firms from Oranj." + e);
+            return RestResponse.error("Error in fecthing Firms from Oranj DB");
+        }
+        return RestResponse.success("All Firms have been saved");
+    }
+
+    public RestResponse getAllAdvisors(){
+        try{
+            List<Object[]> oranjAdvisorsList = oranjGoalRepository.FindAllAdvisors();
+            for (Object[] advisorsResultSet : oranjAdvisorsList) {
+                Advisor advisor = new Advisor();
+                advisor.setId(Long.parseLong(advisorsResultSet[0].toString()));
+                advisor.setAdvisorFirstName(advisorsResultSet[1].toString());
+                advisor.setAdvisorLastName(advisorsResultSet[2].toString());
+                advisor.setFirmId(Long.parseLong(advisorsResultSet[3].toString()));
+                advisorRepository.save(advisor);
+            }
+        }catch (Exception e){
+            log.error("Error in fetching Advisors from Oranj." + e);
+            return RestResponse.error("Error in fecthing Advisors from Oranj DB");
+        }
+        return RestResponse.success("All Advisors have been saved");
+    }
+
+    public RestResponse getAllClients(){
+        try{
+            List<Object[]> oranjClientsList = oranjGoalRepository.FindAllClients();
+            for (Object[] clientsResultSet : oranjClientsList) {
+                Client client = new Client();
+                client.setId(Long.parseLong(clientsResultSet[0].toString()));
+                client.setClientFirstName(clientsResultSet[1].toString());
+                client.setClientLastName(clientsResultSet[2].toString());
+                client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
+                client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
+                clientRepository.save(client);
+            }
+            List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.FindAllClientsWhoAreAdvisors();
+            for (Object[] clientsResultSet : oranjClientsWhoAreAdvisorsList) {
+                Client client = new Client();
+                client.setId(Long.parseLong(clientsResultSet[0].toString()));
+                client.setClientFirstName(clientsResultSet[1].toString());
+                client.setClientLastName(clientsResultSet[2].toString());
+                client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
+                client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
+                clientRepository.save(client);
+            }
+        }catch (Exception e){
+            log.error("Error in fetching Clients from Oranj." + e);
+            return RestResponse.error("Error in fecthing Clients from Oranj DB");
+        }
+        return RestResponse.success("All Clients have been saved");
     }
 
     private String getRandomAssetClass (){

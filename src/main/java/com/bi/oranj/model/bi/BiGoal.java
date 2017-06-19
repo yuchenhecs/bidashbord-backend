@@ -1,14 +1,11 @@
 package com.bi.oranj.model.bi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.*;
-
-/**
- * Created by harshavardhanpatil on 5/24/17.
- */
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Model class bi_goal table
@@ -38,8 +35,14 @@ public class BiGoal {
 
     private boolean deleted;
 
-    @Column(name = "creation_date")
-    private String creationDate;
+    @Column(name = "goal_creation_date")
+    private Timestamp goalCreationDate;
+
+    @Column(name = "inserted_on")
+    private Timestamp insertedOn = new Timestamp((new Date()).getTime());
+
+    @Column(name = "last_updated_on")
+    private Timestamp updatedOn = new Timestamp((new Date()).getTime());
 
     public BiGoal(){
         // For JPA to use

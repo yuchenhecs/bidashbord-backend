@@ -18,12 +18,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 import java.util.HashMap;
 
-/**
- * Created by harshavardhanpatil on 5/25/17.
- */
 @Configuration
 @PropertySource({ "classpath:application.properties" })
-@EnableJpaRepositories(basePackages = "com.bi.oranj.com.bi.oranj.repository.bi",
+@EnableJpaRepositories(basePackages = "com.bi.oranj.repository.bi",
         entityManagerFactoryRef = "biEntityManager",
         transactionManagerRef = "biTransactionManager")
 public class BiConfig {

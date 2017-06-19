@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `positions`;
 CREATE TABLE `positions` (
-  `id` bigint(20) AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `position_id` bigint(20) NOT NULL,
   `portfolio_id` bigint(20) DEFAULT NULL,
   `client_id` bigint(20) DEFAULT NULL,
