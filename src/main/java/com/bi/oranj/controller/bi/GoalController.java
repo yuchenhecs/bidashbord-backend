@@ -1,7 +1,7 @@
-package com.bi.oranj.bi;
+package com.bi.oranj.controller.bi;
 
-import com.bi.oranj.bi.resp.BIResponse;
-import com.bi.oranj.bi.resp.RestResponse;
+import com.bi.oranj.controller.bi.resp.BIResponse;
+import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.GoalResponse;
 import com.bi.oranj.service.bi.AdvisorService;
 import com.bi.oranj.service.bi.ClientService;
