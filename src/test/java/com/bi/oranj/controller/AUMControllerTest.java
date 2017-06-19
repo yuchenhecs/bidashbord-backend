@@ -196,6 +196,4 @@ public class AUMControllerTest {
         aumDiff.setAssetClass(assetClass);
         return aumDiff;
     }
-
-
 }
