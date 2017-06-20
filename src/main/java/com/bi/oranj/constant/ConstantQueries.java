@@ -2,17 +2,21 @@ package com.bi.oranj.constant;
 
 public class ConstantQueries {
 
-    public static final String GET_ALL_FIRMS_QUERY = "select id, name from firm";
+    public static final String GET_ALL_FIRMS_QUERY = "select id, name, created_on, active from firm";
 
-    public static final String GET_ALL_ADVISORS_QUERY = "select ad.id, ad.first_name as advisorFirstName, ad.last_name as advisorLastName, ad.firm_id from advisor ad";
+//    public static final String GET_ALL_ADVISORS_QUERY = "select ad.id, ad.first_name as advisorFirstName, ad.last_name as advisorLastName, ad.firm_id from advisor ad";
+    public static final String GET_ALL_ADVISORS_QUERY = "select ad.id, ad.first_name as advisorFirstName, ad.last_name as advisorLastName, ad.firm_id, a.created, ad.active\n" +
+                                                        "from advisor ad\n" +
+                                                        "join auth_user a\n" +
+                                                        "ON ad.advisor_user_id = a.id";
 
-    public static final String GET_ALL_CLIENTS_QUERY = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, a.advisor_id as advisorId, a.firm_id as firmId from auth_user a where advisor_id is not null";
+    public static final String GET_ALL_CLIENTS_QUERY = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, a.advisor_id as advisorId, a.firm_id as firmId, a.created, a.active from auth_user a where advisor_id is not null";
 
-    public static final String GET_ALL_CLIENTS_WHO_ARE_ADVISORS_QUERY = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, ad.id as advisorId, a.firm_id as firmId \n" +
+    public static final String GET_ALL_CLIENTS_WHO_ARE_ADVISORS_QUERY = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, ad.id as advisorId, a.firm_id as firmId, a.created, a.active\n" +
                                                                         "from auth_user a \n" +
                                                                             "\tjoin advisor ad\n" +
                                                                                 "\tON ad.advisor_user_id = a.id\n" +
-                                                                        "where a.advisor_id is null;";
+                                                                        "where a.advisor_id is null";
 
     public static final String GET_ALL_ADVISORS_AND_THEIR_CLIENTS = "select a.id, a.advisor_first_name, a.advisor_last_name, a.firm_id, c.id as client_id\n" +
             "from advisors a\n" +

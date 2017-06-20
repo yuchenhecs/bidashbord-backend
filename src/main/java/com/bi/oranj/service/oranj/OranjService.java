@@ -244,6 +244,8 @@ public class OranjService {
                 Firm firm = new Firm();
                 firm.setId(Long.parseLong(firmResultSet[0].toString()));
                 firm.setFirmName(firmResultSet[1].toString());
+                firm.setCreatedOn((Timestamp) firmResultSet[2]);
+                firm.setActive((Boolean) firmResultSet[3]);
                 firmRepository.save(firm);
             }
         }catch (Exception e){
@@ -262,6 +264,8 @@ public class OranjService {
                 advisor.setAdvisorFirstName(advisorsResultSet[1].toString());
                 advisor.setAdvisorLastName(advisorsResultSet[2].toString());
                 advisor.setFirmId(Long.parseLong(advisorsResultSet[3].toString()));
+                advisor.setCreatedOn((Timestamp) advisorsResultSet[4]);
+                advisor.setActive((Boolean) advisorsResultSet[5]);
                 advisorRepository.save(advisor);
             }
         }catch (Exception e){
@@ -281,6 +285,8 @@ public class OranjService {
                 client.setClientLastName(clientsResultSet[2].toString());
                 client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
                 client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
+                client.setCreatedOn((Timestamp) clientsResultSet[5]);
+                client.setActive((Boolean) clientsResultSet[6]);
                 clientRepository.save(client);
             }
             List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.FindAllClientsWhoAreAdvisors();
@@ -291,6 +297,8 @@ public class OranjService {
                 client.setClientLastName(clientsResultSet[2].toString());
                 client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
                 client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
+                client.setCreatedOn((Timestamp) clientsResultSet[5]);
+                client.setActive((Boolean) clientsResultSet[6]);
                 clientRepository.save(client);
             }
         }catch (Exception e){
