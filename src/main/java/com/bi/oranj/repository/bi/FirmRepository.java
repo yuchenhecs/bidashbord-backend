@@ -1,6 +1,9 @@
 package com.bi.oranj.repository.bi;
 
+import com.bi.oranj.model.bi.Advisor;
 import com.bi.oranj.model.bi.Firm;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -96,4 +99,6 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
     public List<Object[]> findGoalsWithStartDate (@Param(value = "startDate") String startDate,
                                                   @Param("start") int start,
                                                   @Param("next") int next);
+
+    public Page<Firm> findByActiveTrue(Pageable pageable);
 }

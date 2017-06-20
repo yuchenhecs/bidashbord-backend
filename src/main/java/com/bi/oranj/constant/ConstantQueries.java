@@ -65,12 +65,12 @@ public class ConstantQueries {
     public static final String GET_AUM_FOR_FIRM_QUERY = "select p.client_id as clientId, c.client_first_name, c.client_last_name, p.asset_class, sum(p.amount) as positionAmount, p.position_updated_on, f.id\n" +
             "from positions p\n" +
             "join clients c\n" +
-            "\tON c.id = p.client_id\n" +
+            "ON c.id = p.client_id\n" +
             "join firms f\n" +
-            "\tON f.id = c.firm_id\n" +
-            "where f.id = :firm and p.position_updated_on >= :start and p.position_updated_on <= :end\n" +
+            "ON f.id = c.firm_id\n" +
+            "where f.id = :firm and date(p.position_updated_on) IN (:date) and c.active = 1\n" +
             "group by p.asset_class, p.position_updated_on, p.client_id\n" +
-            "order by p.asset_class;\n";
+            "order by p.asset_class";
 
     public static final String GET_AUM_FOR_ADVISOR_QUERY = "select p.client_id as clientId, c.client_first_name, c.client_last_name, p.asset_class, sum(p.amount) as positionAmount, p.position_updated_on, ad.id\n" +
             "from positions p\n" +
@@ -78,7 +78,7 @@ public class ConstantQueries {
             "\tON c.id = p.client_id\n" +
             "join advisors ad\n" +
             "\tON ad.id = c.advisor_id\n" +
-            "where ad.id = :advisor and p.position_updated_on >= :start and p.position_updated_on <= :end\n" +
+            "where ad.id = :advisor and date(p.position_updated_on) IN (:date)\n" +
             "group by p.asset_class, p.position_updated_on, p.client_id\n" +
             "order by p.asset_class;\n";
 
@@ -88,13 +88,13 @@ public class ConstantQueries {
             "\tON c.id = p.client_id\n" +
             "join advisors ad\n" +
             "\tON ad.id = c.advisor_id\n" +
-            "where p.client_id = :client and p.position_updated_on >= :start and p.position_updated_on <= :end\n" +
+            "where p.client_id = :client and date(p.position_updated_on) IN (:date)\n" +
             "group by p.asset_class\n" +
             "order by p.asset_class\n";
 
     public static final String GET_AUM_SUMMARY_QUERY = "select p.asset_class, sum(p.amount) as sum\n" +
             "from positions p\n" +
-            "where p.position_updated_on >= :start and p.position_updated_on <= :end\n" +
+            "where date(p.position_updated_on) IN (:date)\n" +
             "group by p.asset_class";
 
 }
