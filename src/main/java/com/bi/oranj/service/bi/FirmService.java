@@ -78,7 +78,7 @@ public class FirmService extends GoalService{
         int totalPages = totalPagesByDateBetween(userId, startDate, endDate);
         if (pageNum > totalPages) return null;
 
-        Collection<Firm> firms = findGoalsByDate(startDate, endDate, totalPages());
+        Collection<Firm> firms = findGoalsByDateBetween(startDate, endDate, totalPages());
         int totalFirms = firmRepository.findDistinctFirmsByDateBetween(startDate, endDate);
         int totalGoals = goalRepository.totalGoalsByDateBetween(startDate, endDate);
         GoalResponse goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
@@ -92,7 +92,7 @@ public class FirmService extends GoalService{
         return procesObjectArrays(firms);
     }
 
-    private Collection<Firm> findGoalsByDate (String startDate, String endDate, int pageNum){
+    private Collection<Firm> findGoalsByDateBetween (String startDate, String endDate, int pageNum){
         List<Object[]> goalObjects = firmRepository.findGoalsByDateBetween(startDate, endDate, pageNum * pageSize, pageSize);
         return procesObjectArrays(goalObjects);
     }
