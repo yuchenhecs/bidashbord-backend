@@ -52,7 +52,7 @@ public class GoalController {
     public BIResponse getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "startDate", required = false) String startDate,
                                     @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
-        return processRequest("firms", null, pageNum, request, response, startDate, endDate);
+        return processRequest("firms", null, pageNum, response, startDate, endDate);
     }
 
     @ApiOperation(value = "Get Goals for Firm", notes = "returns goals")
@@ -61,7 +61,7 @@ public class GoalController {
                                 HttpServletResponse response, @RequestParam (value = "firmId", required = true) Long firmId,
                                        @RequestParam (value = "startDate", required = false) String startDate,
                                        @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
-        return processRequest("advisors", firmId, pageNum, request, response, startDate, endDate);
+        return processRequest("advisors", firmId, pageNum, response, startDate, endDate);
     }
 
     @ApiOperation(value = "Get Goals for Advisor", notes = "returns goals")
@@ -70,11 +70,11 @@ public class GoalController {
                                 HttpServletResponse response, @RequestParam (value = "advisorId", required = true) Long advisorId,
                                       @RequestParam (value = "startDate", required = false) String startDate,
                                       @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
-        return processRequest("clients", advisorId, pageNum, request, response, startDate, endDate);
+        return processRequest("clients", advisorId, pageNum, response, startDate, endDate);
     }
 
 
-    private BIResponse processRequest (String userType, Long userId, Integer pageNum, HttpServletRequest request,
+    private BIResponse processRequest (String userType, Long userId, Integer pageNum,
                                        HttpServletResponse response, String startDate, String endDate) throws IOException {
         GoalService goalService = getService(userType);
 
@@ -115,7 +115,6 @@ public class GoalController {
         try{
             goals = goalService.buildResponseByDateBetween(startDate, endDate, pageNum, userId, response);
         }catch (Exception ex){
-            logger.error("Error while building response for firms: " + ex);
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
             return null;
@@ -129,7 +128,6 @@ public class GoalController {
         try{
             goals = goalService.buildResponseWithEndDate(endDate, pageNum, userId, response);
         }catch (Exception ex){
-            logger.error("Error while building response for firms: " + ex);
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
             return null;
@@ -143,7 +141,6 @@ public class GoalController {
         try{
             goals = goalService.buildResponseWithStartDate(startDate, pageNum, userId, response);
         }catch (Exception ex){
-            logger.error("Error while building response for firms: " + ex);
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
             return null;
@@ -158,7 +155,6 @@ public class GoalController {
         try{
             goals = goalService.buildResponse(pageNum, userId, response);
         }catch (Exception ex){
-            logger.error("Error while building response for firms: " + ex);
             ex.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
             return null;
@@ -167,7 +163,10 @@ public class GoalController {
     }
 
     /**
-     * returns GoalService based on what userType was passed
+     * returns GoalService based on userType
+     *
+     * NOTE: API considers firms, advisors, clients as users
+     *
      * @param userType
      * @return
      */

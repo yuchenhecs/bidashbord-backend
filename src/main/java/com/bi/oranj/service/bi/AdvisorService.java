@@ -17,6 +17,7 @@ import java.util.*;
 
 /**
  * Created by jaloliddinbakirov on 5/24/17.
+ * This service is responsible for advisor related logic
  */
 @Service
 public class AdvisorService extends GoalService{
@@ -30,11 +31,25 @@ public class AdvisorService extends GoalService{
     @Value("${page.size}")
     private Integer pageSize;
 
+    /**
+     * returns the number of pages available in database
+     * @param firmId
+     * @return
+     */
     @Override
     public int totalPages (long firmId){
         return (int) Math.ceil(advisorRepository.findDistinctByFirm(firmId) * 1d / pageSize) - 1;
     }
 
+
+    /**
+     * GoalResponse is nothing but JSON Template
+     * returns ready GoalResponse object to be send to the end user
+     * @param pageNum
+     * @param firmId
+     * @param response
+     * @return
+     */
     @Override
     public GoalResponse buildResponse(int pageNum, long firmId, HttpServletResponse response) {
         int totalPages = totalPages(firmId);
@@ -49,6 +64,16 @@ public class AdvisorService extends GoalService{
         return goals;
     }
 
+    /**
+     * GoalResponse is nothing but JSON Template
+     * returns ready GoalResponse object to be send to the end user
+     * for request with start date
+     * @param startDate
+     * @param pageNum
+     * @param firmId
+     * @param response
+     * @return
+     */
     @Override
     public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long firmId, HttpServletResponse response){
         int totalPages = totalPagesWithStartDate(firmId, startDate);
@@ -63,6 +88,17 @@ public class AdvisorService extends GoalService{
         return goals;
     }
 
+
+    /**
+     * GoalResponse is nothing but JSON Template
+     * returns ready GoalResponse object to be send to the end user
+     * for request with end date
+     * @param endDate
+     * @param pageNum
+     * @param firmId
+     * @param response
+     * @return
+     */
     @Override
     public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long firmId, HttpServletResponse response){
         int totalPages = totalPagesWithEndDate(firmId, endDate);
@@ -77,6 +113,17 @@ public class AdvisorService extends GoalService{
         return goals;
     }
 
+    /**
+     * GoalResponse is nothing but JSON Template
+     * returns ready GoalResponse object to be send to the end user
+     * for request with start and date date
+     * @param startDate
+     * @param endDate
+     * @param pageNum
+     * @param firmId
+     * @param response
+     * @return
+     */
     @Override
     public GoalResponse buildResponseByDateBetween (String startDate, String endDate, int pageNum, long firmId, HttpServletResponse response){
         int totalPages = totalPagesByDateBetween(firmId, startDate, endDate);
@@ -91,27 +138,64 @@ public class AdvisorService extends GoalService{
         return goals;
     }
 
-
+    /**
+     * returns appropriate data from repository
+     *
+     * @param firmId
+     * @param pageNum
+     * @return
+     */
     private Collection<Advisor> findGoals (long firmId, int pageNum){
         List<Object[]> goalObjects = advisorRepository.findGoalsOrdered(firmId, pageNum * pageSize, pageSize);
         return processObjectArrays(goalObjects);
     }
 
+    /**
+     * returns appropriate data from repository
+     * @param firmId
+     * @param startDate
+     * @param endDate
+     * @param pageNum
+     * @return
+     */
     private Collection<Advisor> findGoalsByDate (long firmId, String startDate, String endDate, int pageNum){
         List<Object[]> goalObjects = advisorRepository.findGoalsByDateBetween(firmId, startDate, endDate, pageNum * pageSize, pageSize);
         return processObjectArrays(goalObjects);
     }
 
+    /**
+     * returns appropriate data from repository
+     * @param firmId
+     * @param startDate
+     * @param pageNum
+     * @return
+     */
     private Collection<Advisor> findGoalsWithStartDate (long firmId, String startDate, int pageNum){
         List<Object[]> goalObjects = advisorRepository.findGoalsWithStartDate(firmId, startDate, pageNum * pageSize, pageSize);
         return processObjectArrays(goalObjects);
     }
 
+    /**
+     * returns appropriate data from repository
+     * @param firmId
+     * @param endDate
+     * @param pageNum
+     * @return
+     */
     private Collection<Advisor> findGoalsWithEndDate (long firmId, String endDate, int pageNum){
         List<Object[]> goalObjects = advisorRepository.findGoalsWithEndDate(firmId, endDate, pageNum * pageSize, pageSize);
         return processObjectArrays(goalObjects);
     }
 
+
+    /**
+     * builds GoalResponse by putting missing parameters for final JSON
+     * @param advisors
+     * @param pageNum
+     * @param totalAdvisors
+     * @param totalGoals
+     * @return
+     */
     private GoalResponse processGoalresponse (Collection<Advisor> advisors, int pageNum, int totalAdvisors, int totalGoals){
         if (advisors == null || advisors.isEmpty())
             return null;
@@ -126,6 +210,11 @@ public class AdvisorService extends GoalService{
         return goalResponse;
     }
 
+    /**
+     * maps columns to object fields
+     * @param goalObjects
+     * @return
+     */
     private Collection<Advisor> processObjectArrays (List<Object[]> goalObjects){
         Map<Integer, Advisor> linkedHashMap = new LinkedHashMap<>();
 
@@ -139,10 +228,8 @@ public class AdvisorService extends GoalService{
             if (goal[3] == null) type = null;
             else type = ((String) goal[3]).trim().toLowerCase();
 
-
             if (linkedHashMap.containsKey(advisorId)){
                 Advisor advisor = linkedHashMap.get(advisorId);
-
                 HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
                 if (goalList.containsKey(type)){
@@ -152,36 +239,53 @@ public class AdvisorService extends GoalService{
                 }
                 advisor.setGoals(goalList);
                 advisor.setTotal(count);
-
             } else {
-
                 if (type == null){
                     linkedHashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, Collections.emptyMap(), count));
                     continue;
                 }
-
                 HashMap<String, Integer> goalList = new HashMap<>();
                 goalList.put(type, count);
 
                 linkedHashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, goalList, count));
             }
         }
-
-
         return linkedHashMap.values();
     }
 
 
+    /**
+     * returns the number of pages
+     * for requests with start date
+     * @param firmId
+     * @param startDate
+     * @return
+     */
     @Override
     public int totalPagesWithStartDate (long firmId, String startDate) {
         return (int) Math.ceil(advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId) * 1d / pageSize) - 1;
     }
 
+    /**
+     * returns the number of pages
+     * for requests with end date
+     * @param firmId
+     * @param endDate
+     * @return
+     */
     @Override
     public int totalPagesWithEndDate (long firmId, String endDate) {
         return (int) Math.ceil(advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId) * 1d / pageSize) - 1;
     }
 
+    /**
+     * returns the number of pages
+     * for requests with end date
+     * @param firmId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     @Override
     public int totalPagesByDateBetween (long firmId, String startDate, String endDate) {
         return (int) Math.ceil(advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId) * 1d / pageSize) - 1;

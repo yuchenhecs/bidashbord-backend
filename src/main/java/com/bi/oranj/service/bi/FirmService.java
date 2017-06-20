@@ -25,11 +25,6 @@ public class FirmService extends GoalService{
     private Integer pageSize;
 
 
-    @Override
-    public int totalPages(long userId) {
-        return totalPages();
-    }
-
 
     @Override
     public GoalResponse buildResponse(int pageNum, long userId, HttpServletResponse response) {
@@ -89,25 +84,25 @@ public class FirmService extends GoalService{
 
     private Collection<Firm> findGoals (int pageNum){
         List<Object[]> firms = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
-        return procesObjectArrays(firms);
+        return processObjectArrays(firms);
     }
 
     private Collection<Firm> findGoalsByDateBetween (String startDate, String endDate, int pageNum){
         List<Object[]> goalObjects = firmRepository.findGoalsByDateBetween(startDate, endDate, pageNum * pageSize, pageSize);
-        return procesObjectArrays(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Firm> findGoalsWithStartDate (String startDate, int pageNum){
         List<Object[]> goalObjects = firmRepository.findGoalsWithStartDate(startDate, pageNum * pageSize, pageSize);
-        return procesObjectArrays(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Firm> findGoalsWithEndDate (String endDate, int pageNum){
         List<Object[]> goalObjects = firmRepository.findGoalsWithEndDate(endDate, pageNum * pageSize, pageSize);
-        return procesObjectArrays(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
-    private Collection<Firm> procesObjectArrays (List<Object[]> goalObjects){
+    private Collection<Firm> processObjectArrays (List<Object[]> goalObjects){
         Map<Integer, Firm> linkedHashMap = new LinkedHashMap<>();
 
         for (Object[] goal : goalObjects){
@@ -161,11 +156,10 @@ public class FirmService extends GoalService{
         return goalResponse;
     }
 
-    private int totalPages (){
+    public int totalPages (){
         return (int) Math.ceil( firmRepository.findDistinctFromFirm() * 1d / pageSize) - 1;
     }
 
-    @Override
     public int totalPagesWithStartDate (long userId, String startDate) {
         return (int) Math.ceil(firmRepository.findDistinctFirmsWithStartDate(startDate) * 1d / pageSize) - 1;
     }
