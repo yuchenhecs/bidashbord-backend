@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS `firms`;
 CREATE TABLE `firms` (
   `id` bigint(20) NOT NULL,
   `firm_name` varchar(255) DEFAULT NULL,
+  `firm_created_on` datetime DEFAULT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -12,6 +14,8 @@ CREATE TABLE `advisors` (
   `advisor_first_name` varchar(255) DEFAULT NULL,
   `advisor_last_name` varchar(255) DEFAULT NULL,
   `firm_id` bigint(20) DEFAULT NULL,
+  `advisor_created_on` datetime DEFAULT '2010-01-01 00:00:00',
+  `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`firm_id`) REFERENCES firms(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -24,6 +28,8 @@ CREATE TABLE `clients` (
   `client_last_name` varchar(255) DEFAULT NULL,
   `firm_id` bigint(20) DEFAULT NULL,
   `advisor_id` bigint(20) DEFAULT NULL,
+  `client_created_on` datetime DEFAULT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`advisor_id`) REFERENCES advisors(`id`),
   FOREIGN KEY (`firm_id`) REFERENCES firms(`id`)

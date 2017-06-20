@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -17,6 +18,12 @@ public class Firm {
 
     @Column(name = "firm_name")
     private String firmName;
+
+    @Column(name = "firm_created_on")
+    private Timestamp createdOn;
+
+    @Column(name = "active")
+    private boolean active;
 
     public Firm(){
     }

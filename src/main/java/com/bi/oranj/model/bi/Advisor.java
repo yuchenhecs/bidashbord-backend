@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -26,6 +27,11 @@ public class Advisor {
 
     @Column(name = "firm_id")
     private Long firmId;
+
+    @Column(name = "advisor_created_on")
+    private Timestamp createdOn;
+
+    private boolean active;
 
     public Advisor(){
     }
