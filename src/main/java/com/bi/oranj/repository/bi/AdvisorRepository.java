@@ -120,6 +120,7 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long> {
                                                   @Param("start") int start,
                                                   @Param("next") int next);
 
-    public Page<Advisor> findByFirmId(Long firmId, Pageable pageable);
+//    public Page<Advisor> findByFirmId(Long firmId, Pageable pageable);
+    public Page<Advisor> findByFirmIdAndActiveTrue(Long firmId, Pageable pageable);
 
 }

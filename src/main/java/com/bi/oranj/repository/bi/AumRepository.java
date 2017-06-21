@@ -14,14 +14,14 @@ import static com.bi.oranj.constant.ConstantQueries.GET_AUM_SUMMARY_QUERY;
 public interface AumRepository extends JpaRepository<Position, Long> {
 
     @Query(value = GET_AUM_FOR_CLIENT_QUERY, nativeQuery = true)
-    public List<Object[]> findAUMsForClient(@Param("client") Long client, @Param("start") String start, @Param("end") String end);
+    public List<Object[]> findAUMsForClient(@Param("client") Long client, @Param("date") String date);
 
     @Query(value = ConstantQueries.GET_AUM_FOR_ADVISOR_QUERY, nativeQuery = true)
-    public List<Object[]> findAUMsForAdvisor(@Param("advisor") Long advisor, @Param("start") String start, @Param("end") String end);
+    public List<Object[]> findAUMsForAdvisor(@Param("advisor") Long advisor, @Param("date") String date);
 
     @Query(value = ConstantQueries.GET_AUM_FOR_FIRM_QUERY, nativeQuery = true)
-    public List<Object[]> findAUMsForFirm(@Param("firm") Long firm, @Param("start") String start, @Param("end") String end);
+    public List<Object[]> findAUMsForFirm(@Param("firm") Long firm, @Param("date") String date);
 
     @Query(value = GET_AUM_SUMMARY_QUERY, nativeQuery = true)
-    public List<Object[]> findAUMsSummary(@Param("start") String start, @Param("end") String end);
+    public List<Object[]> findAUMsSummary(@Param("date") String date);
 }

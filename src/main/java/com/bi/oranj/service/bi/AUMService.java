@@ -22,9 +22,7 @@ import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.*;
 
-import static com.bi.oranj.constant.Constants.START_DAY;
-import static com.bi.oranj.constant.Constants.START_MONTH;
-import static com.bi.oranj.constant.Constants.START_YEAR;
+import static com.bi.oranj.constant.Constants.*;
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 
 @Service
@@ -50,18 +48,18 @@ public class AUMService {
 
         boolean validDate = validateInputDate(previousDate, currentDate);
         if (validDate == false) {
-            return RestResponse.error("Date should be in 'yyyy-MM-dd' format");
+            return RestResponse.error(DATE_VALIDATION_ERROR);
         }
 
         boolean validPageNumber = validateInputPageNumber(pageNumber);
         if(validPageNumber == false){
-            return RestResponse.error("Page number should be a positive integer");
+            return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
         }
 
         try {
             AUMForAdmin aumForAdmin = new AUMForAdmin();
             List<FirmAUM> firmAUMList = new ArrayList<>();
-            Page<Firm> firmList = firmRepository.findAll(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
+            Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
             for (int i=0; i<firmList.getContent().size(); i++){
 
                 FirmAUM firmAUM = new FirmAUM();
@@ -88,18 +86,18 @@ public class AUMService {
 
         boolean validDate = validateInputDate(previousDate, currentDate);
         if (validDate == false) {
-            return RestResponse.error("Date should be in 'yyyy-MM-dd' format");
+            return RestResponse.error(DATE_VALIDATION_ERROR);
         }
 
         boolean validPageNumber = validateInputPageNumber(pageNumber);
         if(validPageNumber == false){
-            return RestResponse.error("Page number should be a positive integer");
+            return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
         }
 
         try {
             AUMForFirm aumForFirm = new AUMForFirm();
             List<AdvisorAUM> advisorAUMList = new ArrayList<>();
-            Page<Advisor> advisorList = advisorRepository.findByFirmId(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
+            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
             for (int i=0; i<advisorList.getContent().size(); i++){
 
                 AdvisorAUM advisorAUM = new AdvisorAUM();
@@ -126,18 +124,18 @@ public class AUMService {
 
         boolean validDate = validateInputDate(previousDate, currentDate);
         if (validDate == false){
-            return RestResponse.error("Date should be in 'yyyy-MM-dd' format");
+            return RestResponse.error(DATE_VALIDATION_ERROR);
         }
 
         boolean validPageNumber = validateInputPageNumber(pageNumber);
         if(validPageNumber == false){
-            return RestResponse.error("Page number should be a positive integer");
+            return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
         }
 
         try {
             AUMForAdvisor aumForAdvisor = new AUMForAdvisor();
             List<ClientAUM> clientAUMList = new ArrayList<>();
-            Page<Client> clientList = clientRepository.findByAdvisorId(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
+            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
             for (int i=0; i<clientList.getContent().size(); i++){
 
                 ClientAUM clientAUM = new ClientAUM();
@@ -162,9 +160,6 @@ public class AUMService {
 
     public AumDiff getAUM(Long id, String date, String aumFor){
 
-        String startDate = date + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
-        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
-
         AumDiff aumDiff = new AumDiff();
         aumDiff.setDate(date);
         Map<String, BigDecimal> assetClass = new HashMap<>();
@@ -173,13 +168,13 @@ public class AUMService {
 
         switch (aumFor){
             case "client":
-                positionsResultSet = aumRepository.findAUMsForClient(id, startDate, endDate);
+                positionsResultSet = aumRepository.findAUMsForClient(id, date);
                 break;
             case "advisor":
-                positionsResultSet = aumRepository.findAUMsForAdvisor(id, startDate, endDate);
+                positionsResultSet = aumRepository.findAUMsForAdvisor(id, date);
                 break;
             case "firm":
-                positionsResultSet = aumRepository.findAUMsForFirm(id, startDate, endDate);
+                positionsResultSet = aumRepository.findAUMsForFirm(id, date);
                 break;
             default:
                 break;
@@ -199,10 +194,8 @@ public class AUMService {
             List<AumDiff> aumDiffList = new ArrayList<AumDiff>();
             List<String> dateList = getQuarterFirstDates();
             for (int i=0; i<dateList.size(); i++){
-                String startDate = dateList.get(i) + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
-                String endDate = dateList.get(i) + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
 
-                List<Object[]> aumSummaryResultSet = aumRepository.findAUMsSummary(startDate, endDate);
+                List<Object[]> aumSummaryResultSet = aumRepository.findAUMsSummary(dateList.get(i));
 
                 AumDiff aumDiff = new AumDiff();
                 aumDiff.setDate(dateList.get(i));
@@ -231,7 +224,7 @@ public class AUMService {
             Date previous = sdf.parse(previousDate);
             Date current = sdf.parse(currentDate);
         } catch (Exception e){
-            log.error("Date should be in 'yyyy-MM-dd' format");
+            log.error(DATE_VALIDATION_ERROR);
             return false;
         }
         return true;
