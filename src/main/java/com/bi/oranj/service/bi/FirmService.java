@@ -89,25 +89,25 @@ public class FirmService extends GoalService{
 
     private Collection<Firm> findGoals (int pageNum){
         List<Object[]> firms = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
-        return procesObjectArrays(firms);
+        return processObjectArrays(firms);
     }
 
     private Collection<Firm> findGoalsByDate (String startDate, String endDate, int pageNum){
         List<Object[]> goalObjects = firmRepository.findGoalsByDateBetween(startDate, endDate, pageNum * pageSize, pageSize);
-        return procesObjectArrays(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Firm> findGoalsWithStartDate (String startDate, int pageNum){
         List<Object[]> goalObjects = firmRepository.findGoalsWithStartDate(startDate, pageNum * pageSize, pageSize);
-        return procesObjectArrays(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Firm> findGoalsWithEndDate (String endDate, int pageNum){
         List<Object[]> goalObjects = firmRepository.findGoalsWithEndDate(endDate, pageNum * pageSize, pageSize);
-        return procesObjectArrays(goalObjects);
+        return processObjectArrays(goalObjects);
     }
 
-    private Collection<Firm> procesObjectArrays (List<Object[]> goalObjects){
+    private Collection<Firm> processObjectArrays (List<Object[]> goalObjects){
         Map<Integer, Firm> linkedHashMap = new LinkedHashMap<>();
 
         for (Object[] goal : goalObjects){
