@@ -4,51 +4,40 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * Model class user_goal table
+ * Model class networth_history table
  */
 @Entity
 @Data
-@Table(name = "user_goal")
+@Table(name = "networth_history")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OranjGoal {
+public class OranjNetWorth {
 
     @Id
-    @GeneratedValue
-    private long id;
+    @Column(name = "id")
+    private BigInteger id;
 
-    @NotNull
-    private String name;
-    private String priority;
-    private String type;
+    @Column(name = "date")
+    private Timestamp date;
 
-    @Column(name = "user_id", nullable = true)
-    private Long user;
+    @Column(name = "value")
+    private double value;
 
-    @Column(name = "creation_date", nullable = true)
-    private Timestamp creationDate;
+    @Column(name = "user_id")
+    private BigInteger userId;
 
-    @Column(name = "created_by_id", nullable = true)
-    private Long createdById;
+    @Column(name = "asset_value")
+    private double assetValue;
 
-    @Column(name = "last_update", nullable = true)
-    private String lastUpdate;
+    @Column(name = "liability_value")
+    private double liabilityValue;
 
-    @Column(name = "updated_by_id", nullable = true)
-    private Long updatedById;
-
-    private boolean deleted;
-    private String userLastName;
-    private Long firmId;
-    private String firmName;
-    private Long advisorId;
-    private String advisorFirstName;
-    private String advisorLastName;
-
-    public OranjGoal(){
+    public OranjNetWorth(){
         // For JPA to use
     }
 }

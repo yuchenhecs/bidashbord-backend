@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Null;
 
 @Api(basePath = "/oranj", description = "Operations with Oranj DB", produces = "application/json")
 @RestController
@@ -89,6 +90,15 @@ public class OranjController {
     public RestResponse getAllClients() {
         log.info("Fetching All Firms From Oranj DB");
         return oranjService.getAllClients();
+    }
+
+
+    @ApiOperation( value = "Save All Net Worth from Oranj DB To BI DB", notes = "Saves all the net worth till today")
+    @RequestMapping (path = "/networth", method = RequestMethod.GET)
+    public RestResponse getNetworth (){
+        String date = today().toString();
+        log.info("Fetching All Net Worth From Oranj DB");
+        return oranjService.getNetWorthTillDate(date);
     }
 
 }

@@ -74,6 +74,14 @@ public class OranjService {
     OranjPositionsRepository oranjPositionsRepository;
 
     @Autowired
+    OranjNetWorthRepository oranjNetWorthRepository;
+
+
+    @Autowired
+    NetWorthRepository netWorthRepository;
+
+
+    @Autowired
     DateValidator dateValidator;
 
 
@@ -317,5 +325,31 @@ public class OranjService {
         assetClasses.add("Other");
 
         return assetClasses.get(new Random().nextInt(assetClasses.size()));
+    }
+
+
+
+    public RestResponse getNetWorthTillDate(String date){
+        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
+
+        try{
+            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.FindNetWorthTillDate(endDate);
+            for (Object[] obj : oranjNetWorthList) {
+                NetWorth netWorth = new NetWorth();
+                netWorth.setId((BigInteger)obj[0]);
+                netWorth.setDate((Timestamp)obj[1]);
+                netWorth.setValue((double)obj[2]);
+                netWorth.setUserId((BigInteger)obj[3]);
+                netWorth.setAssetValue((double)obj[4]);
+                netWorth.setLiabilityValue((double)obj[5]);
+                netWorthRepository.save(netWorth);
+
+            }
+        }catch (Exception e){
+            log.error("Error in fetching net worth from Oranj." + e);
+            //response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Error in fetching net worth from Oranj DB. "+ e);
+        }
+        return RestResponse.success("Net worth till " + date + " have been saved");
     }
 }
