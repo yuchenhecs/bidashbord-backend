@@ -47,6 +47,12 @@ public class NetWorthController {
         return networthService.getNetWorthForAdmin(pageNumber);
     }
 
+    @ApiOperation(value = "Get net worth for Firm", notes = "returns net worth for Firm")
+    @RequestMapping(path="/advisors", method = RequestMethod.GET)
+    public RestResponse getNetWorthForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
+                                           @RequestParam (value = "page", required = true) Integer pageNumber) {
+        return networthService.getNetWorthForFirm(firmId, pageNumber);
+    }
 //    @ApiOperation(value = "Get AUMs for Firm", notes = "returns AUM for Firm")
 //    @RequestMapping(path="/advisors", method = RequestMethod.GET)
 //    public RestResponse getAUMForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
