@@ -59,9 +59,13 @@ public class ScheduledTasks {
         oranjService.fetchPositionsData();
         log.info("Fetching 'Positions' DATA: DONE");
     }
-
-
-    // add fetch net worth
-
+    
+    @Scheduled(cron = "0 50 2 * * *")
+    public void triggerGetNetWorth (){
+        String yesterday = dateFormat.format(yesterday());
+        log.info("Fetching 'Net Worth' DATA");
+        oranjService.getNetWorth(yesterday);
+        log.info("Fetching 'Net Worth' DATA: DONE");
+    }
 
 }
