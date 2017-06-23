@@ -94,11 +94,18 @@ public class OranjController {
 
 
     @ApiOperation( value = "Save All Net Worth from Oranj DB To BI DB", notes = "Saves all the net worth till today")
-    @RequestMapping (path = "/networth", method = RequestMethod.GET)
-    public RestResponse getNetworth (){
+    @RequestMapping (path = "/networth/migration", method = RequestMethod.GET)
+    public RestResponse getNetworthTillDate (){
         String date = today().toString();
         log.info("Fetching All Net Worth From Oranj DB");
         return oranjService.getNetWorthTillDate(date);
+    }
+
+    @ApiOperation(value = "Save Net Worth from Oranj DB to BI DB for given date", notes = "date should be in 'yyyy-MM-dd' format")
+    @RequestMapping (path = "/networth", method = RequestMethod.GET)
+    public RestResponse getNetworth (@RequestParam(value = "date", required = true) String date){
+        log.info("Fetching Net Worth From Oranj DB for "+ date);
+        return oranjService.getNetWorth(date);
     }
 
 }

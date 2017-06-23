@@ -22,5 +22,16 @@ public interface OranjNetWorthRepository extends JpaRepository<OranjNetWorth, In
                     "ON n.user_id = a.id \n" +
             "where date <= :end limit 0, 100", nativeQuery = true)
     List<Object[]> FindNetWorthTillDate(@Param("end") String end);
+
+
+    @Query(value = "select n.id, n.date, n.value, n.user_id, n.asset_value, n.liability_value " +
+            "from networth_history n " +
+                "inner join auth_user a " +
+                    "ON n.user_id = a.id \n" +
+            "where date >= :start and date <= :end", nativeQuery = true)
+    List<Object[]> FindByCreationDate(@Param("start") String start, @Param("end") String end);
+
+
+
 }
 
