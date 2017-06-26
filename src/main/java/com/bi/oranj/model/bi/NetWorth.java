@@ -30,16 +30,16 @@ public class NetWorth {
     private Timestamp date;
 
     @Column(name = "value")
-    private double value;
+    private BigDecimal value;
 
     @Column(name = "client_id", columnDefinition = "BIGINT")
     private BigInteger userId;
 
     @Column(name = "asset_value")
-    private double assetValue;
+    private BigDecimal assetValue;
 
     @Column(name = "liability_value")
-    private double liabilityValue;
+    private BigDecimal liabilityValue;
 
     @Column(name = "inserted_on")
     private Timestamp insertedOn = new Timestamp((new Date()).getTime());

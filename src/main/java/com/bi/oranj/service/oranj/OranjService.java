@@ -362,10 +362,10 @@ public class OranjService {
             NetWorth netWorth = new NetWorth();
             netWorth.setId((BigInteger)obj[0]);
             netWorth.setDate((Timestamp)obj[1]);
-            netWorth.setValue((double)obj[2]);
+            netWorth.setValue( BigDecimal.valueOf((double)obj[2]) );
             netWorth.setUserId((BigInteger)obj[3]);
-            netWorth.setAssetValue((double)obj[4]);
-            netWorth.setLiabilityValue((double)obj[5]);
+            netWorth.setAssetValue(BigDecimal.valueOf((double)obj[4]));
+            netWorth.setLiabilityValue(BigDecimal.valueOf((double)obj[5]));
             netWorthRepository.save(netWorth);
         }
 

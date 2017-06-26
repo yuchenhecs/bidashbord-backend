@@ -27,7 +27,7 @@ import java.util.Date;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OranjServiceTest {
-    
+
     private ArrayList<Object[]> testData = new ArrayList();
 
 
