@@ -1,6 +1,5 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.constant.Constants;
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.repository.bi.AdvisorRepository;
