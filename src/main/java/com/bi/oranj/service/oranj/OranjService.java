@@ -74,6 +74,14 @@ public class OranjService {
     OranjPositionsRepository oranjPositionsRepository;
 
     @Autowired
+    OranjNetWorthRepository oranjNetWorthRepository;
+
+
+    @Autowired
+    NetWorthRepository netWorthRepository;
+
+
+    @Autowired
     DateValidator dateValidator;
 
 
@@ -318,4 +326,49 @@ public class OranjService {
 
         return assetClasses.get(new Random().nextInt(assetClasses.size()));
     }
+
+
+
+    public RestResponse getNetWorthTillDate(String date){
+        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
+
+        try{
+            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.FindNetWorthTillDate(endDate);
+            storeNetWorth(oranjNetWorthList);
+            //throw new RuntimeException();
+        }catch (Exception e){
+            log.error("Error in fetching net worth from Oranj." + e);
+            return RestResponse.error("Error in fetching net worth from Oranj DB. "+ e);
+        }
+        return RestResponse.success("Net worth till " + date + " have been saved");
+    }
+
+    public RestResponse getNetWorth(String date){
+        String startDate = date + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
+        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
+        try{
+            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.FindByCreationDate(startDate, endDate);
+            storeNetWorth(oranjNetWorthList);
+        }catch (Exception e){
+            log.error("Error in fetching goals from Oranj." + e);
+            return RestResponse.error("Error in fetching Goals from Oranj DB");
+        }
+        return RestResponse.success("Goals created on " + date + " have been saved");
+
+    }
+
+    public void storeNetWorth(List<Object[]> oranjNetWorthList){
+        for (Object[] obj : oranjNetWorthList) {
+            NetWorth netWorth = new NetWorth();
+            netWorth.setId((BigInteger)obj[0]);
+            netWorth.setDate((Timestamp)obj[1]);
+            netWorth.setValue((BigDecimal) obj[2]);
+            netWorth.setUserId((BigInteger)obj[3]);
+            netWorth.setAssetValue((BigDecimal)obj[4]);
+            netWorth.setLiabilityValue((BigDecimal)obj[5]);
+            netWorthRepository.save(netWorth);
+        }
+
+    }
+
 }

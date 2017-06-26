@@ -1,7 +1,9 @@
 package com.bi.oranj.service;
 
-import com.bi.oranj.repository.bi.FirmRepository;
-import com.bi.oranj.service.bi.FirmService;
+import com.bi.oranj.repository.bi.AdvisorRepository;
+import com.bi.oranj.repository.bi.ClientRepository;
+import com.bi.oranj.service.bi.AdvisorService;
+import com.bi.oranj.service.bi.ClientService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,26 +13,23 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 /**
- * For this Unit test, number of elements in one page assumed as 100.
- * So, if in DB <= 100 records it will return 0, which means there is only 1 page.
+ * Created by jaloliddinbakirov on 6/20/17.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FirmServiceTest {
+public class ClientServiceTest {
+    private ClientService clientService;
+    private ClientRepository clientRepositoryMock;
 
-    private FirmService firmService;
-    private FirmRepository firmRepositoryMock;
+    @Value("${advisorId}")
+    private Long advisorId;
 
     @Before
     public void setUp(){
-        firmRepositoryMock = Mockito.mock(FirmRepository.class);
-        firmService = new FirmService();
+        clientRepositoryMock = Mockito.mock(ClientRepository.class);
+        clientService = new ClientService();
     }
-
-    @Value("${firmId}")
-    private Long firmId;
 
     /**
      * pagination starts with 0, so if totalPages returns 0, that means
@@ -39,7 +38,7 @@ public class FirmServiceTest {
      */
     @Test
     public void totalPagesTest() throws Exception{
-        int response = firmService.totalPages();
+        int response = clientService.totalPages(advisorId);
         Assert.assertTrue(response + " should be greater than " + -1, -1 < response);
     }
 
@@ -50,7 +49,7 @@ public class FirmServiceTest {
      */
     @Test
     public void totalPagesWithStartDate() throws Exception{
-        int response = firmService.totalPagesWithStartDate(firmId, "2017-05-12");
+        int response = clientService.totalPagesWithStartDate(advisorId, "2017-05-12");
         Assert.assertTrue(response + " should be greater than " + -1, -1 < response);
     }
 
@@ -61,7 +60,7 @@ public class FirmServiceTest {
      */
     @Test
     public void totalPagesWithEndDate () throws Exception {
-        int response = firmService.totalPagesWithEndDate(firmId, "2017-05-12");
+        int response = clientService.totalPagesWithEndDate(advisorId, "2017-05-12");
         Assert.assertTrue(response + " should be greater than " + -1, -1 < response);
     }
 
@@ -72,9 +71,8 @@ public class FirmServiceTest {
      */
     @Test
     public void totalPagesByDateBetween () throws Exception {
-        int response = firmService.totalPagesByDateBetween(firmId, "2017-05-12","2017-06-16");
+        int response = clientService.totalPagesByDateBetween(advisorId, "2017-05-12","2017-06-16");
         Assert.assertTrue(response + " should be greater than " + -1, -1 < response);
     }
-
 
 }

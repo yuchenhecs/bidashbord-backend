@@ -15,22 +15,22 @@ import java.util.List;
  */
 public interface NetWorthRepository extends JpaRepository<NetWorth, Long> {
 
-    @Query(value = "select count(*), sum(p.amount)\n" +
-            "from positions p\n" +
-            "join clients c\n" +
-            "    ON c.id = p.client_id\n" +
-            "where firm_id=:id", nativeQuery = true)
+    @Query(value = "select count(*), sum(n.value)\n" +
+            "            from networth n\n" +
+            "            join clients c\n" +
+            "                ON c.id = n.client_id\n" +
+            "            where firm_id=:id\n", nativeQuery = true)
     public List<Object[]> findNetWorthForAdmin(@Param("id") Long id);
 
-    @Query(value = "select count(*), sum(p.amount)\n" +
-            "from positions p\n" +
-            "join clients c\n" +
-            "    ON c.id = p.client_id\n" +
-            "where advisor_id=:id", nativeQuery = true)
+    @Query(value = "select count(*), sum(n.value)\n" +
+            "            from networth n\n" +
+            "            join clients c\n" +
+            "                ON c.id = n.client_id\n" +
+            "            where advisor_id=:id\n", nativeQuery = true)
     public List<Object[]> findNetWorthForFirm(@Param("id") Long id);
 
-    @Query(value = "select sum(amount)\n" +
-            "from positions p\n" +
-            "where p.client_id=:id and date(p.position_updated_on) IN (:date)", nativeQuery = true)
+    @Query(value = "select sum(value)\n" +
+            "from networth n\n" +
+            "where n.client_id=:id and date(n.date) IN (:date)", nativeQuery = true)
     public BigDecimal findNetWorthForAdvisor(@Param("id") Long id, @Param("date") String date);
 }
