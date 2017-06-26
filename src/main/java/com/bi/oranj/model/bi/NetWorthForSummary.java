@@ -2,6 +2,7 @@ package com.bi.oranj.model.bi;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,5 +11,7 @@ import java.util.List;
 @Data
 public class NetWorthForSummary {
 
-    private List<NetWorthSummary> summary;
+    private Date date;
+    private Double clients;
+    private Double absNet;
 }

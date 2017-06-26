@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +53,6 @@ public class NetWorthService {
 
     public RestResponse getNetWorthForAdmin(Integer pageNumber) {
         try {
-            //go through the firms table and get all firms with active === 1, then find the clients under those firms
-            //and add up all the client's net worth for one firm and take the average, repeat this for all the firms
             NetWorthAdmin netWorthAdmin = new NetWorthAdmin();
             List<NetWorthForAdmin> networthList = new ArrayList<>();
             Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
@@ -86,8 +85,6 @@ public class NetWorthService {
 
     public RestResponse getNetWorthForFirm(Long firmId, Integer pageNumber) {
         try {
-            //find the appropriate firm using firmId, then for each advisor under that firm, find clients under that advisor
-            //then add up all the client's net worth for one advisor  and take the average
             NetWorthFirm netWorthFirm = new NetWorthFirm();
             List<NetWorthForFirm> networthList = new ArrayList<>();
             Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
@@ -119,8 +116,6 @@ public class NetWorthService {
 
     public RestResponse getNetWorthForAdvisor(Long advisorId, Integer pageNumber) {
         try {
-            //go through client table and get all clients with advisorId and active === 1,
-
             NetWorthAdvisor netWorthAdvisor = new NetWorthAdvisor();
             List<NetWorthForAdvisor> networthList = new ArrayList<>();
             Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
@@ -130,8 +125,6 @@ public class NetWorthService {
                 netWorthForAdvisor.setFirstName(clientList.getContent().get(i).getClientFirstName());
                 netWorthForAdvisor.setLastName(clientList.getContent().get(i).getClientLastName());
                 String yesterday = dateFormat.format(scheduledTasks.yesterday());
-               // String yesterday = "2017-04-01";
-                log.info(yesterday);
                 BigDecimal clientAbsNet = networthRepository.findNetWorthForAdvisor(clientList.getContent().get(i).getId(), yesterday);
                 netWorthForAdvisor.setAbsNet(clientAbsNet);
                 networthList.add(netWorthForAdvisor);
@@ -165,8 +158,26 @@ public class NetWorthService {
     }
 
     public RestResponse getNetWorthSummary(Integer PageNumber) {
+        try {
+            NetWorthSummary netWorthSummary = new NetWorthSummary();
+            List<NetWorthForSummary> networthList = new ArrayList<>();
+            String localDate = LocalDate.now().toString();
+            log.info(localDate);
+            return RestResponse.error("Test");
 
+        } catch (Exception e) {
+            log.error("Error in fetching net worth" + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Error in fetching net worth");
+        }
     }
+
+//    public List<String> getDateList() {
+//        List<String> monthList = new ArrayList<>();
+//        LocalDate localDate = LocalDate.now();
+//
+//    }
+
 }
 
 //added files NetWorth/Admin/Firm/Advisor to replace the files NetWorth/Firms/Advisors/Clients to make it consistent within the networth feature

@@ -19,11 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/bi/networth")
 public class NetWorthController {
 
-//    @ApiOperation(value = "Get Net worth at Admin level", notes = "returns networth")
-//    @RequestMapping(path="/test", method = RequestMethod.GET)
-//    public RestResponse testMethod() {
-//        return RestResponse.success().withMessage("Success!");
-//    }
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -32,14 +27,6 @@ public class NetWorthController {
 
     @Autowired
     private NetWorthService networthService;
-
-//    @ApiOperation(value = "Get AUMs for Oranj Admin", notes = "returns AUM for Oranj Admin, date should be in 'yyyy-MM-dd' format")
-//    @RequestMapping(path="/firms", method = RequestMethod.GET)
-//    public RestResponse getAUMForAdmin(@RequestParam(value = "page", required = true) Integer pageNumber,
-//                                       @RequestParam(value = "previousDate", required = true) String previousDate,
-//                                       @RequestParam(value = "currentDate", required = true) String currentDate) {
-//        return aumService.getAUMForAdmin(pageNumber, previousDate, currentDate);
-//    }
 
     @ApiOperation(value = "Get net worth for Oranj Admin", notes = "returns net worth for Oranj Admin")
     @RequestMapping(path="/firms", method = RequestMethod.GET)
@@ -66,28 +53,4 @@ public class NetWorthController {
     public RestResponse getNetWorthSummary(@RequestParam (value = "page", required = true) Integer pageNumber) {
         return networthService.getNetWorthSummary(pageNumber);
     }
-//    @ApiOperation(value = "Get AUMs for Firm", notes = "returns AUM for Firm")
-//    @RequestMapping(path="/advisors", method = RequestMethod.GET)
-//    public RestResponse getAUMForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
-//                                      @RequestParam (value = "page", required = true) Integer pageNumber,
-//                                      @RequestParam(value = "previousDate", required = true) String previousDate,
-//                                      @RequestParam(value = "currentDate", required = true) String currentDate) {
-//        return aumService.getAUMForFirm(firmId, previousDate, currentDate, pageNumber);
-//    }
-//
-//    @ApiOperation(value = "Get AUMs for Advisor", notes = "returns AUM for Advisor")
-//    @RequestMapping(path="/clients", method = RequestMethod.GET)
-//    public RestResponse getAUMForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId,
-//                                         @RequestParam (value = "page", required = true) Integer pageNumber,
-//                                         @RequestParam(value = "previousDate", required = true) String previousDate,
-//                                         @RequestParam(value = "currentDate", required = true) String currentDate) {
-//        return aumService.getAUMForAdvisor(advisorId, previousDate, currentDate, pageNumber);
-//    }
-//
-//    @ApiOperation(value = "Get AUMs for Summary Page", notes = "returns AUMs in Oranj Platform")
-//    @RequestMapping(method = RequestMethod.GET)
-//    public RestResponse getAUMSummary() {
-//        return aumService.getAUMSummary();
-//    }
-
 }
