@@ -2,6 +2,8 @@ package com.bi.oranj.model.bi;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * Created by robertyuan on 6/22/17.
  */
@@ -9,6 +11,7 @@ import lombok.Data;
 public class NetWorthForAdvisor {
 
     private Long clientId;
-    private String name;
-    private Double absNet;
+    private String firstName;
+    private String lastName;
+    private BigDecimal absNet;
 }

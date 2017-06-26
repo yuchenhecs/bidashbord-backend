@@ -6,11 +6,13 @@ import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.repository.bi.NetWorthRepository;
+import com.bi.oranj.scheduler.ScheduledTasks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +32,7 @@ import java.util.List;
 public class NetWorthService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     HttpServletResponse response;
 
     @Autowired
@@ -43,6 +46,9 @@ public class NetWorthService {
 
     @Autowired
     private FirmRepository firmRepository;
+
+    @Autowired
+    ScheduledTasks scheduledTasks;
 
     public RestResponse getNetWorthForAdmin(Integer pageNumber) {
         try {
@@ -72,19 +78,19 @@ public class NetWorthService {
             netWorthAdmin.setFirms(networthList);
             return RestResponse.successWithoutMessage(netWorthAdmin);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error("Error in fetching net worth" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs");
+            return RestResponse.error("Error in fetching net worth");
         }
     }
 
     public RestResponse getNetWorthForFirm(Long firmId, Integer pageNumber) {
         try {
-            //go through the advisors table and get all advisors with active === 1, then find the clients under those advisors
-            //and add up all the client's net worth for one advisor and take the average, repeat this for all the advisors
+            //find the appropriate firm using firmId, then for each advisor under that firm, find clients under that advisor
+            //then add up all the client's net worth for one advisor  and take the average
             NetWorthFirm netWorthFirm = new NetWorthFirm();
             List<NetWorthForFirm> networthList = new ArrayList<>();
-            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
+            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
             for (int i = 0; i < advisorList.getContent().size(); i++) {
                 NetWorthForFirm netWorthForFirm = new NetWorthForFirm();
                 netWorthForFirm.setId(advisorList.getContent().get(i).getId());
@@ -105,16 +111,62 @@ public class NetWorthService {
             netWorthFirm.setAdvisors(networthList);
             return RestResponse.successWithoutMessage(netWorthFirm);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error("Error in fetching net worth" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs");
+            return RestResponse.error("Error in fetching net worth");
         }
     }
 
+    public RestResponse getNetWorthForAdvisor(Long advisorId, Integer pageNumber) {
+        try {
+            //go through client table and get all clients with advisorId and active === 1,
+
+            NetWorthAdvisor netWorthAdvisor = new NetWorthAdvisor();
+            List<NetWorthForAdvisor> networthList = new ArrayList<>();
+            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
+            for (int i = 0; i < clientList.getContent().size(); i++) {
+                NetWorthForAdvisor netWorthForAdvisor = new NetWorthForAdvisor();
+                netWorthForAdvisor.setClientId(clientList.getContent().get(i).getId());
+                netWorthForAdvisor.setFirstName(clientList.getContent().get(i).getClientFirstName());
+                netWorthForAdvisor.setLastName(clientList.getContent().get(i).getClientLastName());
+                String yesterday = dateFormat.format(scheduledTasks.yesterday());
+               // String yesterday = "2017-04-01";
+                log.info(yesterday);
+                BigDecimal clientAbsNet = networthRepository.findNetWorthForAdvisor(clientList.getContent().get(i).getId(), yesterday);
+                netWorthForAdvisor.setAbsNet(clientAbsNet);
+                networthList.add(netWorthForAdvisor);
+            }
+            List<Object[]> advisorCalc = networthRepository.findNetWorthForFirm(advisorId);
+            for (Object[] resultSet : advisorCalc) {
+                if (resultSet[1] != null) {
+                    BigDecimal denominator = new BigDecimal((BigInteger) resultSet[0]);
+                    netWorthAdvisor.setAvgAdvisor(((BigDecimal) resultSet[1]).divide(denominator, 2, RoundingMode.HALF_UP));
+                }
+            }
+
+
+            List<Object[]> firmCalc = networthRepository.findNetWorthForAdmin(clientList.getContent().get(0).getFirmId());
+            for (Object[] resultSet : firmCalc) {
+                if (resultSet[1] != null) {
+                    BigDecimal denominator = new BigDecimal((BigInteger) resultSet[0]);
+                    netWorthAdvisor.setAvgFirm(((BigDecimal) resultSet[1]).divide(denominator, 2, RoundingMode.HALF_UP));
+                }
+            }
+
+            netWorthAdvisor.setHasNext(clientList.hasNext());
+            netWorthAdvisor.setPage(pageNumber);
+            netWorthAdvisor.setClients(networthList);
+            return RestResponse.successWithoutMessage(netWorthAdvisor);
+        } catch (Exception e) {
+            log.error("Error in fetching net worth" + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error("Error in fetching net worth");
+        }
+    }
+
+    public RestResponse getNetWorthSummary(Integer PageNumber) {
+
+    }
 }
-
-
-
-
 
 //added files NetWorth/Admin/Firm/Advisor to replace the files NetWorth/Firms/Advisors/Clients to make it consistent within the networth feature

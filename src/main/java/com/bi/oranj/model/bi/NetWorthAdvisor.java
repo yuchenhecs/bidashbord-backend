@@ -2,6 +2,7 @@ package com.bi.oranj.model.bi;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Data
 public class NetWorthAdvisor extends BaseNetWorth {
 
-    private Double avgAdvisor;
-    private Double avgFirm;
+    private BigDecimal avgAdvisor;
+    private BigDecimal avgFirm;
     private List<NetWorthForAdvisor> clients = new ArrayList<>();
 }

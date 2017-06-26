@@ -76,7 +76,7 @@ public class AUMService {
             aumForAdmin.setCount(firmAUMList.size());
             return RestResponse.successWithoutMessage(aumForAdmin);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error("Error in fetching AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fetching AUMs");
         }
@@ -114,7 +114,7 @@ public class AUMService {
             aumForFirm.setCount(advisorAUMList.size());
             return RestResponse.successWithoutMessage(aumForFirm);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error("Error in fetching AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fetching AUMs");
         }
@@ -152,7 +152,7 @@ public class AUMService {
             aumForAdvisor.setCount(clientAUMList.size());
             return RestResponse.successWithoutMessage(aumForAdvisor);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error("Error in fetching AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fetching AUMs");
         }
@@ -211,7 +211,7 @@ public class AUMService {
             }
             return RestResponse.successWithoutMessage(aumDiffList);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error("Error in fetching AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fetching AUMs");
         }
