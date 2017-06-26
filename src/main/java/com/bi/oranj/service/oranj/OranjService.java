@@ -78,7 +78,7 @@ public class OranjService {
 
 
     @Autowired
-    NetWorthRepository netWorthRepository;
+    public NetWorthRepository netWorthRepository;
 
 
     @Autowired
