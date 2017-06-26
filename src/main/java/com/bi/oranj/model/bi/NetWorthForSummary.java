@@ -2,6 +2,7 @@ package com.bi.oranj.model.bi;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Data
 public class NetWorthForSummary {
 
-    private Date date;
-    private Double clients;
-    private Double absNet;
+    private String date;
+    private BigDecimal clients;
+    private BigDecimal absNet;
 }

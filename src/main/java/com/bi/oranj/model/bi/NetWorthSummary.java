@@ -11,5 +11,5 @@ import java.util.List;
 @Data
 public class NetWorthSummary {
 
-    private List<NetWorthSummary> summary;
+    private List<NetWorthForSummary> summary;
 }

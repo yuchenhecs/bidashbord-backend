@@ -161,9 +161,32 @@ public class NetWorthService {
         try {
             NetWorthSummary netWorthSummary = new NetWorthSummary();
             List<NetWorthForSummary> networthList = new ArrayList<>();
-            String localDate = LocalDate.now().toString();
-            log.info(localDate);
-            return RestResponse.error("Test");
+            List<String> monthList = getDateList();
+            BigDecimal numClientsBefore = BigDecimal.valueOf(0);
+
+            for(int i=0; i<monthList.size();i++) {
+                NetWorthForSummary netWorthForSummary = new NetWorthForSummary();
+                netWorthForSummary.setDate(monthList.get(i));
+                List<Object[]> monthData = networthRepository.findNetWorthForSummary(monthList.get(i));
+                for (Object[] resultSet : monthData) {
+                    if (i == 0) {
+                        netWorthForSummary.setClients(numClientsBefore);
+                        numClientsBefore = new BigDecimal((BigInteger) resultSet[0]);
+                        netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
+                        networthList.add(netWorthForSummary);
+                    } else {
+                        BigDecimal numClientsNow = new BigDecimal((BigInteger) resultSet[0]);
+                        netWorthForSummary.setClients(numClientsNow.subtract(numClientsBefore));
+                        numClientsBefore = numClientsNow;
+                        netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
+                        networthList.add(netWorthForSummary);
+                    }
+                }
+            }
+
+            netWorthSummary.setSummary(networthList);
+
+            return RestResponse.successWithoutMessage(netWorthSummary);
 
         } catch (Exception e) {
             log.error("Error in fetching net worth" + e);
@@ -172,11 +195,20 @@ public class NetWorthService {
         }
     }
 
-//    public List<String> getDateList() {
-//        List<String> monthList = new ArrayList<>();
-//        LocalDate localDate = LocalDate.now();
-//
-//    }
+    public List<String> getDateList() {
+        List<String> monthList = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now();
+        LocalDate firstDayDate = currentDate.minusMonths(5);
+        int dayToSubtract = (currentDate.getDayOfMonth()-1);
+        firstDayDate = firstDayDate.minusDays(dayToSubtract);
+        for (int i=0; i<5 ;i++) {
+            monthList.add(firstDayDate.toString());
+            firstDayDate = firstDayDate.plusMonths(1);
+        }
+        monthList.add(currentDate.toString());
+
+        return monthList;
+    }
 
 }
 

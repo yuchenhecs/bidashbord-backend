@@ -33,4 +33,9 @@ public interface NetWorthRepository extends JpaRepository<NetWorth, Long> {
             "from networth n\n" +
             "where n.client_id=:id and date(n.date) IN (:date)", nativeQuery = true)
     public BigDecimal findNetWorthForAdvisor(@Param("id") Long id, @Param("date") String date);
+
+    @Query(value = "select count(*), sum(n.value)\n" +
+            "from networth n\n" +
+            "where date(n.date) IN (:date)",nativeQuery = true)
+    public List<Object[]> findNetWorthForSummary(@Param("date") String date);
 }
