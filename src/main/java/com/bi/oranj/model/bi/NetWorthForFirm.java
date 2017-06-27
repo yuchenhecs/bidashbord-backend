@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 public class NetWorthForFirm {
 
-    private Long Id;
+    private Long advisorId;
     private String firstName;
     private String lastName;
     private BigDecimal absNet;

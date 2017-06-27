@@ -13,6 +13,6 @@ import java.util.List;
 public class NetWorthForSummary {
 
     private String date;
-    private BigDecimal clients;
+    private BigDecimal clientsDiff;
     private BigDecimal absNet;
 }

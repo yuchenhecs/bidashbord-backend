@@ -90,7 +90,7 @@ public class NetWorthService {
             Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
             for (int i = 0; i < advisorList.getContent().size(); i++) {
                 NetWorthForFirm netWorthForFirm = new NetWorthForFirm();
-                netWorthForFirm.setId(advisorList.getContent().get(i).getId());
+                netWorthForFirm.setAdvisorId(advisorList.getContent().get(i).getId());
                 netWorthForFirm.setFirstName(advisorList.getContent().get(i).getAdvisorFirstName());
                 netWorthForFirm.setLastName(advisorList.getContent().get(i).getAdvisorLastName());
                 List<Object[]> netWorthCalc = networthRepository.findNetWorthForFirm(advisorList.getContent().get(i).getId());
@@ -157,7 +157,7 @@ public class NetWorthService {
         }
     }
 
-    public RestResponse getNetWorthSummary(Integer PageNumber) {
+    public RestResponse getNetWorthSummary() {
         try {
             NetWorthSummary netWorthSummary = new NetWorthSummary();
             List<NetWorthForSummary> networthList = new ArrayList<>();
@@ -170,13 +170,13 @@ public class NetWorthService {
                 List<Object[]> monthData = networthRepository.findNetWorthForSummary(monthList.get(i));
                 for (Object[] resultSet : monthData) {
                     if (i == 0) {
-                        netWorthForSummary.setClients(numClientsBefore);
+                        netWorthForSummary.setClientsDiff(numClientsBefore);
                         numClientsBefore = new BigDecimal((BigInteger) resultSet[0]);
                         netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
                         networthList.add(netWorthForSummary);
                     } else {
                         BigDecimal numClientsNow = new BigDecimal((BigInteger) resultSet[0]);
-                        netWorthForSummary.setClients(numClientsNow.subtract(numClientsBefore));
+                        netWorthForSummary.setClientsDiff(numClientsNow.subtract(numClientsBefore));
                         numClientsBefore = numClientsNow;
                         netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
                         networthList.add(netWorthForSummary);

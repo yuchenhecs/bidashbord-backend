@@ -50,7 +50,7 @@ public class NetWorthController {
 
     @ApiOperation(value = "Get net worth for summary", notes = "returns net worth for summary")
     @RequestMapping(method = RequestMethod.GET)
-    public RestResponse getNetWorthSummary(@RequestParam (value = "page", required = true) Integer pageNumber) {
-        return networthService.getNetWorthSummary(pageNumber);
+    public RestResponse getNetWorthSummary() {
+        return networthService.getNetWorthSummary();
     }
 }
