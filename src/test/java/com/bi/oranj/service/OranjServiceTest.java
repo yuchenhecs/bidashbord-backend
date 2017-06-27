@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 /**
  * Created by yuchenhe on 6/26/17.
@@ -38,35 +38,35 @@ public class OranjServiceTest {
 
     @Before
     public void setUp(){
-//        Object[] testEntry = new Object[6];
-//        testEntry[0] = BigInteger.valueOf(23);
-//        testEntry[1] = new Date();
-//        testEntry[2] = 1.2;
-//        testEntry[3] = BigInteger.valueOf(23);
-//        testEntry[4] = 1.3;
-//        testEntry[5] = 1.4;
-//
-//        testData.add(testEntry);
-//
-//
-//        //netWorthRepositoryMock = Mockito.mock(NetWorthRepository.class);
-//        netWorthService = new OranjService();
-//
-//
-//        netWorthRepositoryMock = Mockito.spy(NetWorthRepository.class);
-//        Mockito.when(netWorthRepositoryMock.save(Mockito.any(NetWorth.class));
+        Object[] testEntry = new Object[6];
+        testEntry[0] = BigInteger.valueOf(23);
+        testEntry[1] = new Timestamp(System.currentTimeMillis() / 1000L);
+        testEntry[2] = 1.2;
+        testEntry[3] = BigInteger.valueOf(23);
+        testEntry[4] = 1.3;
+        testEntry[5] = 1.4;
+
+        testData.add(testEntry);
+
+
+        netWorthRepositoryMock = Mockito.mock(NetWorthRepository.class);
+        netWorthService = new OranjService();
+
+        netWorthService.netWorthRepository = netWorthRepositoryMock;
+
     }
 
 
 
     @Test
     public void test() throws Exception{
-        //System.out.println(testClass.getOtherThing());
 
 
-//        netWorthService.storeNetWorth(testData);
-//
-//        Assert.assertTrue(true);
+        netWorthService.storeNetWorth(testData);
+
+        Mockito.verify(netWorthRepositoryMock).save(Mockito.any(NetWorth.class));
+
+      //  Assert.assertTrue(true);
     }
 
 }
