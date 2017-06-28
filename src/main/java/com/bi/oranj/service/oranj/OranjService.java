@@ -21,7 +21,7 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -79,8 +79,12 @@ public class OranjService {
 
     public void fetchPositionsData () {
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date1 = simpleDateFormat.format(new Date());
+        positionRepository.deleteAllBeforeDate(date1);
+
         List<Object[]> positionRows = oranjPositionsRepository.fetchPositionsData();
-        DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
         savePositions(positionRows, dateFormat1);
     }
@@ -90,7 +94,7 @@ public class OranjService {
      * @param limitNum - is how many rows of history to fetch from ORANJ DB
      */
     public void fetchPositionsHistory (long limitNum){
-        DateFormat dateFormat1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.US);
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         List<Object[]> history = null;
 
         if (limitNum == 0) history = oranjPositionsHistoryRepository.fetchPositionsHistory();

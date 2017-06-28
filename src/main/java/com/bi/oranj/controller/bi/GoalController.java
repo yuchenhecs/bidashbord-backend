@@ -49,7 +49,7 @@ public class GoalController {
 
     @ApiOperation(value = "Get Goals at Admin level", notes = "returns goals")
     @RequestMapping (value = "/firms", method = RequestMethod.GET)
-    public BIResponse getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+    public RestResponse getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "startDate", required = false) String startDate,
                                     @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
         return processRequest("firms", null, pageNum, response, startDate, endDate);
@@ -57,7 +57,7 @@ public class GoalController {
 
     @ApiOperation(value = "Get Goals for Firm", notes = "returns goals")
     @RequestMapping (value = "/advisors", method = RequestMethod.GET)
-    public BIResponse getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+    public RestResponse getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "firmId", required = true) Long firmId,
                                        @RequestParam (value = "startDate", required = false) String startDate,
                                        @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
@@ -66,7 +66,7 @@ public class GoalController {
 
     @ApiOperation(value = "Get Goals for Advisor", notes = "returns goals")
     @RequestMapping (value = "/clients", method = RequestMethod.GET)
-    public BIResponse getClientGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+    public RestResponse getClientGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "advisorId", required = true) Long advisorId,
                                       @RequestParam (value = "startDate", required = false) String startDate,
                                       @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
@@ -74,7 +74,7 @@ public class GoalController {
     }
 
 
-    private BIResponse processRequest (String userType, Long userId, Integer pageNum,
+    private RestResponse processRequest (String userType, Long userId, Integer pageNum,
                                        HttpServletResponse response, String startDate, String endDate) throws IOException {
         GoalService goalService = getService(userType);
 
@@ -86,7 +86,7 @@ public class GoalController {
             return RestResponse.error("Bad input parameter");
         }
 
-        GoalResponse goalResponse = null;
+        RestResponse goalResponse = null;
         if (startDate == null && endDate == null)
             goalResponse = requestDefault(goalService, pageNum, userId, response);
         else if (startDate == null && dateValidator.validate(endDate))
@@ -109,7 +109,7 @@ public class GoalController {
     }
 
 
-    private GoalResponse requestByDateBetween(GoalService goalService, int pageNum, long userId,
+    private RestResponse requestByDateBetween(GoalService goalService, int pageNum, long userId,
                                          HttpServletResponse response, String startDate, String endDate) throws IOException {
         GoalResponse goals;
         try{
@@ -119,10 +119,10 @@ public class GoalController {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
             return null;
         }
-        return goals;
+        return RestResponse.successWithoutMessage(goals);
     }
 
-    private GoalResponse requestWithEndDate (GoalService goalService, int pageNum, long userId,
+    private RestResponse requestWithEndDate (GoalService goalService, int pageNum, long userId,
                                              HttpServletResponse response, String endDate) throws IOException {
         GoalResponse goals;
         try{
@@ -132,10 +132,10 @@ public class GoalController {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
             return null;
         }
-        return goals;
+        return RestResponse.successWithoutMessage(goals);
     }
 
-    private GoalResponse requestWithStartDate (GoalService goalService, int pageNum, long userId,
+    private RestResponse requestWithStartDate (GoalService goalService, int pageNum, long userId,
                                              HttpServletResponse response, String startDate) throws IOException {
         GoalResponse goals;
         try{
@@ -145,11 +145,11 @@ public class GoalController {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
             return null;
         }
-        return goals;
+        return RestResponse.successWithoutMessage(goals);
     }
 
 
-    private GoalResponse requestDefault (GoalService goalService, int pageNum, long userId,
+    private RestResponse requestDefault (GoalService goalService, int pageNum, long userId,
                                          HttpServletResponse response) throws IOException {
         GoalResponse goals;
         try{
@@ -159,7 +159,7 @@ public class GoalController {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
             return null;
         }
-        return goals;
+        return RestResponse.successWithoutMessage(goals);
     }
 
     /**
