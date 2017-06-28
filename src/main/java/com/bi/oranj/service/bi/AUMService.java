@@ -46,12 +46,12 @@ public class AUMService {
     public RestResponse getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
 
         boolean validDate = validateInputDate(previousDate, currentDate);
-        if (validDate == false) {
+        if (!validDate) {
             return RestResponse.error(DATE_VALIDATION_ERROR);
         }
 
         boolean validPageNumber = validateInputPageNumber(pageNumber);
-        if(validPageNumber == false){
+        if(!validPageNumber){
             return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
         }
 
@@ -75,21 +75,21 @@ public class AUMService {
             aumForAdmin.setCount(firmAUMList.size());
             return RestResponse.successWithoutMessage(aumForAdmin);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error(ERROR_IN_GETTING_AUM + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs");
+            return RestResponse.error(ERROR_IN_GETTING_AUM);
         }
     }
 
     public RestResponse getAUMForFirm(Long firmId, String previousDate, String currentDate, Integer pageNumber) {
 
         boolean validDate = validateInputDate(previousDate, currentDate);
-        if (validDate == false) {
+        if (!validDate) {
             return RestResponse.error(DATE_VALIDATION_ERROR);
         }
 
         boolean validPageNumber = validateInputPageNumber(pageNumber);
-        if(validPageNumber == false){
+        if(!validPageNumber){
             return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
         }
 
@@ -102,8 +102,8 @@ public class AUMService {
                 AdvisorAUM advisorAUM = new AdvisorAUM();
                 advisorAUM.setAdvisorId(advisorList.getContent().get(i).getId());
                 advisorAUM.setName(advisorList.getContent().get(i).getAdvisorFirstName() + " " + advisorList.getContent().get(i).getAdvisorLastName());
-                advisorAUM.setPrevious(getAUM(advisorList.getContent().get(i).getId(), previousDate, "advisor"));
-                advisorAUM.setCurrent(getAUM(advisorList.getContent().get(i).getId(), currentDate, "advisor"));
+                advisorAUM.setPrevious(getAUM(advisorList.getContent().get(i).getId(), previousDate, ADVISOR));
+                advisorAUM.setCurrent(getAUM(advisorList.getContent().get(i).getId(), currentDate, ADVISOR));
                 advisorAUMList.add(advisorAUM);
             }
             aumForFirm.setAdvisors(advisorAUMList);
@@ -113,21 +113,21 @@ public class AUMService {
             aumForFirm.setCount(advisorAUMList.size());
             return RestResponse.successWithoutMessage(aumForFirm);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error(ERROR_IN_GETTING_AUM + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs");
+            return RestResponse.error(ERROR_IN_GETTING_AUM);
         }
     }
 
     public RestResponse getAUMForAdvisor(Long advisorId, String previousDate, String currentDate, Integer pageNumber) {
 
         boolean validDate = validateInputDate(previousDate, currentDate);
-        if (validDate == false){
+        if (!validDate){
             return RestResponse.error(DATE_VALIDATION_ERROR);
         }
 
         boolean validPageNumber = validateInputPageNumber(pageNumber);
-        if(validPageNumber == false){
+        if(!validPageNumber){
             return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
         }
 
@@ -140,8 +140,8 @@ public class AUMService {
                 ClientAUM clientAUM = new ClientAUM();
                 clientAUM.setClientId(clientList.getContent().get(i).getId());
                 clientAUM.setName(clientList.getContent().get(i).getClientFirstName() + " " + clientList.getContent().get(i).getClientLastName());
-                clientAUM.setPrevious(getAUM(clientList.getContent().get(i).getId(), previousDate, "client"));
-                clientAUM.setCurrent(getAUM(clientList.getContent().get(i).getId(), currentDate, "client"));
+                clientAUM.setPrevious(getAUM(clientList.getContent().get(i).getId(), previousDate, CLIENT));
+                clientAUM.setCurrent(getAUM(clientList.getContent().get(i).getId(), currentDate, CLIENT));
                 clientAUMList.add(clientAUM);
             }
             aumForAdvisor.setClients(clientAUMList);
@@ -190,7 +190,7 @@ public class AUMService {
     public RestResponse getAUMSummary() {
 
         try {
-            List<AumDiff> aumDiffList = new ArrayList<AumDiff>();
+            List<AumDiff> aumDiffList = new ArrayList<>();
             List<String> dateList = getQuarterFirstDates();
             for (int i=0; i<dateList.size(); i++){
 
@@ -220,8 +220,8 @@ public class AUMService {
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date previous = sdf.parse(previousDate);
-            Date current = sdf.parse(currentDate);
+            sdf.parse(previousDate);
+            sdf.parse(currentDate);
         } catch (Exception e){
             log.error(DATE_VALIDATION_ERROR);
             return false;
@@ -230,12 +230,7 @@ public class AUMService {
     }
 
     public boolean validateInputPageNumber(Integer pageNumber) {
-
-        if(pageNumber >= 0){
-            return true;
-        }else {
-            return false;
-        }
+        return (pageNumber >= 0);
     }
 
     public List<String> getQuarterFirstDates(){
@@ -246,7 +241,7 @@ public class AUMService {
                         LocalDate.of(Calendar.getInstance().get(Calendar.YEAR),
                                      (Calendar.getInstance().get(Calendar.MONTH)+1),
                                       Calendar.getInstance().get(Calendar.DAY_OF_MONTH)))+1;
-        log.info("totalNumberOfQuarters ::: " + totalNumberOfQuarters);
+        log.info("totalNumberOfQuarters ::: %s", totalNumberOfQuarters);
 
         LocalDate beginningYear = LocalDate.parse(START_YEAR + "-0" + START_MONTH + "-0" + START_DAY);
         LocalDate firstQuarter = beginningYear.with(firstDayOfYear());

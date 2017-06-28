@@ -11,4 +11,7 @@ public class Constants {
     public static final int START_DAY = 1;
     public static final String DATE_VALIDATION_ERROR = "Date should be in 'yyyy-MM-dd' format";
     public static final String PAGE_NUMBER_VALIDATION_ERROR = "Page number should be a positive integer";
+    public static final String ERROR_IN_GETTING_AUM = "Error in fecthing AUMs";
+    public static final String ADVISOR = "advisor";
+    public static final String CLIENT = "client";
 }
