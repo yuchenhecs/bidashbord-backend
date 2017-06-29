@@ -64,8 +64,8 @@ public class AUMService {
                 FirmAUM firmAUM = new FirmAUM();
                 firmAUM.setFirmId(firmList.getContent().get(i).getId());
                 firmAUM.setName(firmList.getContent().get(i).getFirmName());
-                firmAUM.setPrevious(getAUM(firmList.getContent().get(i).getId(), previousDate, "firm"));
-                firmAUM.setCurrent(getAUM(firmList.getContent().get(i).getId(), currentDate, "firm"));
+                firmAUM.setPrevious(getAUM(firmList.getContent().get(i).getId(), previousDate, FIRM));
+                firmAUM.setCurrent(getAUM(firmList.getContent().get(i).getId(), currentDate, FIRM));
                 firmAUMList.add(firmAUM);
             }
             aumForAdmin.setFirms(firmAUMList);
