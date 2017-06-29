@@ -1,16 +1,13 @@
 package com.bi.oranj.controller.bi;
 
-import com.bi.oranj.controller.bi.resp.BIResponse;
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.GoalResponse;
 import com.bi.oranj.service.bi.AdvisorService;
 import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.GoalService;
-import com.bi.oranj.utils.DateValidator;
-import com.bi.oranj.model.bi.GoalSummary;
+import com.bi.oranj.utils.date.DateValidator;
 import com.bi.oranj.service.bi.*;
-import com.bi.oranj.model.bi.wrapper.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -21,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
 
 @Api(basePath = "/bi/goals", description = "Operations with BI DB", produces = "application/json")
 @RestController
