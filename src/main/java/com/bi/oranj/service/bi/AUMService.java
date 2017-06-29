@@ -6,6 +6,7 @@ import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.AumRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
+import com.bi.oranj.utils.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.*;
@@ -43,16 +43,17 @@ public class AUMService {
     @Autowired
     private FirmRepository firmRepository;
 
+    @Autowired
+    private InputValidator inputValidator;
+
     public RestResponse getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
 
-        boolean validDate = validateInputDate(previousDate, currentDate);
-        if (!validDate) {
-            return RestResponse.error(DATE_VALIDATION_ERROR);
+        if (!inputValidator.validateInputDate(previousDate, currentDate)) {
+            return RestResponse.error(ERROR_DATE_VALIDATION);
         }
 
-        boolean validPageNumber = validateInputPageNumber(pageNumber);
-        if(!validPageNumber){
-            return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
+        if(!inputValidator.validateInputPageNumber(pageNumber)){
+            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
         }
 
         try {
@@ -83,14 +84,12 @@ public class AUMService {
 
     public RestResponse getAUMForFirm(Long firmId, String previousDate, String currentDate, Integer pageNumber) {
 
-        boolean validDate = validateInputDate(previousDate, currentDate);
-        if (!validDate) {
-            return RestResponse.error(DATE_VALIDATION_ERROR);
+        if (!inputValidator.validateInputDate(previousDate, currentDate)) {
+            return RestResponse.error(ERROR_DATE_VALIDATION);
         }
 
-        boolean validPageNumber = validateInputPageNumber(pageNumber);
-        if(!validPageNumber){
-            return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
+        if(!inputValidator.validateInputPageNumber(pageNumber)){
+            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
         }
 
         try {
@@ -121,14 +120,12 @@ public class AUMService {
 
     public RestResponse getAUMForAdvisor(Long advisorId, String previousDate, String currentDate, Integer pageNumber) {
 
-        boolean validDate = validateInputDate(previousDate, currentDate);
-        if (!validDate){
-            return RestResponse.error(DATE_VALIDATION_ERROR);
+        if (!inputValidator.validateInputDate(previousDate, currentDate)){
+            return RestResponse.error(ERROR_DATE_VALIDATION);
         }
 
-        boolean validPageNumber = validateInputPageNumber(pageNumber);
-        if(!validPageNumber){
-            return RestResponse.error(PAGE_NUMBER_VALIDATION_ERROR);
+        if(!inputValidator.validateInputPageNumber(pageNumber)){
+            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
         }
 
         try {
@@ -151,9 +148,9 @@ public class AUMService {
             aumForAdvisor.setCount(clientAUMList.size());
             return RestResponse.successWithoutMessage(aumForAdvisor);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error(ERROR_IN_GETTING_AUM + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs");
+            return RestResponse.error(ERROR_IN_GETTING_AUM);
         }
     }
 
@@ -166,13 +163,13 @@ public class AUMService {
         List<Object[]> positionsResultSet = null;
 
         switch (aumFor){
-            case "client":
+            case CLIENT:
                 positionsResultSet = aumRepository.findAUMsForClient(id, date);
                 break;
-            case "advisor":
+            case ADVISOR:
                 positionsResultSet = aumRepository.findAUMsForAdvisor(id, date);
                 break;
-            case "firm":
+            case FIRM:
                 positionsResultSet = aumRepository.findAUMsForFirm(id, date);
                 break;
             default:
@@ -210,27 +207,10 @@ public class AUMService {
             }
             return RestResponse.successWithoutMessage(aumDiffList);
         } catch (Exception e) {
-            log.error("Error in fetching AUMs" + e);
+            log.error(ERROR_IN_GETTING_AUM + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching AUMs");
+            return RestResponse.error(ERROR_IN_GETTING_AUM);
         }
-    }
-
-    public boolean validateInputDate(String previousDate, String currentDate){
-
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            sdf.parse(previousDate);
-            sdf.parse(currentDate);
-        } catch (Exception e){
-            log.error(DATE_VALIDATION_ERROR);
-            return false;
-        }
-        return true;
-    }
-
-    public boolean validateInputPageNumber(Integer pageNumber) {
-        return (pageNumber >= 0);
     }
 
     public List<String> getQuarterFirstDates(){
@@ -241,7 +221,7 @@ public class AUMService {
                         LocalDate.of(Calendar.getInstance().get(Calendar.YEAR),
                                      (Calendar.getInstance().get(Calendar.MONTH)+1),
                                       Calendar.getInstance().get(Calendar.DAY_OF_MONTH)))+1;
-        log.info("totalNumberOfQuarters ::: %s", totalNumberOfQuarters);
+        log.info("totalNumberOfQuarters ::: {}", totalNumberOfQuarters);
 
         LocalDate beginningYear = LocalDate.parse(START_YEAR + "-0" + START_MONTH + "-0" + START_DAY);
         LocalDate firstQuarter = beginningYear.with(firstDayOfYear());

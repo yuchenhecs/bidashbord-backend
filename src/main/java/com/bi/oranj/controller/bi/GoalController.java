@@ -8,29 +8,19 @@ import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.GoalService;
 import com.bi.oranj.utils.DateValidator;
-import com.bi.oranj.model.bi.GoalSummary;
 import com.bi.oranj.service.bi.*;
-import com.bi.oranj.model.bi.wrapper.User;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
 
-@Api(basePath = "/bi/goals", description = "Operations with BI DB", produces = "application/json")
 @RestController
 @CrossOrigin
 @RequestMapping("bi/goals")
 public class GoalController {
-
-    private final Logger logger = LoggerFactory.getLogger(GoalController.class);
 
     @Autowired
     FirmService firmService;

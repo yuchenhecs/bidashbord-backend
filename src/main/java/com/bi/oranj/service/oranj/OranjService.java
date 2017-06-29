@@ -1,9 +1,7 @@
 package com.bi.oranj.service.oranj;
 
-import com.bi.oranj.constant.Constants;
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
-import com.bi.oranj.model.oranj.OranjClient;
 import com.bi.oranj.model.oranj.OranjGoal;
 import com.bi.oranj.model.oranj.OranjPositions;
 import com.bi.oranj.repository.bi.*;
@@ -14,10 +12,8 @@ import com.bi.oranj.utils.DateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -29,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.*;
+
+import static com.bi.oranj.constant.Constants.ERROR_IN_GETTING_GOALS_FROM_ORANJ;
 
 @Service
 public class OranjService {
@@ -53,36 +51,28 @@ public class OranjService {
     private GoalRepository goalRepository;
 
     @Autowired
-    PositionRepository positionRepository;
-
-
-    @Autowired
-    OranjAUMRepository oranjAUMRepository;
-
+    private PositionRepository positionRepository;
 
     @Autowired
-    OranjPositionsHistoryRepository oranjPositionsHistoryRepository;
+    private OranjAUMRepository oranjAUMRepository;
 
     @Autowired
-    @Qualifier ("biEntityManager")
-    EntityManager entityManager;
+    private OranjPositionsHistoryRepository oranjPositionsHistoryRepository;
 
     @Autowired
-    OranjClientRepository oranjClientRepository;
+    private OranjClientRepository oranjClientRepository;
 
     @Autowired
-    OranjPositionsRepository oranjPositionsRepository;
+    private OranjPositionsRepository oranjPositionsRepository;
 
     @Autowired
-    OranjNetWorthRepository oranjNetWorthRepository;
-
-
-    @Autowired
-    public NetWorthRepository netWorthRepository;
-
+    private OranjNetWorthRepository oranjNetWorthRepository;
 
     @Autowired
-    DateValidator dateValidator;
+    private NetWorthRepository netWorthRepository;
+
+    @Autowired
+    private DateValidator dateValidator;
 
 
     public void fetchPositionsData () {
@@ -110,7 +100,7 @@ public class OranjService {
         if (!dateValidator.validate(date)) return;
 
         List<OranjPositions> positions = oranjPositionsHistoryRepository.fetchPositionsHistoryByDate(date);
-        if (positions.size() == 0) log.info("Empty data set for the given data -> {}", date);
+        if (positions.isEmpty()) log.info("Empty data set for the given data -> {}", date);
 
     }
 
@@ -144,57 +134,28 @@ public class OranjService {
                 posHis.add(positionHistory);
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("ParseException ::", e);
         }
         positionRepository.save(posHis);
     }
 
-    private void saveClients (List<OranjClient> clients){
-        for (OranjClient oranjClient : clients) {
-
-            Firm firm = new Firm();
-            firm.setId(oranjClient.getFirmId());
-            firm.setFirmName(oranjClient.getFirmName());
-            firmRepository.save(firm);
-
-            Advisor advisor = new Advisor();
-            advisor.setId(oranjClient.getAdvisorId());
-            advisor.setAdvisorFirstName(oranjClient.getAdvisorFirstName());
-            advisor.setAdvisorLastName(oranjClient.getAdvisorLastName());
-            advisor.setFirmId(oranjClient.getFirmId());
-            advisorRepository.save(advisor);
-
-            Client client = new Client();
-            client.setId(oranjClient.getId());
-            client.setClientFirstName(oranjClient.getClientFirstName());
-            client.setClientLastName(oranjClient.getClientLastName());
-            client.setAdvisorId(oranjClient.getAdvisorId());
-            client.setFirmId(oranjClient.getFirmId());
-            clientRepository.save(client);
-
-        }
-    }
-
     public RestResponse getGoals(String date){
 
-        String startDate = date + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
-        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
         try{
-            List<OranjGoal> oranjGoalList = oranjGoalRepository.FindByCreationDate(startDate, endDate);
+            List<OranjGoal> oranjGoalList = oranjGoalRepository.findByCreationDate(date);
             storeGoals(oranjGoalList);
         }catch (Exception e){
-            log.error("Error in fetching goals from Oranj." + e);
+            log.error(ERROR_IN_GETTING_GOALS_FROM_ORANJ, e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching Goals from Oranj DB");
+            return RestResponse.error(ERROR_IN_GETTING_GOALS_FROM_ORANJ);
         }
         return RestResponse.success("Goals created on " + date + " have been saved");
     }
 
     public RestResponse getGoalsTillDate(String date){
 
-        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
         try{
-            List<OranjGoal> oranjGoalList = oranjGoalRepository.FindGoalsTillDate(endDate);
+            List<OranjGoal> oranjGoalList = oranjGoalRepository.findGoalsTillDate(date);
             storeGoals(oranjGoalList);
         }catch (Exception e){
             log.error("Error in fetching goals from Oranj." + e);
@@ -240,14 +201,14 @@ public class OranjService {
                 goalRepository.save(biGoal);
             }
         }catch (Exception e){
-            log.error("Error in storing goals in BI DB" + e);
+            log.error("Error in storing goals in BI DB", e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
     public RestResponse getAllFirms(){
         try{
-            List<Object[]> oranjFirmList = oranjGoalRepository.FindAllFirms();
+            List<Object[]> oranjFirmList = oranjGoalRepository.findAllFirms();
             for (Object[] firmResultSet : oranjFirmList) {
                 Firm firm = new Firm();
                 firm.setId(Long.parseLong(firmResultSet[0].toString()));
@@ -265,7 +226,7 @@ public class OranjService {
 
     public RestResponse getAllAdvisors(){
         try{
-            List<Object[]> oranjAdvisorsList = oranjGoalRepository.FindAllAdvisors();
+            List<Object[]> oranjAdvisorsList = oranjGoalRepository.findAllAdvisors();
             for (Object[] advisorsResultSet : oranjAdvisorsList) {
                 Advisor advisor = new Advisor();
                 advisor.setId(Long.parseLong(advisorsResultSet[0].toString()));
@@ -285,7 +246,7 @@ public class OranjService {
 
     public RestResponse getAllClients(){
         try{
-            List<Object[]> oranjClientsList = oranjGoalRepository.FindAllClients();
+            List<Object[]> oranjClientsList = oranjGoalRepository.findAllClients();
             for (Object[] clientsResultSet : oranjClientsList) {
                 Client client = new Client();
                 client.setId(Long.parseLong(clientsResultSet[0].toString()));
@@ -297,7 +258,7 @@ public class OranjService {
                 client.setActive((Boolean) clientsResultSet[6]);
                 clientRepository.save(client);
             }
-            List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.FindAllClientsWhoAreAdvisors();
+            List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.findAllClientsWhoAreAdvisors();
             for (Object[] clientsResultSet : oranjClientsWhoAreAdvisorsList) {
                 Client client = new Client();
                 client.setId(Long.parseLong(clientsResultSet[0].toString()));
@@ -327,15 +288,10 @@ public class OranjService {
         return assetClasses.get(new Random().nextInt(assetClasses.size()));
     }
 
-
-
     public RestResponse getNetWorthTillDate(String date){
-        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
-
         try{
-            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.FindNetWorthTillDate(endDate);
+            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDate(date);
             storeNetWorth(oranjNetWorthList);
-            //throw new RuntimeException();
         }catch (Exception e){
             log.error("Error in fetching net worth from Oranj." + e);
             return RestResponse.error("Error in fetching net worth from Oranj DB. "+ e);
@@ -344,10 +300,8 @@ public class OranjService {
     }
 
     public RestResponse getNetWorth(String date){
-        String startDate = date + Constants.SPACE + Constants.START_SECOND_OF_THE_DAY;
-        String endDate = date + Constants.SPACE + Constants.LAST_SECOND_OF_THE_DAY;
         try{
-            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.FindByCreationDate(startDate, endDate);
+            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findByCreationDate(date);
             storeNetWorth(oranjNetWorthList);
         }catch (Exception e){
             log.error("Error in fetching goals from Oranj." + e);
@@ -368,7 +322,5 @@ public class OranjService {
             netWorth.setLiabilityValue(BigDecimal.valueOf((double)obj[5]));
             netWorthRepository.save(netWorth);
         }
-
     }
-
 }

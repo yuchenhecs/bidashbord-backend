@@ -2,7 +2,6 @@ package com.bi.oranj.controller.oranj;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.service.oranj.OranjService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +13,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Null;
 
-@Api(basePath = "/oranj", description = "Operations with Oranj DB", produces = "application/json")
+import static com.bi.oranj.constant.Constants.YEAR_MONTH_DAY_FORMAT;
+
 @RestController
 @RequestMapping(value = "/bi/oranj", produces=MediaType.APPLICATION_JSON_VALUE)
 public class OranjController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat(YEAR_MONTH_DAY_FORMAT);
 
     @Autowired
     OranjService oranjService;
@@ -43,7 +42,7 @@ public class OranjController {
     @ApiOperation(value = "Save All Goals from Oranj DB To BI DB", notes = "Saves all the goals created till today")
     @RequestMapping(path="/goals/migration", method = RequestMethod.GET)
     public RestResponse getGoalsTillDate() {
-        String date = today().toString();
+        String date = dateFormat.format(today());
         log.info("Fetching goals till {}", date);
         return oranjService.getGoalsTillDate(date);
     }
@@ -51,7 +50,7 @@ public class OranjController {
     public Date today() {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 0);
-        log.info(cal.getTime().toString());
+        log.info("Today's date {}",cal.getTime());
         return cal.getTime();
     }
 
@@ -64,8 +63,7 @@ public class OranjController {
             oranjService.fetchPositionsHistory(50);
             oranjService.fetchPositionsData();
         }catch (Exception ex){
-            log.error("Error while building initial data");
-            ex.printStackTrace();
+            log.error("Error while building initial data", ex);
         }
 
     }
@@ -80,7 +78,7 @@ public class OranjController {
     @ApiOperation(value = "Save All Advisors from Oranj DB To BI DB", notes = "Saves all the advisors created till today")
     @RequestMapping(path="/advisors", method = RequestMethod.GET)
     public RestResponse getAllAdvisors() {
-        log.info("Fetching All Firms From Oranj DB");
+        log.info("Fetching All Advisors From Oranj DB");
         return oranjService.getAllAdvisors();
     }
 
@@ -88,7 +86,7 @@ public class OranjController {
     @ApiOperation(value = "Save All Clients from Oranj DB To BI DB", notes = "Saves all the clients created till today")
     @RequestMapping(path="/clients", method = RequestMethod.GET)
     public RestResponse getAllClients() {
-        log.info("Fetching All Firms From Oranj DB");
+        log.info("Fetching All Clinets From Oranj DB");
         return oranjService.getAllClients();
     }
 
@@ -96,7 +94,7 @@ public class OranjController {
     @ApiOperation( value = "Save All Net Worth from Oranj DB To BI DB", notes = "Saves all the net worth till today")
     @RequestMapping (path = "/networth/migration", method = RequestMethod.GET)
     public RestResponse getNetworthTillDate (){
-        String date = today().toString();
+        String date = dateFormat.format(today());
         log.info("Fetching All Net Worth From Oranj DB");
         return oranjService.getNetWorthTillDate(date);
     }
@@ -104,7 +102,7 @@ public class OranjController {
     @ApiOperation(value = "Save Net Worth from Oranj DB to BI DB for given date", notes = "date should be in 'yyyy-MM-dd' format")
     @RequestMapping (path = "/networth", method = RequestMethod.GET)
     public RestResponse getNetworth (@RequestParam(value = "date", required = true) String date){
-        log.info("Fetching Net Worth From Oranj DB for "+ date);
+        log.info("Fetching Net Worth From Oranj DB for ", date);
         return oranjService.getNetWorth(date);
     }
 

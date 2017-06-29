@@ -12,15 +12,6 @@ import java.util.List;
  */
 public interface OranjPositionsHistoryRepository extends JpaRepository<OranjPositions, Integer> {
 
-
-//    @Query(value = "select id position_id, portfolio portfolio_id, ticker_name, asset_class, price, quantity, value amount, " +
-//            "insert_date creation_date, update_date updated_on from quovo_positions_history limit 0, :num", nativeQuery = true)
-//    List<Object[]> fetchPositionsHistoryWithLimit(@Param("num") Long num);
-
-//    @Query(value = "select id position_id, portfolio portfolio_id, ticker_name, asset_class, price, quantity, value amount, " +
-//            "insert_date creation_date, update_date updated_on from quovo_positions_history", nativeQuery = true)
-//    List<Object[]> fetchPositionsHistory();
-
     @Query(value = "select poshis.id position_id, poshis.portfolio portfolio_id, qport.oranj_user_id client_id, " +
             "poshis.ticker_name, poshis.asset_class, poshis.price, poshis.quantity, poshis.value amount, " +
             "poshis.insert_date creation_date, poshis.update_date updated_on from quovo_positions_history poshis " +

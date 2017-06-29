@@ -12,12 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -26,6 +24,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bi.oranj.constant.Constants.ERROR_IN_GETTING_NET_WORTH;
+import static com.bi.oranj.constant.Constants.YEAR_MONTH_DAY_FORMAT;
+
 /**
  * Created by robertyuan on 6/21/17.
  */
@@ -33,7 +34,7 @@ import java.util.List;
 public class NetWorthService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat(YEAR_MONTH_DAY_FORMAT);
     HttpServletResponse response;
 
     @Autowired
@@ -61,9 +62,9 @@ public class NetWorthService {
                 netWorthForAdmin.setFirmId(firmList.getContent().get(i).getId());
                 netWorthForAdmin.setName(firmList.getContent().get(i).getFirmName());
                 List<Object[]> netWorthCalc = networthRepository.findNetWorthForAdmin(firmList.getContent().get(i).getId());
-                log.info("netWorthCalc.length::: " + netWorthCalc);
+                log.info("netWorthCalc.length::: ", netWorthCalc);
                 for (Object[] resultSet : netWorthCalc) {
-                    log.info("resultSet.length::" + resultSet.length);
+                    log.info("resultSet.length:: ", resultSet.length);
                     if (resultSet[1] != null) {
                         netWorthForAdmin.setAbsNet((BigDecimal) resultSet[1]);
                         BigDecimal count = new BigDecimal((BigInteger) resultSet[0]);
@@ -77,9 +78,9 @@ public class NetWorthService {
             netWorthAdmin.setFirms(networthList);
             return RestResponse.successWithoutMessage(netWorthAdmin);
         } catch (Exception e) {
-            log.error("Error in fetching net worth" + e);
+            log.error(ERROR_IN_GETTING_NET_WORTH, e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching net worth");
+            return RestResponse.error(ERROR_IN_GETTING_NET_WORTH);
         }
     }
 
@@ -108,9 +109,9 @@ public class NetWorthService {
             netWorthFirm.setAdvisors(networthList);
             return RestResponse.successWithoutMessage(netWorthFirm);
         } catch (Exception e) {
-            log.error("Error in fetching net worth" + e);
+            log.error(ERROR_IN_GETTING_NET_WORTH, e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching net worth");
+            return RestResponse.error(ERROR_IN_GETTING_NET_WORTH);
         }
     }
 
@@ -151,9 +152,9 @@ public class NetWorthService {
             netWorthAdvisor.setClients(networthList);
             return RestResponse.successWithoutMessage(netWorthAdvisor);
         } catch (Exception e) {
-            log.error("Error in fetching net worth" + e);
+            log.error(ERROR_IN_GETTING_NET_WORTH, e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching net worth");
+            return RestResponse.error(ERROR_IN_GETTING_NET_WORTH);
         }
     }
 
@@ -189,9 +190,9 @@ public class NetWorthService {
             return RestResponse.successWithoutMessage(netWorthSummary);
 
         } catch (Exception e) {
-            log.error("Error in fetching net worth" + e);
+            log.error(ERROR_IN_GETTING_NET_WORTH, e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching net worth");
+            return RestResponse.error(ERROR_IN_GETTING_NET_WORTH);
         }
     }
 
@@ -209,7 +210,4 @@ public class NetWorthService {
 
         return monthList;
     }
-
 }
-
-//added files NetWorth/Admin/Firm/Advisor to replace the files NetWorth/Firms/Advisors/Clients to make it consistent within the networth feature

@@ -2,9 +2,12 @@ package com.bi.oranj.constant;
 
 public class ConstantQueries {
 
+    private ConstantQueries(){
+        throw new IllegalStateException("ConstantQueries class");
+    }
+
     public static final String GET_ALL_FIRMS_QUERY = "select id, name, created_on, active from firm";
 
-//    public static final String GET_ALL_ADVISORS_QUERY = "select ad.id, ad.first_name as advisorFirstName, ad.last_name as advisorLastName, ad.firm_id from advisor ad";
     public static final String GET_ALL_ADVISORS_QUERY = "select ad.id, ad.first_name as advisorFirstName, ad.last_name as advisorLastName, ad.firm_id, a.created, ad.active\n" +
                                                         "from advisor ad\n" +
                                                         "join auth_user a\n" +
@@ -36,7 +39,7 @@ public class ConstantQueries {
                                                                         "ON a.advisor_id = ad.id \n" +
                                                                     "inner join firm f " +
                                                                         "ON f.id = a.firm_id \n" +
-                                                                "where creation_date >= :start and creation_date <= :end";
+                                                                "where date(creation_date) IN (:date)";
 
     public static final String GET_GOALS_GROUPED_BY_TYPE = "select type as type, count(*) as count from BiGoal group by type";
 
@@ -52,15 +55,7 @@ public class ConstantQueries {
                                                                     "ON a.advisor_id = ad.id \n" +
                                                                 "inner join firm f " +
                                                                     "ON f.id = a.firm_id \n" +
-                                                            "where creation_date <= :end";
-
-
-
-    public static final String GET_CLIENT_AND_GOAL_INFO = "select client.id, client.first_name , client.last_name , " +
-            "client.advisor_id, client.firm_id , a.first_name  advisorFirstName, a.last_name  advisorLastName,f.name  firmNamefrom  auth_user client \n" +
-            " join advisor  aon a.id = client.advisor_id\n" +
-            " join firm f on f.id = client.firm_id \n" +
-            "where client.id = :id";
+                                                            "where date(creation_date) <= (:date)";
 
     public static final String GET_AUM_FOR_FIRM_QUERY = "select p.client_id as clientId, c.client_first_name, c.client_last_name, p.asset_class, sum(p.amount) as positionAmount, p.position_updated_on, f.id\n" +
             "from positions p\n" +
