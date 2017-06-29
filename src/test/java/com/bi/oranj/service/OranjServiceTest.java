@@ -30,7 +30,7 @@ public class OranjServiceTest {
 
     private ArrayList<Object[]> testData = new ArrayList();
 
-
+    @Autowired
     private OranjService netWorthService;
 
     private NetWorthRepository netWorthRepositoryMock;
