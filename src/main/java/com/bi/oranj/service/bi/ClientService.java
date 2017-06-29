@@ -26,18 +26,12 @@ public class ClientService extends GoalService{
 
 
     @Override
-    public int totalPages (long clientId){
-        return (int) Math.ceil(clientRepository.findDistinctByAdvisor(clientId) * 1d / pageSize) - 1;
-    }
-
-
-    @Override
     public GoalResponse buildResponse(int pageNum, long advisorId, HttpServletResponse response) {
-        int totalPages = totalPages(advisorId);
+        int totalClients = clientRepository.findDistinctByAdvisor(advisorId);
+        int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
 
         Collection<Client> clients = findGoals(advisorId, pageNum);
-        int totalClients = clientRepository.findDistinctByAdvisor(advisorId);
         int totalGoals = goalRepository.totalClientGoals(advisorId);
         GoalResponse goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -47,11 +41,11 @@ public class ClientService extends GoalService{
 
     @Override
     public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long advisorId, HttpServletResponse response){
-        int totalPages = totalPagesWithStartDate(advisorId, startDate);
+        int totalClients = clientRepository.findDistinctClientsWithStartDate(startDate, advisorId);
+        int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
 
         Collection<Client> clients = findGoalsWithStartDate(advisorId, startDate, pageNum);
-        int totalClients = clientRepository.findDistinctClientsWithStartDate(startDate, advisorId);
         int totalGoals = goalRepository.totalClientGoalsWithStartDate(startDate, advisorId);
         GoalResponse goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -61,13 +55,12 @@ public class ClientService extends GoalService{
 
     @Override
     public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long advisorId, HttpServletResponse response){
-        int totalPages = totalPagesWithStartDate(advisorId, endDate);
+        int totalClients = clientRepository.findDistinctClientsWithEndDate(endDate, advisorId);
+        int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
 
         Collection<Client> clients = findGoalsWithEndDate(advisorId, endDate, pageNum);
-        int totalClients = clientRepository.findDistinctClientsWithEndDate(endDate, advisorId);
         int totalGoals = goalRepository.totalClientGoalsWithEndDate(endDate, advisorId);
-
         GoalResponse goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
@@ -76,11 +69,11 @@ public class ClientService extends GoalService{
 
     @Override
     public GoalResponse buildResponseByDateBetween (String startDate, String endDate, int pageNum, long advisorId, HttpServletResponse response){
-        int totalPages = totalPagesByDateBetween(advisorId, startDate, endDate);
+        int totalClients = clientRepository.findDistinctClientsByDateBetween(startDate, endDate, advisorId);
+        int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
 
         Collection<Client> clients = findGoalsByDate(advisorId, startDate, endDate, pageNum);
-        int totalClients = clientRepository.findDistinctClientsByDateBetween(startDate, endDate, advisorId);
         int totalGoals = goalRepository.totalClientGoalsByDateBetween(startDate, endDate, advisorId);
         GoalResponse goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -182,6 +175,15 @@ public class ClientService extends GoalService{
     @Override
     public int totalPagesByDateBetween (long advisorId, String startDate, String endDate) {
         return (int) Math.ceil(clientRepository.findDistinctClientsByDateBetween(startDate, endDate, advisorId) * 1d / pageSize) - 1;
+    }
+
+    @Override
+    public int totalPages (long clientId){
+        return (int) Math.ceil(clientRepository.findDistinctByAdvisor(clientId) * 1d / pageSize) - 1;
+    }
+
+    public int totalPages (int totalClients){
+        return (int) Math.ceil(totalClients * 1d / pageSize) - 1;
     }
 
 }

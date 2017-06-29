@@ -22,6 +22,7 @@ public interface GoalRepository extends JpaRepository<BiGoal, Integer> {
 
     @Query(value = GET_GOALS_GROUPED_BY_TYPE)
     public List<Object[]> findGoalsGroupedByType();
+
     @Query(value = "SELECT count(id) FROM goals WHERE goal_creation_date >= :startDate' 00:00:00' ", nativeQuery = true)
     public Integer totalGoalsWithStartDate (@Param(value = "startDate") String startDate);
 

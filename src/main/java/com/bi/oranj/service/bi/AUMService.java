@@ -210,7 +210,7 @@ public class AUMService {
             }
             return RestResponse.successWithoutMessage(aumDiffList);
         } catch (Exception e) {
-            log.error("Error in fecthing AUMs" + e);
+            log.error("Error in fetching AUMs" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fetching AUMs");
         }

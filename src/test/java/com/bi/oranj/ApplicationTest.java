@@ -1,4 +1,4 @@
-package com.bi.oranj.controller;
+package com.bi.oranj;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

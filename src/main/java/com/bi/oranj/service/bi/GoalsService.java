@@ -33,7 +33,7 @@ public class GoalsService {
                 goalSummaryList.add(goalSummary);
             }
         }catch (Exception e){
-            log.error("Error in fecthing goals" + e);
+            log.error("Error in fetching goals" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Error in fecthing Goals");
         }
