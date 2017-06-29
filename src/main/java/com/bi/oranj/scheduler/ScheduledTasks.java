@@ -1,6 +1,5 @@
 package com.bi.oranj.scheduler;
 
-import com.bi.oranj.constant.Constants;
 import com.bi.oranj.service.oranj.OranjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,7 @@ public class ScheduledTasks {
     OranjService oranjService;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public Date yesterday() {
         final Calendar cal = Calendar.getInstance();
@@ -60,7 +59,12 @@ public class ScheduledTasks {
         log.info("Fetching 'Positions' DATA: DONE");
     }
 
-
-
+    @Scheduled(cron = "0 50 2 * * *")
+    public void triggerGetNetWorth (){
+        String yesterday = dateFormat.format(yesterday());
+        log.info("Fetching 'Net Worth' DATA");
+        oranjService.getNetWorth(yesterday);
+        log.info("Fetching 'Net Worth' DATA: DONE");
+    }
 
 }

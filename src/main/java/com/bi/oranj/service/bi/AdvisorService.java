@@ -1,11 +1,8 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.GoalResponse;
-import com.bi.oranj.model.bi.wrapper.user.Client;
-import com.bi.oranj.model.bi.wrapper.user.Firm;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
-import com.bi.oranj.model.bi.wrapper.User;
 import com.bi.oranj.model.bi.wrapper.user.Advisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
