@@ -173,8 +173,9 @@ public class GoalController {
                 return advisorService;
             case "clients":
                 return clientService;
+            default:
+                return null;
         }
-        return null;
     }
 
     @ApiOperation(value = "Get All Goals grouped by type", notes = "returns all goals grouped by type")

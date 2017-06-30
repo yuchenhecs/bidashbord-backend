@@ -42,9 +42,9 @@ public class BiAnalytics {
 
     public Map<Boolean, List<List<String>>> getResults(String startDate, String endDate, String dimensionName, Integer startIndex, Integer maxResults){
 
-        String dimensions = "ga:country, ga:pagePath, ga:" + dimensionName;
-        String metrics = "ga:sessions, ga:pageviews, ga:uniquePageviews, ga:timeOnPage, ga:exits, ga:entrances, ga:bounces, " +
-                        "ga:sessionDuration";
+        String dimensions = "ga:sessionDurationBucket, ga:" + dimensionName + ", ga:dateHourMinute";
+        String metrics = "ga:users";
+        String sortBy = "ga:" + dimensionName + ",ga:dateHourMinute";
         Map<Boolean, List<List<String>>> resultContainer = new HashMap<>();
 
         List<List<String>> rows = null;
@@ -53,7 +53,7 @@ public class BiAnalytics {
                 analytics = initializeAnalytics();
 
             String profile = getFirstProfileId();
-            GaData gaData = queryAPI(profile, startDate, endDate, metrics, dimensions, startIndex, maxResults);
+            GaData gaData = queryAPI(profile, startDate, endDate, metrics, dimensions, startIndex, maxResults, sortBy);
 
             if (gaData != null && !gaData.getRows().isEmpty()) {
                 rows = gaData.getRows();
@@ -152,11 +152,11 @@ public class BiAnalytics {
     }
 
     private GaData queryAPI(String profileId, String startDate, String endDate,
-                            String metrics, String dimensions, Integer startIndex, Integer maxResults) throws IOException {
+                            String metrics, String dimensions, Integer startIndex, Integer maxResults, String sortBy) throws IOException {
         return analytics.data().ga()
                 .get("ga:" + profileId, startDate, endDate, metrics)
                 .setDimensions(dimensions)
-//                .setSort("-ga:pageviews, ga:dimension4")
+                .setSort(sortBy)
 //                .setFilters("ga:dimension1==801")
                 .setOutput("json")
                 .setPrettyPrint(true)
