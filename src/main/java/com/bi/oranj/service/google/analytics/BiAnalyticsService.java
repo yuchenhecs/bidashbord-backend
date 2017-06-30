@@ -55,11 +55,11 @@ public class BiAnalyticsService {
 
         List<List<String>> resultsRaw = null;
         Map<Boolean, List<List<String>>> resultContainer = null;
-        List<List<String>> results = null;
+        List<List<String>> results = new ArrayList<>();;
 
         for (Map.Entry e : dimensions.entrySet()){
             ROLE_ID = roleRepository.getRoleId((String)e.getValue());
-            results = new ArrayList<>();
+
 
             for (int i = 1; i <= 30; i++){
                 cal.add(Calendar.DATE, oneDayDecrement);
@@ -78,10 +78,12 @@ public class BiAnalyticsService {
 
                     results.addAll(resultsRaw);
                     startIndex += maxResults;
+
                 } while (resultContainer.get(Boolean.TRUE) != null);
 
                 startIndex = -9999;
-                save(results, ROLE_ID, cal.getTime());
+                save(results, ROLE_ID);
+                results.clear();
             }
         }
     }
@@ -93,14 +95,14 @@ public class BiAnalyticsService {
         Long ROLE_ID = 0l;
 
         Map<Boolean, List<List<String>>> resultContainer = null;
-        List<List<String>> results = null;
+        List<List<String>> results = new ArrayList<>();
         List<List<String>> resultsRaw = null;
         List<Analytics> analyticsList = new ArrayList<>();
         int startIndex = -9999;
 
         for (Map.Entry e : dimensions.entrySet()){
             ROLE_ID = roleRepository.getRoleId((String)e.getValue());
-            results = new ArrayList<>();
+
             do{
                 resultContainer = biAnalytics.getResults(yesterday, yesterday, (String)e.getKey(),
                         startIndex + maxResults, maxResults);
@@ -118,16 +120,17 @@ public class BiAnalyticsService {
             }while (resultContainer.get(Boolean.TRUE) != null);
 
             startIndex = -9999;
-            analyticsList.addAll(save(results, ROLE_ID, cal.getTime()));
+            analyticsList.addAll(save(results, ROLE_ID));
+            results.clear();
         }
 
         return analyticsList.toString();
     }
 
-    private List<Analytics> save(List<List<String>> results, Long roleId, Date createdOn) {
+    private List<Analytics> save(List<List<String>> results, Long roleId) {
         Set<Long> clientIds = new TreeSet<>(); // ! this code only for test purposes, to create dummy data for given Ids
 
-        if (results == null) return null;
+        if (results == null) return Collections.emptyList();
 
         List<Analytics> analyticsList = new ArrayList<>();
 
@@ -144,7 +147,6 @@ public class BiAnalyticsService {
                 analytics.setClientId(currentId);
                 analytics.setSessionStartDate(convertToDate(sessionStart));
                 analytics.setRoleId(roleId);
-                analytics.setCreatedOn(createdOn);
                 analytics.setSessionDuration(Integer.parseInt(object.get(0)));
                 analyticsList.add(analytics);
 

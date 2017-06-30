@@ -32,6 +32,8 @@ public class DummyService {
     private DataFactory dataFactory = new DataFactory();
 
     public void createData (int numberOfFirms, int numberOfAdvisors, Set<Long> clientIds){
+        if (clientIds.size() == 0) return;
+
         Random random = new Random();
         List<Firm> firms = new ArrayList<>();
         List<Advisor> advisors = new ArrayList<>();
