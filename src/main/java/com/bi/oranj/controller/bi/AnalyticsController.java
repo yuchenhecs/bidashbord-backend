@@ -18,10 +18,11 @@ public class AnalyticsController {
     @Autowired
     BiAnalyticsService biAnalyticsService;
 
-//    @RequestMapping(path = "/initialize", method = RequestMethod.GET)
-//    public String fillInitialAnalyticsData (){
-//        return biAnalyticsService.getAnalyticsDataForYesterday();
-//    }
+    @RequestMapping(path = "/initialize", method = RequestMethod.GET)
+    public String fillInitialAnalyticsData (){
+        biAnalyticsService.getPreciseOneMonthAnalyticsDayBy();
+        return "Success";
+    }
 
     @RequestMapping(path = "/one-day-data", method = RequestMethod.GET)
     public String getDailyAnalytics (){
