@@ -18,11 +18,12 @@ VALUES
 
 DROP TABLE IF EXISTS `analytics`;
 CREATE TABLE `analytics` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `client_id` bigint(20) NOT NULL,
   `session_duration` int(10) NOT NULL,
   `session_start_date` datetime DEFAULT NULL,
   `role_id` bigint(20) NOT NULL,
+  `created_on` datetime NOT NULL,
   `inserted_on` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`client_id`) REFERENCES clients(`id`),

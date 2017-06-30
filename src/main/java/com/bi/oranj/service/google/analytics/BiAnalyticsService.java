@@ -3,6 +3,7 @@ package com.bi.oranj.service.google.analytics;
 import com.bi.oranj.model.bi.Analytics;
 import com.bi.oranj.repository.bi.AnalyticsRepository;
 import com.bi.oranj.repository.bi.RoleRepository;
+import com.bi.oranj.utils.DummyService;
 import com.bi.oranj.utils.google.analytics.BiAnalytics;
 import jdk.nashorn.internal.runtime.ECMAException;
 import org.slf4j.Logger;
@@ -30,9 +31,11 @@ public class BiAnalyticsService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private DummyService dummyService; // ! this code only for test purposes, to create dummy data for given Ids
+
     private final Logger logger = LoggerFactory.getLogger(BiAnalyticsService.class);
     private Long ROLE_ID = 0l;
-    private static final String YESTERDAY = "yesterday";
     private static final int maxResults = 10000;
     private static final SimpleDateFormat simpleDateFormatQuery = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat simpleDateFormatSave = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -45,18 +48,18 @@ public class BiAnalyticsService {
     }
 
 
-    public String getPreciseOneMonthAnalyticsDayBy (){
+    public void getPreciseOneMonthAnalyticsDayBy (){
         Calendar cal = GregorianCalendar.getInstance();
         int oneDayDecrement = -1;
         int startIndex = -9999;
 
+        List<List<String>> resultsRaw = null;
         Map<Boolean, List<List<String>>> resultContainer = null;
         List<List<String>> results = null;
-        List<Analytics> analyticsList = null;
 
         for (Map.Entry e : dimensions.entrySet()){
             if (ROLE_ID == null || ROLE_ID == 0)
-                ROLE_ID = roleRepository.getRoleId((String)e.getValue()).getId();
+                ROLE_ID = roleRepository.getRoleId((String)e.getValue());
 
             for (int i = 1; i <= 30; i++){
                 cal.add(Calendar.DATE, oneDayDecrement);
@@ -65,43 +68,66 @@ public class BiAnalyticsService {
                 do{
                     resultContainer = biAnalytics.getResults(oneDayDate, oneDayDate, (String)e.getKey(),
                             startIndex + maxResults, maxResults);
+                    resultsRaw = resultContainer.get(Boolean.TRUE) == null ? resultContainer.get(Boolean.FALSE) : resultContainer.get(Boolean.TRUE);
 
-                    results = resultContainer.get(Boolean.TRUE) == null ? resultContainer.get(Boolean.FALSE) : resultContainer.get(Boolean.TRUE);
-                    analyticsList.addAll(save(results, ROLE_ID));
+                    if (resultsRaw == null){
+                        logger.error(String.format("There is no data for the give date - %s in Google Analytics" +
+                                " for %s metrics", oneDayDate, (String)e.getValue()));
+                        continue;
+                    }
+
+                    results.addAll(resultsRaw);
                     startIndex += maxResults;
                 } while (resultContainer.get(Boolean.TRUE) != null);
 
+                startIndex = -9999;
+                save(results, ROLE_ID, cal.getTime());
             }
         }
-
-        return analyticsList.toString();
     }
 
     public String getAnalyticsDataForYesterday (){
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String yesterday = simpleDateFormatQuery.format(cal.getTime());
+
         Map<Boolean, List<List<String>>> resultContainer = null;
-        List<List<String>> results = null;
-        List<Analytics> analyticsList = null;
+        List<List<String>> results = new ArrayList<>();
+        List<List<String>> resultsRaw = null;
+        List<Analytics> analyticsList = new ArrayList<>();
         int startIndex = -9999;
 
         for (Map.Entry e : dimensions.entrySet()){
             if (ROLE_ID == null || ROLE_ID == 0)
-                ROLE_ID = roleRepository.getRoleId((String)e.getValue()).getId();
+                ROLE_ID = roleRepository.getRoleId((String)e.getValue());
 
             do{
-                resultContainer = biAnalytics.getResults(YESTERDAY, YESTERDAY, (String)e.getKey(),
+                resultContainer = biAnalytics.getResults(yesterday, yesterday, (String)e.getKey(),
                         startIndex + maxResults, maxResults);
 
-                results = resultContainer.get(Boolean.TRUE) == null ? resultContainer.get(Boolean.FALSE) : resultContainer.get(Boolean.TRUE);
-                analyticsList.addAll(save(results, ROLE_ID));
+                resultsRaw = resultContainer.get(Boolean.TRUE) == null ? resultContainer.get(Boolean.FALSE) : resultContainer.get(Boolean.TRUE);
+
+                if (resultsRaw == null){
+                    logger.error(String.format("There is no data for the give date - %s in Google Analytics" +
+                            " for %s metrics", yesterday, (String)e.getValue()));
+                    continue;
+                }
+
+                results.addAll(resultsRaw);
                 startIndex += maxResults;
             }while (resultContainer.get(Boolean.TRUE) != null);
 
+            startIndex = -9999;
+            analyticsList.addAll(save(results, ROLE_ID, cal.getTime()));
         }
 
         return analyticsList.toString();
     }
 
-    private List<Analytics> save(List<List<String>> results, Long roleId) {
+    private List<Analytics> save(List<List<String>> results, Long roleId, Date createdOn) {
+        Set<Long> clientIds = new TreeSet<>(); // ! this code only for test purposes, to create dummy data for given Ids
+
+        if (results == null) return null;
 
         List<Analytics> analyticsList = new ArrayList<>();
 
@@ -111,11 +137,15 @@ public class BiAnalyticsService {
             Long currentId = Long.valueOf(object.get(1));
             Long sessionStart = Long.valueOf(results.get(0).get(2));
 
+            clientIds.add(currentId);   // ! this code only for test purposes, to create dummy data for given Ids
+
             if (previousId == 0 || previousId != currentId || (previousId == currentId && sessionStart >= previousSessionStart)){
                 Analytics analytics = new Analytics();
                 analytics.setClientId(currentId);
                 analytics.setSessionStartDate(convertToDate(sessionStart));
                 analytics.setRoleId(roleId);
+                analytics.setCreatedOn(createdOn);
+                analytics.setSessionDuration(Integer.parseInt(object.get(0)));
                 analyticsList.add(analytics);
 
                 previousId = currentId;
@@ -123,10 +153,13 @@ public class BiAnalyticsService {
             }
         }
 
+        dummyService.createData(8, 13, clientIds); // ! this code only for test purposes, to create dummy data for given Ids
+
+
         try {
             analyticsRepository.save(analyticsList);
         }catch (Exception e){
-            logger.error("Error occured while saving analytics data");
+            logger.error("Error occured while saving analytics data", e);
         }
 
         return analyticsList;
@@ -152,5 +185,6 @@ public class BiAnalyticsService {
 
         return date;
     }
+
 
 }

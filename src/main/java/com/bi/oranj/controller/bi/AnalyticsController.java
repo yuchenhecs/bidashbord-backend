@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("bi/analytics")
-public class AnalyticsTESTController {
+public class AnalyticsController {
 
     @Autowired
     BiAnalyticsService biAnalyticsService;
 
-    @RequestMapping(path = "/initialize", method = RequestMethod.POST)
-    public String fillInitialAnalyticsData (){
-        return biAnalyticsService.getThirtyDaysAnalyticsData();
-    }
+//    @RequestMapping(path = "/initialize", method = RequestMethod.GET)
+//    public String fillInitialAnalyticsData (){
+//        return biAnalyticsService.getAnalyticsDataForYesterday();
+//    }
 
-    @RequestMapping(path = "/one-day-data", method = RequestMethod.POST)
+    @RequestMapping(path = "/one-day-data", method = RequestMethod.GET)
     public String getDailyAnalytics (){
-        return "";
+        return biAnalyticsService.getAnalyticsDataForYesterday();
     }
 
 }
