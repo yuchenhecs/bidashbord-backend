@@ -17,4 +17,6 @@ public interface OranjPositionsRepository extends JpaRepository<OranjPositions, 
             "join quovo_positions qpos on qport.id = qpos.portfolio where oranj_user_id is not null", nativeQuery = true)
     List<Object[]> fetchPositionsData ();
 
+
+
 }

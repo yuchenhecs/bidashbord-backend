@@ -162,26 +162,6 @@ public class ClientService extends GoalService{
         return linkedHashMap.values();
     }
 
-    @Override
-    public int totalPagesWithStartDate (long advisorId, String startDate) {
-        return (int) Math.ceil(clientRepository.findDistinctClientsWithStartDate(startDate, advisorId) * 1d / pageSize) - 1;
-    }
-
-    @Override
-    public int totalPagesWithEndDate (long advisorId, String endDate) {
-        return (int) Math.ceil(clientRepository.findDistinctClientsWithEndDate(endDate, advisorId) * 1d / pageSize) - 1;
-    }
-
-    @Override
-    public int totalPagesByDateBetween (long advisorId, String startDate, String endDate) {
-        return (int) Math.ceil(clientRepository.findDistinctClientsByDateBetween(startDate, endDate, advisorId) * 1d / pageSize) - 1;
-    }
-
-    @Override
-    public int totalPages (long clientId){
-        return (int) Math.ceil(clientRepository.findDistinctByAdvisor(clientId) * 1d / pageSize) - 1;
-    }
-
     public int totalPages (int totalClients){
         return (int) Math.ceil(totalClients * 1d / pageSize) - 1;
     }

@@ -8,8 +8,11 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AUMForFirm extends BaseData {
+public class LoginMetricsForAdmin extends BaseData {
 
-    private long totalAdvisors;
-    private List<AdvisorAUM> advisors = new ArrayList<>();
+    private long totalFirms;
+    private List<FirmAUM> firms = new ArrayList<>();
+
+    public LoginMetricsForAdmin(){
+    }
 }

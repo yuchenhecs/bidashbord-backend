@@ -168,12 +168,10 @@ public class FirmService extends GoalService{
         return (int) Math.ceil(firmRepository.findDistinctFirmsWithStartDate(startDate) * 1d / pageSize) - 1;
     }
 
-    @Override
     public int totalPagesWithEndDate (long userId, String endDate) {
         return (int) Math.ceil(firmRepository.findDistinctFirmsWithEndDate(endDate) * 1d / pageSize) - 1;
     }
 
-    @Override
     public int totalPagesByDateBetween (long userId, String startDate, String endDate) {
         return (int) Math.ceil(firmRepository.findDistinctFirmsByDateBetween(startDate, endDate) * 1d / pageSize) - 1;
     }

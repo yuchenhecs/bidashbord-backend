@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class RestResponse implements Map<String, Object>, BIResponse {
+public class RestResponse implements Map<String, Object>{
 
 	public static final String EMPTY = "";
 

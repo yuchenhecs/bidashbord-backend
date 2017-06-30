@@ -9,3 +9,4 @@
 .oranj-bi-logfile.log
 *.log
 catalina.home_IS_UNDEFINED
+bi-key.p12

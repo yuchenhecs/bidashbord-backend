@@ -1,6 +1,5 @@
 package com.bi.oranj.model.bi;
 
-import com.bi.oranj.controller.bi.resp.BIResponse;
 import com.bi.oranj.serializer.GoalResponseSerializer;
 import com.bi.oranj.model.bi.wrapper.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,7 +9,7 @@ import java.util.Collection;
 
 @JsonSerialize(using = GoalResponseSerializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GoalResponse implements BIResponse{
+public class GoalResponse{
 
     private int totalGoals;
     private int totalUsers;

@@ -5,9 +5,6 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BaseAum {
+public class FirmLoginMetrics {
 
-    private boolean hasNext;
-    private int page;
-    private int count;
 }

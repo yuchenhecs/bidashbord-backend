@@ -1,4 +1,4 @@
-package com.bi.oranj.utils;
+package com.bi.oranj.utils.date;
 
 import org.springframework.stereotype.Component;
 

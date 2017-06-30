@@ -244,52 +244,5 @@ public class AdvisorService extends GoalService{
         return (int) Math.ceil(totalAdvisors * 1d / pageSize) - 1;
     }
 
-    /**
-     * returns the number of pages
-     * for requests with start date
-     * @param firmId
-     * @param startDate
-     * @return
-     */
-    @Override
-    public int totalPagesWithStartDate (long firmId, String startDate) {
-        return (int) Math.ceil(advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId) * 1d / pageSize) - 1;
-    }
-
-    /**
-     * returns the number of pages
-     * for requests with end date
-     * @param firmId
-     * @param endDate
-     * @return
-     */
-    @Override
-    public int totalPagesWithEndDate (long firmId, String endDate) {
-        return (int) Math.ceil(advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId) * 1d / pageSize) - 1;
-    }
-
-    /**
-     * returns the number of pages
-     * for requests with end date
-     * @param firmId
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    @Override
-    public int totalPagesByDateBetween (long firmId, String startDate, String endDate) {
-        return (int) Math.ceil(advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId) * 1d / pageSize) - 1;
-    }
-
-    /**
-     * returns the number of pages available in database
-     * @param firmId
-     * @return
-     */
-    @Override
-    public int totalPages (long firmId){
-        return (int) Math.ceil(advisorRepository.findDistinctByFirm(firmId) * 1d / pageSize) - 1;
-    }
-
 
 }
