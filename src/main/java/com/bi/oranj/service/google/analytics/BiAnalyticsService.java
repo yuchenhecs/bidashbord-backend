@@ -35,7 +35,6 @@ public class BiAnalyticsService {
     private DummyService dummyService; // ! this code only for test purposes, to create dummy data for given Ids
 
     private final Logger logger = LoggerFactory.getLogger(BiAnalyticsService.class);
-    private Long ROLE_ID = 0l;
     private static final int maxResults = 10000;
     private static final SimpleDateFormat simpleDateFormatQuery = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat simpleDateFormatSave = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -52,14 +51,15 @@ public class BiAnalyticsService {
         Calendar cal = GregorianCalendar.getInstance();
         int oneDayDecrement = -1;
         int startIndex = -9999;
+        Long ROLE_ID = 0l;
 
         List<List<String>> resultsRaw = null;
         Map<Boolean, List<List<String>>> resultContainer = null;
         List<List<String>> results = null;
 
         for (Map.Entry e : dimensions.entrySet()){
-            if (ROLE_ID == null || ROLE_ID == 0)
-                ROLE_ID = roleRepository.getRoleId((String)e.getValue());
+            ROLE_ID = roleRepository.getRoleId((String)e.getValue());
+            results = new ArrayList<>();
 
             for (int i = 1; i <= 30; i++){
                 cal.add(Calendar.DATE, oneDayDecrement);
@@ -90,17 +90,17 @@ public class BiAnalyticsService {
         Calendar cal = GregorianCalendar.getInstance();
         cal.add(Calendar.DATE, -1);
         String yesterday = simpleDateFormatQuery.format(cal.getTime());
+        Long ROLE_ID = 0l;
 
         Map<Boolean, List<List<String>>> resultContainer = null;
-        List<List<String>> results = new ArrayList<>();
+        List<List<String>> results = null;
         List<List<String>> resultsRaw = null;
         List<Analytics> analyticsList = new ArrayList<>();
         int startIndex = -9999;
 
         for (Map.Entry e : dimensions.entrySet()){
-            if (ROLE_ID == null || ROLE_ID == 0)
-                ROLE_ID = roleRepository.getRoleId((String)e.getValue());
-
+            ROLE_ID = roleRepository.getRoleId((String)e.getValue());
+            results = new ArrayList<>();
             do{
                 resultContainer = biAnalytics.getResults(yesterday, yesterday, (String)e.getKey(),
                         startIndex + maxResults, maxResults);
@@ -135,11 +135,11 @@ public class BiAnalyticsService {
         Long previousSessionStart = 0l;
         for (List<String> object : results){
             Long currentId = Long.valueOf(object.get(1));
-            Long sessionStart = Long.valueOf(results.get(0).get(2));
+            Long sessionStart = Long.valueOf(object.get(2));
 
             clientIds.add(currentId);   // ! this code only for test purposes, to create dummy data for given Ids
 
-            if (previousId == 0 || previousId != currentId || (previousId == currentId && sessionStart >= previousSessionStart)){
+            if ((previousId == 0) || (!previousId.equals(currentId)) || (previousId.equals(currentId) && sessionStart >= previousSessionStart)){
                 Analytics analytics = new Analytics();
                 analytics.setClientId(currentId);
                 analytics.setSessionStartDate(convertToDate(sessionStart));
