@@ -8,8 +8,9 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoginMetricsForAdmin extends BaseData {
+public class LoginMetricsForFirm extends BaseData {
 
-    private long totalFirms;
-    private List<FirmLoginMetrics> firms = new ArrayList<>();
+    private long totalAdvisors;
+    private List<AdvisorLoginMetrics> advisors = new ArrayList<>();
+
 }

@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.bi.oranj.constant.Constants.YEAR_MONTH_DAY_FORMAT;
+
 @Component
 public class ScheduledTasks {
 
@@ -18,7 +20,7 @@ public class ScheduledTasks {
     OranjService oranjService;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat(YEAR_MONTH_DAY_FORMAT);
 
     public Date yesterday() {
         final Calendar cal = Calendar.getInstance();

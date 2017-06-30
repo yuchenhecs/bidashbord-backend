@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FirmLoginMetrics extends BaseLoginMetrics {
+public class AdvisorLoginMetrics extends BaseLoginMetrics {
 
-    private Long firmId;
+    private Long advisorId;
 }
