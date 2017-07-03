@@ -109,5 +109,14 @@ public class ConstantQueries {
             "ON r.id = a.role_id\n" +
             "where c.advisor_id = :advisor and r.id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
             "group by a.client_id";
+
+    public static final String GET_LOGIN_METRICS_FOR_ADVISOR_QUERY = "select count(*) as totalLogins, client_id, sum(session_duration)\n" +
+            "from analytics a\n" +
+            "join clients c\n" +
+            "ON a.client_id = c.id\n" +
+            "join roles r\n" +
+            "ON r.id = a.role_id\n" +
+            "where c.id = :client and r.id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
+            "group by a.client_id";
 }
 

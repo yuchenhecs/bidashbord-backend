@@ -31,4 +31,13 @@ public class LoginMetricsController {
         return loginMetricsService.getLoginMetricsForFirm(firmId, pageNumber, user, range);
     }
 
+    @ApiOperation(value = "Get Login Metrics for Firm", notes = "returns Login Metrics for Firm Admin")
+    @RequestMapping(path="/clients", method = RequestMethod.GET)
+    public RestResponse getLoginMetricsForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId,
+                                               @RequestParam(value = "page", required = true) Integer pageNumber,
+                                               @RequestParam(value = "user", required = true) String user,
+                                               @RequestParam(value = "range", required = true) String range) {
+        return loginMetricsService.getLoginMetricsForAdvisor(advisorId, pageNumber, user, range);
+    }
+
 }

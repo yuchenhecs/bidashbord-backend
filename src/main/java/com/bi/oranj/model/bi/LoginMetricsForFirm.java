@@ -10,6 +10,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginMetricsForFirm extends BaseData {
 
+    private String unit;
     private long totalAdvisors;
     private List<AdvisorLoginMetrics> advisors = new ArrayList<>();
 

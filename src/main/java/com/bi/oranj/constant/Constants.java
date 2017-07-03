@@ -16,6 +16,7 @@ public class Constants {
     public static final String PROSPECT = "prospect";
     public static final String WEEK = "week";
     public static final String MONTH = "month";
+    public static final String MINUTE = "minute";
 
     public static final String ERROR_DATE_VALIDATION = "Date should be in 'yyyy-MM-dd' format";
     public static final String ERROR_USER_TYPE_VALIDATION = "'user' should be either 'prospect' or 'client'";

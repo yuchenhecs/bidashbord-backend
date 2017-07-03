@@ -4,6 +4,7 @@ import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.AnalyticsRepository;
+import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.utils.InputValidator;
 import org.slf4j.Logger;
@@ -22,7 +23,6 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static com.bi.oranj.constant.Constants.*;
@@ -46,6 +46,9 @@ public class LoginMetricsService {
 
     @Autowired
     private AnalyticsRepository analyticsRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     public RestResponse getLoginMetricsForAdmin(Integer pageNumber, String user, String range){
 
@@ -80,6 +83,7 @@ public class LoginMetricsService {
                 getLoginStats(firmLoginMetrics, roleId, dateRange.get(1), dateRange.get(0));
                 firmLoginMetricsList.add(firmLoginMetrics);
             }
+            loginMetricsForAdmin.setUnit(MINUTE);
             loginMetricsForAdmin.setFirms(firmLoginMetricsList);
             loginMetricsForAdmin.setTotalFirms(firmList.getTotalElements());
             loginMetricsForAdmin.setHasNext(firmList.hasNext());
@@ -126,12 +130,60 @@ public class LoginMetricsService {
                 getLoginStats(advisorLoginMetrics, roleId, dateRange.get(1), dateRange.get(0));
                 advisorLoginMetricsList.add(advisorLoginMetrics);
             }
+            loginMetricsForFirm.setUnit(MINUTE);
             loginMetricsForFirm.setAdvisors(advisorLoginMetricsList);
             loginMetricsForFirm.setTotalAdvisors(advisorList.getTotalElements());
             loginMetricsForFirm.setHasNext(advisorList.hasNext());
             loginMetricsForFirm.setPage(pageNumber);
             loginMetricsForFirm.setCount(advisorLoginMetricsList.size());
             return RestResponse.successWithoutMessage(loginMetricsForFirm);
+        } catch (Exception e) {
+            log.error(ERROR_IN_GETTING_AUM + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error(ERROR_IN_GETTING_AUM);
+        }
+    }
+
+    public RestResponse getLoginMetricsForAdvisor(Long advisorId, Integer pageNumber, String user, String range){
+
+        List<String> dateRange = new ArrayList<>();
+        Long roleId;
+
+        if (!inputValidator.validateInputPageNumber(pageNumber)) {
+            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
+        }
+
+        if (!inputValidator.validateInputUserType(user)) {
+            return RestResponse.error(ERROR_USER_TYPE_VALIDATION);
+        } else {
+            roleId = getRoleId(user);
+        }
+
+        if (!inputValidator.validateInputRangeType(range)) {
+            return RestResponse.error(ERROR_RANGE_TYPE_VALIDATION);
+        } else {
+            dateRange = getDates(dateRange, range);
+        }
+
+        try {
+            LoginMetricsForAdvisor loginMetricsForAdvisor = new LoginMetricsForAdvisor();
+            List<ClientLoginMetrics> clientLoginMetricsList = new ArrayList<>();
+            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
+            for (int i=0; i<clientList.getContent().size(); i++){
+
+                ClientLoginMetrics clientLoginMetrics = new ClientLoginMetrics();
+                clientLoginMetrics.setClientId(clientList.getContent().get(i).getId());
+                clientLoginMetrics.setName(clientList.getContent().get(i).getClientFirstName() + " " + clientList.getContent().get(i).getClientLastName());
+                getLoginStats(clientLoginMetrics, roleId, dateRange.get(1), dateRange.get(0));
+                clientLoginMetricsList.add(clientLoginMetrics);
+            }
+            loginMetricsForAdvisor.setUnit(MINUTE);
+            loginMetricsForAdvisor.setClients(clientLoginMetricsList);
+            loginMetricsForAdvisor.setTotalClients(clientList.getTotalElements());
+            loginMetricsForAdvisor.setHasNext(clientList.hasNext());
+            loginMetricsForAdvisor.setPage(pageNumber);
+            loginMetricsForAdvisor.setCount(clientLoginMetricsList.size());
+            return RestResponse.successWithoutMessage(loginMetricsForAdvisor);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -180,6 +232,28 @@ public class LoginMetricsService {
             advisorLoginMetrics.setAvgSessionTime(totalSessionTime);
         }else {
             advisorLoginMetrics.setAvgSessionTime(totalSessionTime
+                    .divide(new BigDecimal(totalLogins), 2, RoundingMode.HALF_UP)
+                    .divide(new BigDecimal(60), 2, RoundingMode.HALF_UP));
+        }
+    }
+
+    public void getLoginStats(ClientLoginMetrics clientLoginMetrics, Long roleId, String startDate, String endDate){
+
+        BigInteger totalLogins = BigInteger.valueOf(0);
+        Long uniqueLogins = 0l;
+        BigDecimal totalSessionTime = BigDecimal.valueOf(0.0);
+        List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsForClient(clientLoginMetrics.getClientId(), roleId, startDate, endDate);
+        for (Object[] resultSet : loginMetricsResultSet){
+            totalLogins = totalLogins.add((BigInteger) resultSet[0]);
+            uniqueLogins = uniqueLogins + 1;
+            totalSessionTime = totalSessionTime.add((BigDecimal) resultSet[2]);
+        }
+        clientLoginMetrics.setTotalLogins(totalLogins);
+        clientLoginMetrics.setUniqueLogins(uniqueLogins);
+        if(totalLogins.compareTo(BigInteger.ZERO) == 0){
+            clientLoginMetrics.setAvgSessionTime(totalSessionTime);
+        }else {
+            clientLoginMetrics.setAvgSessionTime(totalSessionTime
                     .divide(new BigDecimal(totalLogins), 2, RoundingMode.HALF_UP)
                     .divide(new BigDecimal(60), 2, RoundingMode.HALF_UP));
         }
