@@ -11,6 +11,9 @@ import org.fluttercode.datafactory.impl.DataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -31,7 +34,7 @@ public class DummyService {
 
     private DataFactory dataFactory = new DataFactory();
 
-    public void createData (int numberOfFirms, int numberOfAdvisors, Set<Long> clientIds){
+    public void createData (int numberOfFirms, int numberOfAdvisors, Set<Long> clientIds) throws ParseException {
         if (clientIds.isEmpty()) return;
 
         Random random = new Random();
@@ -39,11 +42,16 @@ public class DummyService {
         List<Advisor> advisors = new ArrayList<>();
         List<Client> clients = new ArrayList<>();
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = "2016-01-01";
+        String endDate = "2017-06-20";
+
         for (int i = 0; i < numberOfFirms; i++){
             Firm firm = new Firm();
             firm.setId(Long.valueOf(dataFactory.getNumberBetween(1, 4000)));
             firm.setFirmName(dataFactory.getRandomWord());
             firm.setActive(true);
+            firm.setCreatedOn(new Timestamp(dataFactory.getDateBetween(simpleDateFormat.parse(startDate), simpleDateFormat.parse(endDate)).getTime()));
             firms.add(firm);
         }
         firmRepository.save(firms);
@@ -54,6 +62,7 @@ public class DummyService {
             advisor.setAdvisorFirstName(dataFactory.getFirstName());
             advisor.setAdvisorLastName(dataFactory.getLastName());
             advisor.setFirmId(firms.get(random.nextInt(firms.size())).getId());
+            advisor.setCreatedOn(new Timestamp(dataFactory.getDateBetween(simpleDateFormat.parse(startDate), simpleDateFormat.parse(endDate)).getTime()));
             advisor.setActive(true);
             advisors.add(advisor);
         }
@@ -66,6 +75,7 @@ public class DummyService {
             client.setClientLastName(dataFactory.getLastName());
             client.setAdvisorId(advisors.get(random.nextInt(advisors.size())).getId());
             client.setFirmId(firms.get(random.nextInt(firms.size())).getId());
+            client.setCreatedOn(new Timestamp(dataFactory.getDateBetween(simpleDateFormat.parse(startDate), simpleDateFormat.parse(endDate)).getTime()));
             client.setActive(true);
             clients.add(client);
         }
