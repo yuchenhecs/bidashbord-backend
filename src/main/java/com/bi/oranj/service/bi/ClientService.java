@@ -162,7 +162,7 @@ public class ClientService extends GoalService{
         return linkedHashMap.values();
     }
 
-    public int totalPages (int totalClients){
+    private int totalPages (int totalClients){
         return (int) Math.ceil(totalClients * 1d / pageSize) - 1;
     }
 

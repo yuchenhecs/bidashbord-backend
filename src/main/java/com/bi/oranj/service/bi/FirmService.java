@@ -24,7 +24,6 @@ public class FirmService extends GoalService{
     private Integer pageSize;
 
 
-
     @Override
     public Goal buildResponse(int pageNum, long userId, HttpServletResponse response) {
         int totalFirms = firmRepository.findDistinctFromFirm();
@@ -155,8 +154,7 @@ public class FirmService extends GoalService{
         return goal;
     }
 
-
-    public int totalPages (int totalFirms){
+    private int totalPages (int totalFirms){
         return (int) Math.ceil( totalFirms * 1d / pageSize) - 1;
     }
 }

@@ -240,9 +240,7 @@ public class AdvisorService extends GoalService{
         return linkedHashMap.values();
     }
 
-    public int totalPages (int totalAdvisors){
+    private int totalPages (int totalAdvisors){
         return (int) Math.ceil(totalAdvisors * 1d / pageSize) - 1;
     }
-
-
 }
