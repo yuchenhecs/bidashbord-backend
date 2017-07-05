@@ -1,7 +1,7 @@
 package com.bi.oranj.controller.bi;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
-import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.service.bi.AdvisorService;
 import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
@@ -106,7 +106,7 @@ public class GoalController {
 
     private RestResponse requestByDateBetween(GoalService goalService, int pageNum, long userId,
                                          HttpServletResponse response, String startDate, String endDate) throws IOException {
-        GoalResponse goals;
+        Goal goals;
         try{
             goals = goalService.buildResponseByDateBetween(startDate, endDate, pageNum, userId, response);
         }catch (Exception ex){
@@ -119,7 +119,7 @@ public class GoalController {
 
     private RestResponse requestWithEndDate (GoalService goalService, int pageNum, long userId,
                                              HttpServletResponse response, String endDate) throws IOException {
-        GoalResponse goals;
+        Goal goals;
         try{
             goals = goalService.buildResponseWithEndDate(endDate, pageNum, userId, response);
         }catch (Exception ex){
@@ -132,7 +132,7 @@ public class GoalController {
 
     private RestResponse requestWithStartDate (GoalService goalService, int pageNum, long userId,
                                              HttpServletResponse response, String startDate) throws IOException {
-        GoalResponse goals;
+        Goal goals;
         try{
             goals = goalService.buildResponseWithStartDate(startDate, pageNum, userId, response);
         }catch (Exception ex){
@@ -146,7 +146,7 @@ public class GoalController {
 
     private RestResponse requestDefault (GoalService goalService, int pageNum, long userId,
                                          HttpServletResponse response) throws IOException {
-        GoalResponse goals;
+        Goal goals;
         try{
             goals = goalService.buildResponse(pageNum, userId, response);
         }catch (Exception ex){

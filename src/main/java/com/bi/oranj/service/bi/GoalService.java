@@ -1,29 +1,27 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.model.bi.GoalResponse;
-import com.bi.oranj.model.bi.wrapper.User;
+import com.bi.oranj.model.bi.Goal;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 
 /**
  * Created by jaloliddinbakirov on 5/30/17.
  */
 public abstract class GoalService {
 
-    public GoalResponse buildResponseByDateBetween(String startDate, String endDate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseByDateBetween(String startDate, String endDate, int pageNum, long userId, HttpServletResponse response){
         return null;
     }
 
-    public GoalResponse buildResponseWithStartDate (String startdate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseWithStartDate (String startdate, int pageNum, long userId, HttpServletResponse response){
         return null;
     }
 
-    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseWithEndDate (String endDate, int pageNum, long userId, HttpServletResponse response){
         return null;
     }
 
-    public GoalResponse buildResponse (int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponse (int pageNum, long userId, HttpServletResponse response){
         return null;
     }
 }
