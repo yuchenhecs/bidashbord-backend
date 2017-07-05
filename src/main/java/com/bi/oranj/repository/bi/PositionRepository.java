@@ -11,5 +11,5 @@ public interface PositionRepository extends JpaRepository <Position, Integer>{
     public Integer isExist (@Param(value = "date") String date);
 
     @Query(value = "DELETE FROM positions WHERE position_updated_on >= :date", nativeQuery = true)
-    public void deleteAllBeforeDate (@Param("date") String date);
+    public void deleteAllAfterDate (@Param("date") String date);
 }

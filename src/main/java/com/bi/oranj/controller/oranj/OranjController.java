@@ -60,7 +60,7 @@ public class OranjController {
     public void buildData (HttpServletResponse response){
         log.info("Building initial data");
         try{
-            oranjService.fetchPositionsHistory(50);
+            oranjService.fetchPositionsHistory(2000);
             oranjService.fetchPositionsData();
         }catch (Exception ex){
             log.error("Error while building initial data", ex);
