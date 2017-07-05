@@ -32,6 +32,8 @@ public class DummyService {
     private DataFactory dataFactory = new DataFactory();
 
     public void createData (int numberOfFirms, int numberOfAdvisors, Set<Long> clientIds){
+        if (clientIds.isEmpty()) return;
+
         Random random = new Random();
         List<Firm> firms = new ArrayList<>();
         List<Advisor> advisors = new ArrayList<>();
@@ -41,6 +43,7 @@ public class DummyService {
             Firm firm = new Firm();
             firm.setId(Long.valueOf(dataFactory.getNumberBetween(1, 4000)));
             firm.setFirmName(dataFactory.getRandomWord());
+            firm.setActive(true);
             firms.add(firm);
         }
         firmRepository.save(firms);
@@ -51,6 +54,7 @@ public class DummyService {
             advisor.setAdvisorFirstName(dataFactory.getFirstName());
             advisor.setAdvisorLastName(dataFactory.getLastName());
             advisor.setFirmId(firms.get(random.nextInt(firms.size())).getId());
+            advisor.setActive(true);
             advisors.add(advisor);
         }
         advisorRepository.save(advisors);

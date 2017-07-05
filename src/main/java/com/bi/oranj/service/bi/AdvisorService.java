@@ -1,6 +1,6 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.model.bi.wrapper.user.Advisor;
@@ -30,30 +30,30 @@ public class AdvisorService extends GoalService{
 
 
     /**
-     * GoalResponse is nothing but JSON Template
-     * returns ready GoalResponse object to be send to the end user
+     * Goal is nothing but JSON Template
+     * returns Goal object
      * @param pageNum
      * @param firmId
      * @param response
      * @return
      */
     @Override
-    public GoalResponse buildResponse(int pageNum, long firmId, HttpServletResponse response) {
+    public Goal buildResponse(int pageNum, long firmId, HttpServletResponse response) {
         int totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
         int totalPages = totalPages(totalAdvisors);
         if (pageNum > totalPages) return null;
 
         Collection<Advisor> advisors = findGoals(firmId, pageNum);
         int totalGoals = goalRepository.totalAdvisorGoals(firmId);
-        GoalResponse goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
+        Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     /**
-     * GoalResponse is nothing but JSON Template
-     * returns ready GoalResponse object to be send to the end user
+     * Goal is nothing but JSON Template
+     * returns Goal object
      * for request with start date
      * @param startDate
      * @param pageNum
@@ -62,14 +62,14 @@ public class AdvisorService extends GoalService{
      * @return
      */
     @Override
-    public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long firmId, HttpServletResponse response){
+    public Goal buildResponseWithStartDate (String startDate, int pageNum, long firmId, HttpServletResponse response){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId);
         int totalPages = totalPages(totalAdvisors);
         if (pageNum > totalPages) return null;
 
         Collection<Advisor> advisors = findGoalsWithStartDate(firmId, startDate, pageNum);
         int totalGoals = goalRepository.totalAdvisorGoalsWithStartDate(startDate, firmId);
-        GoalResponse goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
+        Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
         return goals;
@@ -77,8 +77,8 @@ public class AdvisorService extends GoalService{
 
 
     /**
-     * GoalResponse is nothing but JSON Template
-     * returns ready GoalResponse object to be send to the end user
+     * Goal is nothing but JSON Template
+     * returns Goal object
      * for request with end date
      * @param endDate
      * @param pageNum
@@ -87,22 +87,22 @@ public class AdvisorService extends GoalService{
      * @return
      */
     @Override
-    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long firmId, HttpServletResponse response){
+    public Goal buildResponseWithEndDate (String endDate, int pageNum, long firmId, HttpServletResponse response){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId);
         int totalPages = totalPages(totalAdvisors);
         if (pageNum > totalPages) return null;
 
         Collection<Advisor> advisors = findGoalsWithEndDate(firmId, endDate, pageNum);
         int totalGoals = goalRepository.totalAdvisorGoalsWithEndDate(endDate, firmId);
-        GoalResponse goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
+        Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     /**
-     * GoalResponse is nothing but JSON Template
-     * returns ready GoalResponse object to be send to the end user
+     * Goal is nothing but JSON Template
+     * returns Goal object
      * for request with start and date date
      * @param startDate
      * @param endDate
@@ -112,14 +112,14 @@ public class AdvisorService extends GoalService{
      * @return
      */
     @Override
-    public GoalResponse buildResponseByDateBetween (String startDate, String endDate, int pageNum, long firmId, HttpServletResponse response){
+    public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long firmId, HttpServletResponse response){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId);
         int totalPages = totalPages(totalAdvisors);
         if (pageNum > totalPages) return null;
 
         Collection<Advisor> advisors = findGoalsByDate(firmId, startDate, endDate, pageNum);
         int totalGoals = goalRepository.totalAdvisorGoalsByDateBetween(startDate, endDate, firmId);
-        GoalResponse goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
+        Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
         return goals;
@@ -176,29 +176,29 @@ public class AdvisorService extends GoalService{
 
 
     /**
-     * builds GoalResponse by putting missing parameters for final JSON
+     * builds Goal by putting missing parameters for final JSON
      * @param advisors
      * @param pageNum
      * @param totalAdvisors
      * @param totalGoals
      * @return
      */
-    private GoalResponse processGoalresponse (Collection<Advisor> advisors, int pageNum, int totalAdvisors, int totalGoals){
+    private Goal processGoalresponse (Collection<Advisor> advisors, int pageNum, int totalAdvisors, int totalGoals){
         if (advisors == null || advisors.isEmpty())
             return null;
 
-        GoalResponse goalResponse = new GoalResponse();
-        goalResponse.setTotalUsers(totalAdvisors);
-        goalResponse.setTotalGoals(totalGoals);
-        goalResponse.setUsers(advisors);
-        goalResponse.setPage(pageNum);
-        goalResponse.setCount(advisors.size());
+        Goal goal = new Goal();
+        goal.setTotalUsers(totalAdvisors);
+        goal.setTotalGoals(totalGoals);
+        goal.setUsers(advisors);
+        goal.setPage(pageNum);
+        goal.setCount(advisors.size());
 
-        return goalResponse;
+        return goal;
     }
 
     /**
-     * maps columns to object fields
+     * maps data returned from database to Advisor object fields
      * @param goalObjects
      * @return
      */
@@ -240,9 +240,7 @@ public class AdvisorService extends GoalService{
         return linkedHashMap.values();
     }
 
-    public int totalPages (int totalAdvisors){
+    private int totalPages (int totalAdvisors){
         return (int) Math.ceil(totalAdvisors * 1d / pageSize) - 1;
     }
-
-
 }

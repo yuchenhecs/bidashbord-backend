@@ -31,6 +31,4 @@ public class Analytics {
     @Column (name = "role_id")
     private Long roleId;
 
-    @Column (name = "created_on")
-    private Date createdOn;
 }

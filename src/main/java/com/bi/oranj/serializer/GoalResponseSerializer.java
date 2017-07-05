@@ -1,24 +1,24 @@
 package com.bi.oranj.serializer;
 
-import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.model.bi.Goal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-public class GoalResponseSerializer extends StdSerializer<GoalResponse>{
+public class GoalResponseSerializer extends StdSerializer<Goal>{
 
     public GoalResponseSerializer(){
         this(null);
     }
 
-    public GoalResponseSerializer(Class<GoalResponse> t){
+    public GoalResponseSerializer(Class<Goal> t){
         super(t);
     }
 
     @Override
-    public void serialize(GoalResponse value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    public void serialize(Goal value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         String user = "";
         if (!value.getUsers().isEmpty()){
             user = value.getUsers().iterator().next().getClass().getSimpleName() + "s";

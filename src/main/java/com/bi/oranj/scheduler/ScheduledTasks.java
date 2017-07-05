@@ -1,5 +1,6 @@
 package com.bi.oranj.scheduler;
 
+import com.bi.oranj.service.google.analytics.BiAnalyticsService;
 import com.bi.oranj.service.oranj.OranjService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,16 +12,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.bi.oranj.constant.Constants.YEAR_MONTH_DAY_FORMAT;
-
 @Component
 public class ScheduledTasks {
 
     @Autowired
     OranjService oranjService;
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat(YEAR_MONTH_DAY_FORMAT);
+    @Autowired
+    BiAnalyticsService analyticsService;
+
+
+    private static final Logger log = LoggerFactory.getLogger(Scheduled.class);
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public Date yesterday() {
         final Calendar cal = Calendar.getInstance();
@@ -69,4 +72,10 @@ public class ScheduledTasks {
         log.info("Fetching 'Net Worth' DATA: DONE");
     }
 
+    @Scheduled (cron = "0 3 00 * * *")
+    public void triggerGetAnalytics(){
+        log.info("Fetching 'Google Analytics' DATA");
+        analyticsService.getAnalyticsDataForYesterday();
+        log.info("Fetching 'Google Analytics' DATA: DONE");
+    }
 }

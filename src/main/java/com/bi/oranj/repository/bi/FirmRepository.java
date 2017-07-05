@@ -39,8 +39,8 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
     @Query (value = "select f.id firmId, f.firm_name firmName, g.type, count(g.id) " +
             "from firms f " +
             "left join goals g on g.firm_id = f.id " +
-            "INNER JOIN (SELECT DISTINCT firm_name FROM firms where active = 1 ORDER BY firm_name LIMIT :start, :next) a " +
-            "on a.firm_name = f.firm_name " +
+            "INNER JOIN (SELECT DISTINCT id FROM firms where active = 1 ORDER BY firm_name LIMIT :start, :next) a " +
+            "on a.id = f.id " +
             "GROUP BY f.id, f.firm_name, g.type " +
             "ORDER BY f.firm_name", nativeQuery = true)
     public List<Object[]> findGoalsOrdered (@Param("start") int start, @Param("next") int next);
