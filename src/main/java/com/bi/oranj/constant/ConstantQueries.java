@@ -118,5 +118,11 @@ public class ConstantQueries {
             "ON r.id = a.role_id\n" +
             "where c.id = :client and r.id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
             "group by a.client_id";
+
+    public static final String GET_LOGIN_METRICS_FOR_SUMMARY_QUERY = "select sum(totalLogins) as totalLogins, count(client_id) as uniqueLogins, sum(totalSessionDuration) as totalSessionTime from (\n" +
+            "select count(*) as totalLogins, client_id, sum(session_duration) as totalSessionDuration\n" +
+            "from analytics \n" +
+            "where role_id = :role and date(session_start_date) between date(:start) and date(:end)\n" +
+            "group by client_id) as o;";
 }
 

@@ -21,9 +21,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 import static com.bi.oranj.constant.Constants.*;
 
@@ -91,9 +89,9 @@ public class LoginMetricsService {
             loginMetricsForAdmin.setCount(firmLoginMetricsList.size());
             return RestResponse.successWithoutMessage(loginMetricsForAdmin);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_AUM + e);
+            log.error(ERROR_IN_GETTING_LOGIN_METRICS + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_AUM);
+            return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
         }
     }
 
@@ -138,9 +136,9 @@ public class LoginMetricsService {
             loginMetricsForFirm.setCount(advisorLoginMetricsList.size());
             return RestResponse.successWithoutMessage(loginMetricsForFirm);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_AUM + e);
+            log.error(ERROR_IN_GETTING_LOGIN_METRICS + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_AUM);
+            return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
         }
     }
 
@@ -185,9 +183,58 @@ public class LoginMetricsService {
             loginMetricsForAdvisor.setCount(clientLoginMetricsList.size());
             return RestResponse.successWithoutMessage(loginMetricsForAdvisor);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_AUM + e);
+            log.error(ERROR_IN_GETTING_LOGIN_METRICS + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_AUM);
+            return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
+        }
+    }
+
+    public RestResponse getLoginMetricsSummary(String user){
+
+        Long roleId;
+
+        if (!inputValidator.validateInputUserType(user)) {
+            return RestResponse.error(ERROR_USER_TYPE_VALIDATION);
+        } else {
+            roleId = getRoleId(user);
+        }
+
+        List<String> dateRange = new ArrayList<>();
+        try {
+            dateRange = getDates(dateRange, WEEK);
+            LoginMetricsSummary loginMetricsSummary = new LoginMetricsSummary();
+            Map<String, LoginMetricsSummary> map = new HashMap<>();
+            List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(1), dateRange.get(0));
+            for (Object[] resultSet : loginMetricsResultSet){
+                if(resultSet[0] != null){
+                    loginMetricsSummary.setTotalLogins((BigDecimal) resultSet[0]);
+                    loginMetricsSummary.setUniqueLogins(new BigDecimal((BigInteger) resultSet[1]));
+                    loginMetricsSummary.setAvgSessionTime(((BigDecimal) resultSet[2]).divide(loginMetricsSummary.getTotalLogins(), 2, RoundingMode.HALF_UP));
+                } else {
+                    loginMetricsSummary.setTotalLogins(BigDecimal.ZERO);
+                    loginMetricsSummary.setUniqueLogins(BigDecimal.ZERO);
+                    loginMetricsSummary.setAvgSessionTime(BigDecimal.ZERO);
+                }
+            }
+            dateRange = getDates(dateRange, TWO_WEEKS);
+            loginMetricsResultSet = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(3), dateRange.get(2));
+            for (Object[] resultSet : loginMetricsResultSet){
+                if(resultSet[0] != null){
+                    loginMetricsSummary.setChangeInTotalLogins(loginMetricsSummary.getTotalLogins().subtract(((BigDecimal) resultSet[0])));
+                    loginMetricsSummary.setChangeInUniqueLogins(loginMetricsSummary.getUniqueLogins().subtract(new BigDecimal((BigInteger) resultSet[1])));
+                    loginMetricsSummary.setChangeInAvgSessionTime(loginMetricsSummary.getAvgSessionTime().subtract((((BigDecimal) resultSet[2]).divide(loginMetricsSummary.getTotalLogins(), 2, RoundingMode.HALF_UP))));
+                }else {
+                    loginMetricsSummary.setChangeInTotalLogins(loginMetricsSummary.getTotalLogins().subtract(BigDecimal.ZERO));
+                    loginMetricsSummary.setChangeInUniqueLogins(loginMetricsSummary.getUniqueLogins().subtract(BigDecimal.ZERO));
+                    loginMetricsSummary.setChangeInAvgSessionTime(loginMetricsSummary.getAvgSessionTime().subtract(BigDecimal.ZERO));
+                }
+            }
+            map.put(user, loginMetricsSummary);
+            return RestResponse.successWithoutMessage(map);
+        } catch (Exception e) {
+            log.error(ERROR_IN_GETTING_LOGIN_METRICS + e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
         }
     }
 
@@ -274,6 +321,12 @@ public class LoginMetricsService {
                     cal.add(Calendar.DATE, -1);
                     dateRange.add(dateFormat.format(cal.getTime()));
                     cal.add(Calendar.DATE, -29);
+                    dateRange.add(dateFormat.format(cal.getTime()));
+                    break;
+                case TWO_WEEKS:
+                    cal.add(Calendar.DATE, -8);
+                    dateRange.add(dateFormat.format(cal.getTime()));
+                    cal.add(Calendar.DATE, -6);
                     dateRange.add(dateFormat.format(cal.getTime()));
                     break;
                 default:
