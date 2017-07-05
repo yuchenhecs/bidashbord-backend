@@ -155,10 +155,9 @@ public class BiAnalyticsService {
             }
         }
 
-        dummyService.createData(8, 13, clientIds); // ! this code only for test purposes, to create dummy data for given Ids
-
-
         try {
+
+            dummyService.createData(8, 13, clientIds); // ! this code only for test purposes, to create dummy data for given Ids
             analyticsRepository.save(analyticsList);
         }catch (Exception e){
             logger.error("Error occured while saving analytics data", e);
