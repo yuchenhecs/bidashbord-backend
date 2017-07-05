@@ -62,6 +62,7 @@ public class DummyService {
             client.setClientLastName(dataFactory.getLastName());
             client.setAdvisorId(advisors.get(random.nextInt(advisors.size())).getId());
             client.setFirmId(firms.get(random.nextInt(firms.size())).getId());
+            client.setActive(true);
             clients.add(client);
         }
 
