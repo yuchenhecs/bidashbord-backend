@@ -30,7 +30,7 @@ public class GoalResponseSerializer extends StdSerializer<Goal>{
         jgen.writeBooleanField("last", value.isLast());
         jgen.writeNumberField("page", value.getPage());
         jgen.writeNumberField("count", value.getCount());
-        jgen.writeObjectField(user, value.getUsers());
+        jgen.writeObjectField(user.toLowerCase(), value.getUsers());
         jgen.writeEndObject();
 
     }

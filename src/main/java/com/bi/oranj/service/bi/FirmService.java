@@ -32,7 +32,7 @@ public class FirmService extends GoalService{
 
         Collection<Firm> firms = findGoals(pageNum);
         if (firms == null || firms.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")).toLowerCase());
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
         int totalGoals = goalRepository.totalGoals();
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -48,7 +48,7 @@ public class FirmService extends GoalService{
 
         Collection<Firm> firms = findGoalsWithStartDate(startDate, pageNum);
         if (firms == null || firms.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")).toLowerCase());
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
         int totalGoals = goalRepository.totalGoalsWithStartDate(startDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if ( goals!=null && pageNum == totalPages) goals.setLast(true);
@@ -64,7 +64,7 @@ public class FirmService extends GoalService{
 
         Collection<Firm> firms = findGoalsWithEndDate(endDate, pageNum);
         if (firms == null || firms.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")).toLowerCase());
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
         int totalGoals = goalRepository.totalGoalsWithEndDate(endDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -80,7 +80,7 @@ public class FirmService extends GoalService{
 
         Collection<Firm> firms = findGoalsByDateBetween(startDate, endDate, pageNum);
         if (firms == null || firms.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")).toLowerCase());
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
         int totalGoals = goalRepository.totalGoalsByDateBetween(startDate, endDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);

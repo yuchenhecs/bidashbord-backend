@@ -96,7 +96,7 @@ public class GoalController {
         }
         return goalResponse;
     }
-    
+
 
     /**
      * returns GoalService based on userType

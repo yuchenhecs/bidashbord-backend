@@ -45,7 +45,7 @@ public class AdvisorService extends GoalService{
 
         Collection<Advisor> advisors = findGoals(firmId, pageNum);
         if (advisors == null || advisors.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")).toLowerCase());
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
         int totalGoals = goalRepository.totalAdvisorGoals(firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -71,7 +71,7 @@ public class AdvisorService extends GoalService{
 
         Collection<Advisor> advisors = findGoalsWithStartDate(firmId, startDate, pageNum);
         if (advisors == null || advisors.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")).toLowerCase());
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
         int totalGoals = goalRepository.totalAdvisorGoalsWithStartDate(startDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -98,7 +98,7 @@ public class AdvisorService extends GoalService{
 
         Collection<Advisor> advisors = findGoalsWithEndDate(firmId, endDate, pageNum);
         if (advisors == null || advisors.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")).toLowerCase());
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
         int totalGoals = goalRepository.totalAdvisorGoalsWithEndDate(endDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -125,7 +125,7 @@ public class AdvisorService extends GoalService{
 
         Collection<Advisor> advisors = findGoalsByDate(firmId, startDate, endDate, pageNum);
         if (advisors == null || advisors.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")).toLowerCase());
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
         int totalGoals = goalRepository.totalAdvisorGoalsByDateBetween(startDate, endDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
