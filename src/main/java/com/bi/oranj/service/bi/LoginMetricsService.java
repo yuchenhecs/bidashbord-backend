@@ -245,10 +245,12 @@ public class LoginMetricsService {
         Long uniqueLogins = 0l;
         BigDecimal totalSessionTime = BigDecimal.valueOf(0.0);
         List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsForFirm(firmLoginMetrics.getFirmId(), roleId, startDate, endDate);
-        for (Object[] resultSet : loginMetricsResultSet){
-            totalLogins = totalLogins.add((BigInteger) resultSet[0]);
-            uniqueLogins = uniqueLogins + 1;
-            totalSessionTime = totalSessionTime.add((BigDecimal) resultSet[2]);
+        for (Object[] resultSet : loginMetricsResultSet) {
+            if(resultSet[1] != null){
+                totalLogins = totalLogins.add((BigInteger) resultSet[0]);
+                uniqueLogins = uniqueLogins + 1;
+                totalSessionTime = totalSessionTime.add((BigDecimal) resultSet[1]);
+            }
         }
         firmLoginMetrics.setTotalLogins(totalLogins);
         firmLoginMetrics.setUniqueLogins(uniqueLogins);
@@ -268,10 +270,12 @@ public class LoginMetricsService {
         Long uniqueLogins = 0l;
         BigDecimal totalSessionTime = BigDecimal.valueOf(0.0);
         List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsForAdvisor(advisorLoginMetrics.getAdvisorId(), roleId, startDate, endDate);
-        for (Object[] resultSet : loginMetricsResultSet){
-            totalLogins = totalLogins.add((BigInteger) resultSet[0]);
-            uniqueLogins = uniqueLogins + 1;
-            totalSessionTime = totalSessionTime.add((BigDecimal) resultSet[2]);
+        for (Object[] resultSet : loginMetricsResultSet) {
+            if (resultSet[1] != null) {
+                totalLogins = totalLogins.add((BigInteger) resultSet[0]);
+                uniqueLogins = uniqueLogins + 1;
+                totalSessionTime = totalSessionTime.add((BigDecimal) resultSet[1]);
+            }
         }
         advisorLoginMetrics.setTotalLogins(totalLogins);
         advisorLoginMetrics.setUniqueLogins(uniqueLogins);
@@ -291,9 +295,11 @@ public class LoginMetricsService {
         BigDecimal totalSessionTime = BigDecimal.valueOf(0.0);
         List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsForClient(clientLoginMetrics.getClientId(), roleId, startDate, endDate);
         for (Object[] resultSet : loginMetricsResultSet){
-            totalLogins = totalLogins.add((BigInteger) resultSet[0]);
-            uniqueLogins = uniqueLogins + 1;
-            totalSessionTime = totalSessionTime.add((BigDecimal) resultSet[2]);
+            if(resultSet[1] != null){
+                totalLogins = totalLogins.add((BigInteger) resultSet[0]);
+                uniqueLogins = uniqueLogins + 1;
+                totalSessionTime = totalSessionTime.add((BigDecimal) resultSet[1]);
+            }
         }
         clientLoginMetrics.setTotalLogins(totalLogins);
         clientLoginMetrics.setUniqueLogins(uniqueLogins);

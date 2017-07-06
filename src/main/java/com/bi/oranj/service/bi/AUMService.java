@@ -177,8 +177,8 @@ public class AUMService {
         }
 
         for (Object[] resultSet : positionsResultSet){
-            assetClass.put(resultSet[3].toString(), (BigDecimal) resultSet[4]);
-            aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[4]));
+            assetClass.put(resultSet[0].toString(), (BigDecimal) resultSet[1]);
+            aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[1]));
         }
         aumDiff.setAssetClass(assetClass);
         return aumDiff;

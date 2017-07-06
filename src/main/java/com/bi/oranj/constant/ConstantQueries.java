@@ -57,67 +57,49 @@ public class ConstantQueries {
                                                                     "ON f.id = a.firm_id \n" +
                                                             "where date(creation_date) <= (:date)";
 
-    public static final String GET_AUM_FOR_FIRM_QUERY = "select p.client_id as clientId, c.client_first_name, c.client_last_name, p.asset_class, sum(p.amount) as positionAmount, p.position_updated_on, f.id\n" +
+    public static final String GET_AUM_FOR_FIRM_QUERY = "select p.asset_class, sum(p.amount) as positionAmount\n" +
             "from positions p\n" +
             "join clients c\n" +
             "ON c.id = p.client_id\n" +
-            "join firms f\n" +
-            "ON f.id = c.firm_id\n" +
-            "where f.id = :firm and date(p.position_updated_on) IN (:date) and c.active = 1\n" +
-            "group by p.asset_class, p.position_updated_on, p.client_id\n" +
-            "order by p.asset_class";
+            "where c.firm_id = :firm and date(p.position_updated_on) IN (:date) and c.active=1\n" +
+            "group by p.asset_class";
 
-    public static final String GET_AUM_FOR_ADVISOR_QUERY = "select p.client_id as clientId, c.client_first_name, c.client_last_name, p.asset_class, sum(p.amount) as positionAmount, p.position_updated_on, ad.id\n" +
+    public static final String GET_AUM_FOR_ADVISOR_QUERY = "select p.asset_class, sum(p.amount) as positionAmount\n"+
+            "from positions p\n"+
+            "join clients c\n"+
+            "ON c.id = p.client_id\n"+
+            "where c.advisor_id = :advisor and date(p.position_updated_on) IN (:date)\n"+
+            "group by p.asset_class";
+
+    public static final String GET_AUM_FOR_CLIENT_QUERY = "select p.asset_class, sum(p.amount) as positionAmount\n" +
             "from positions p\n" +
             "join clients c\n" +
-            "\tON c.id = p.client_id\n" +
-            "join advisors ad\n" +
-            "\tON ad.id = c.advisor_id\n" +
-            "where ad.id = :advisor and date(p.position_updated_on) IN (:date)\n" +
-            "group by p.asset_class, p.position_updated_on, p.client_id\n" +
-            "order by p.asset_class;\n";
-
-    public static final String GET_AUM_FOR_CLIENT_QUERY = "select p.client_id as clientId, c.client_first_name, c.client_last_name, p.asset_class, sum(p.amount) as positionAmount\n" +
-            "from positions p\n" +
-            "join clients c\n" +
-            "\tON c.id = p.client_id\n" +
-            "join advisors ad\n" +
-            "\tON ad.id = c.advisor_id\n" +
+            "ON c.id = p.client_id\n" +
             "where p.client_id = :client and date(p.position_updated_on) IN (:date)\n" +
-            "group by p.asset_class\n" +
-            "order by p.asset_class\n";
+            "group by p.asset_class;";
 
     public static final String GET_AUM_SUMMARY_QUERY = "select p.asset_class, sum(p.amount) as sum\n" +
             "from positions p\n" +
             "where date(p.position_updated_on) IN (:date)\n" +
             "group by p.asset_class";
 
-    public static final String GET_LOGIN_METRICS_FOR_ADMIN_QUERY = "select count(*) as totalLogins, client_id, sum(session_duration)\n" +
+    public static final String GET_LOGIN_METRICS_FOR_ADMIN_QUERY = "select count(*) as totalLogins, sum(session_duration)\n" +
             "from analytics a\n" +
             "join clients c\n" +
             "ON a.client_id = c.id\n" +
-            "join roles r\n" +
-            "ON r.id = a.role_id\n" +
-            "where c.firm_id = :firm and r.id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
-            "group by a.client_id";
+            "where c.firm_id = :firm and a.role_id = :role and date(a.session_start_date) between date(:start) and date(:end)";
 
-    public static final String GET_LOGIN_METRICS_FOR_FIRM_QUERY = "select count(*) as totalLogins, client_id, sum(session_duration)\n" +
+    public static final String GET_LOGIN_METRICS_FOR_FIRM_QUERY = "select count(*) as totalLogins, sum(session_duration)\n" +
             "from analytics a\n" +
             "join clients c\n" +
             "ON a.client_id = c.id\n" +
-            "join roles r\n" +
-            "ON r.id = a.role_id\n" +
-            "where c.advisor_id = :advisor and r.id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
-            "group by a.client_id";
+            "where c.advisor_id = :advisor and a.role_id = :role and date(a.session_start_date) between date(:start) and date(:end)";
 
-    public static final String GET_LOGIN_METRICS_FOR_ADVISOR_QUERY = "select count(*) as totalLogins, client_id, sum(session_duration)\n" +
+    public static final String GET_LOGIN_METRICS_FOR_ADVISOR_QUERY = "select count(*) as totalLogins, sum(session_duration)\n" +
             "from analytics a\n" +
             "join clients c\n" +
             "ON a.client_id = c.id\n" +
-            "join roles r\n" +
-            "ON r.id = a.role_id\n" +
-            "where c.id = :client and r.id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
-            "group by a.client_id";
+            "where c.id = :client and a.role_id = :role and date(a.session_start_date) between date(:start) and date(:end)";
 
     public static final String GET_LOGIN_METRICS_FOR_SUMMARY_QUERY = "select sum(totalLogins) as totalLogins, count(client_id) as uniqueLogins, sum(totalSessionDuration) as totalSessionTime from (\n" +
             "select count(*) as totalLogins, client_id, sum(session_duration) as totalSessionDuration\n" +
