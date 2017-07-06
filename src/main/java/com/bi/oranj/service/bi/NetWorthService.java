@@ -56,7 +56,7 @@ public class NetWorthService {
         try {
             NetWorthAdmin netWorthAdmin = new NetWorthAdmin();
             List<NetWorthForAdmin> networthList = new ArrayList<>();
-            Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
+            Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 500, Sort.Direction.ASC, "firmName"));
             for (int i = 0; i < firmList.getContent().size(); i++) {
                 NetWorthForAdmin netWorthForAdmin = new NetWorthForAdmin();
                 netWorthForAdmin.setFirmId(firmList.getContent().get(i).getId());
@@ -88,7 +88,7 @@ public class NetWorthService {
         try {
             NetWorthFirm netWorthFirm = new NetWorthFirm();
             List<NetWorthForFirm> networthList = new ArrayList<>();
-            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
+            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 500, Sort.Direction.ASC, "advisorFirstName"));
             for (int i = 0; i < advisorList.getContent().size(); i++) {
                 NetWorthForFirm netWorthForFirm = new NetWorthForFirm();
                 netWorthForFirm.setAdvisorId(advisorList.getContent().get(i).getId());
@@ -119,7 +119,7 @@ public class NetWorthService {
         try {
             NetWorthAdvisor netWorthAdvisor = new NetWorthAdvisor();
             List<NetWorthForAdvisor> networthList = new ArrayList<>();
-            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
+            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 500, Sort.Direction.ASC, "clientFirstName"));
             for (int i = 0; i < clientList.getContent().size(); i++) {
                 NetWorthForAdvisor netWorthForAdvisor = new NetWorthForAdvisor();
                 netWorthForAdvisor.setClientId(clientList.getContent().get(i).getId());
