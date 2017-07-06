@@ -59,7 +59,7 @@ public class AUMService {
         try {
             AUMForAdmin aumForAdmin = new AUMForAdmin();
             List<FirmAUM> firmAUMList = new ArrayList<>();
-            Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
+            Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 500, Sort.Direction.ASC, "firmName"));
             for (int i=0; i<firmList.getContent().size(); i++){
 
                 FirmAUM firmAUM = new FirmAUM();
@@ -95,7 +95,7 @@ public class AUMService {
         try {
             AUMForFirm aumForFirm = new AUMForFirm();
             List<AdvisorAUM> advisorAUMList = new ArrayList<>();
-            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
+            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 500, Sort.Direction.ASC, "advisorFirstName"));
             for (int i=0; i<advisorList.getContent().size(); i++){
 
                 AdvisorAUM advisorAUM = new AdvisorAUM();
@@ -131,7 +131,7 @@ public class AUMService {
         try {
             AUMForAdvisor aumForAdvisor = new AUMForAdvisor();
             List<ClientAUM> clientAUMList = new ArrayList<>();
-            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
+            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 500, Sort.Direction.ASC, "clientFirstName"));
             for (int i=0; i<clientList.getContent().size(); i++){
 
                 ClientAUM clientAUM = new ClientAUM();

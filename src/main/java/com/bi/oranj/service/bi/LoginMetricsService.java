@@ -72,7 +72,7 @@ public class LoginMetricsService {
         try {
             LoginMetricsForAdmin loginMetricsForAdmin = new LoginMetricsForAdmin();
             List<FirmLoginMetrics> firmLoginMetricsList = new ArrayList<>();
-            Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 100, Sort.Direction.ASC, "firmName"));
+            Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 500, Sort.Direction.ASC, "firmName"));
             for (int i=0; i<firmList.getContent().size(); i++){
 
                 FirmLoginMetrics firmLoginMetrics = new FirmLoginMetrics();
@@ -119,7 +119,7 @@ public class LoginMetricsService {
         try {
             LoginMetricsForFirm loginMetricsForFirm = new LoginMetricsForFirm();
             List<AdvisorLoginMetrics> advisorLoginMetricsList = new ArrayList<>();
-            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "advisorFirstName"));
+            Page<Advisor> advisorList = advisorRepository.findByFirmIdAndActiveTrue(firmId, new PageRequest(pageNumber, 500, Sort.Direction.ASC, "advisorFirstName"));
             for (int i=0; i<advisorList.getContent().size(); i++){
 
                 AdvisorLoginMetrics advisorLoginMetrics = new AdvisorLoginMetrics();
@@ -166,7 +166,7 @@ public class LoginMetricsService {
         try {
             LoginMetricsForAdvisor loginMetricsForAdvisor = new LoginMetricsForAdvisor();
             List<ClientLoginMetrics> clientLoginMetricsList = new ArrayList<>();
-            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 100, Sort.Direction.ASC, "clientFirstName"));
+            Page<Client> clientList = clientRepository.findByAdvisorIdAndActiveTrue(advisorId, new PageRequest(pageNumber, 500, Sort.Direction.ASC, "clientFirstName"));
             for (int i=0; i<clientList.getContent().size(); i++){
 
                 ClientLoginMetrics clientLoginMetrics = new ClientLoginMetrics();
