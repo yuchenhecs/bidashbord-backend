@@ -79,7 +79,7 @@ public class OranjService {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date1 = simpleDateFormat.format(new Date());
-        positionRepository.deleteAllBeforeDate(date1);
+        positionRepository.deleteAllAfterDate(date1);
 
         List<Object[]> positionRows = oranjPositionsRepository.fetchPositionsData();
         DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
