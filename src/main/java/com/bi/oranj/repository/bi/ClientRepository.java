@@ -17,7 +17,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "SELECT COUNT(DISTINCT(id)) from clients WHERE advisor_id = ?1", nativeQuery = true)
     public Integer findDistinctByAdvisor(long advisorId);
 
-    public Page<Client> findByAdvisorIdAndActiveTrue(Long advisorId, Pageable pageable);
+    public List<Client> findByAdvisorIdAndActiveTrueOrderByClientFirstNameAsc(Long advisorId);
 
 
     @Query(value = "select count(distinct(c.id)) from clients c " +

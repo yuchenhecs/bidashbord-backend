@@ -103,5 +103,5 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
                                                   @Param("start") int start,
                                                   @Param("next") int next);
 
-    public Page<Firm> findByActiveTrue(Pageable pageable);
+    public List<Firm> findByActiveTrueOrderByFirmNameAsc();
 }
