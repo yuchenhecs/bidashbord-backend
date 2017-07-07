@@ -19,8 +19,8 @@ public interface AumRepository extends JpaRepository<Position, Long> {
     @Query(value = ConstantQueries.GET_AUM_FOR_ADVISOR_QUERY, nativeQuery = true)
     public List<Object[]> findAUMsForAdvisor(@Param("advisor") Long advisor, @Param("date") String date);
 
-    @Query(value = ConstantQueries.GET_AUM_FOR_FIRM_QUERY, nativeQuery = true)
-    public List<Object[]> findAUMsForFirm(@Param("firm") Long firm, @Param("date") String date);
+    @Query(value = ConstantQueries.GET_AUM_FOR_ADMIN_QUERY, nativeQuery = true)
+    public List<Object[]> findAUMsForAdmin(@Param("date") String date);
 
     @Query(value = GET_AUM_SUMMARY_QUERY, nativeQuery = true)
     public List<Object[]> findAUMsSummary(@Param("date") String date);

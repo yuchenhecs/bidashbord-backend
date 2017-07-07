@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.*;
@@ -57,6 +58,7 @@ public class AUMService {
         }
 
         try {
+            Map<Long, FirmAUM> map = new HashMap<>();
             AUMForAdmin aumForAdmin = new AUMForAdmin();
             List<FirmAUM> firmAUMList = new ArrayList<>();
             Page<Firm> firmList = firmRepository.findByActiveTrue(new PageRequest(pageNumber, 5000, Sort.Direction.ASC, "firmName"));
@@ -65,10 +67,34 @@ public class AUMService {
                 FirmAUM firmAUM = new FirmAUM();
                 firmAUM.setFirmId(firmList.getContent().get(i).getId());
                 firmAUM.setName(firmList.getContent().get(i).getFirmName());
-                firmAUM.setPrevious(getAUM(firmList.getContent().get(i).getId(), previousDate, FIRM));
-                firmAUM.setCurrent(getAUM(firmList.getContent().get(i).getId(), currentDate, FIRM));
+                firmAUM.setPrevious(new AumDiff(previousDate, BigDecimal.ZERO, new HashMap<String, BigDecimal>()));
+                firmAUM.setCurrent(new AumDiff(currentDate, BigDecimal.ZERO, new HashMap<String, BigDecimal>()));
                 firmAUMList.add(firmAUM);
+                map.put(firmAUM.getFirmId(), firmAUM);
             }
+
+            List<Object[]> positionsResultSet = aumRepository.findAUMsForAdmin(previousDate);
+            for (Object[] resultSet : positionsResultSet){
+                FirmAUM firmAUM = map.get(((BigInteger) resultSet[0]).longValue());
+                AumDiff aumDiff = firmAUM.getPrevious();
+                Map<String, BigDecimal> assetClass = aumDiff.getAssetClass();
+                assetClass.put(resultSet[1].toString(), (BigDecimal) resultSet[2]);
+                aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[2]));
+                aumDiff.setAssetClass(assetClass);
+                firmAUM.setPrevious(aumDiff);
+            }
+
+            List<Object[]> positionsResultSet2 = aumRepository.findAUMsForAdmin(currentDate);
+            for (Object[] resultSet : positionsResultSet2){
+                FirmAUM firmAUM = map.get(((BigInteger) resultSet[0]).longValue());
+                AumDiff aumDiff = firmAUM.getCurrent();
+                Map<String, BigDecimal> assetClass = aumDiff.getAssetClass();
+                assetClass.put(resultSet[1].toString(), (BigDecimal) resultSet[2]);
+                aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[2]));
+                aumDiff.setAssetClass(assetClass);
+                firmAUM.setCurrent(aumDiff);
+            }
+
             aumForAdmin.setFirms(firmAUMList);
             aumForAdmin.setTotalFirms(firmList.getTotalElements());
             aumForAdmin.setHasNext(firmList.hasNext());
@@ -168,9 +194,6 @@ public class AUMService {
                 break;
             case ADVISOR:
                 positionsResultSet = aumRepository.findAUMsForAdvisor(id, date);
-                break;
-            case FIRM:
-                positionsResultSet = aumRepository.findAUMsForFirm(id, date);
                 break;
             default:
                 break;

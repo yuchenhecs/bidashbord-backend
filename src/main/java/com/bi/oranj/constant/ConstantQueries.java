@@ -64,6 +64,19 @@ public class ConstantQueries {
             "where c.firm_id = :firm and date(p.position_updated_on) IN (:date) and c.active=1\n" +
             "group by p.asset_class";
 
+    public static final String GET_AUM_FOR_ADMIN_QUERY = "select f.id, innerTable.asset_class, sum(innerTable.amount)\n" +
+            "from firms f\n" +
+            "left join clients c\n" +
+            "ON f.id = c.firm_id\n" +
+            "left join \n" +
+            "(SELECT p.client_id, p.asset_class, p.amount from positions p\n" +
+            "where date(p.position_updated_on) IN (:date)\n" +
+            ") as innerTable\n" +
+            "ON innerTable.client_id = c.id\n" +
+            "where f.active=1 and c.active=1 and innerTable.asset_class is not null\n" +
+            "group by f.id, innerTable.asset_class \n" +
+            "order by f.id";
+
     public static final String GET_AUM_FOR_ADVISOR_QUERY = "select p.asset_class, sum(p.amount) as positionAmount\n"+
             "from positions p\n"+
             "join clients c\n"+
