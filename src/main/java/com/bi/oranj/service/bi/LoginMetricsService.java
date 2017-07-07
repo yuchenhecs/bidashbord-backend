@@ -129,7 +129,7 @@ public class LoginMetricsService {
 
                 AdvisorLoginMetrics advisorLoginMetrics = new AdvisorLoginMetrics();
                 advisorLoginMetrics.setAdvisorId(((BigInteger) resultSet[0]).longValue());
-                advisorLoginMetrics.setName((String) resultSet[1] + (String) resultSet[2]);
+                advisorLoginMetrics.setName((String) resultSet[1] + " " + (String) resultSet[2]);
                 if(resultSet[3] != null){
                     advisorLoginMetrics.setTotalLogins(((BigInteger) resultSet[4]).longValue());
                     advisorLoginMetrics.setUniqueLogins(((BigInteger) resultSet[5]).longValue());
@@ -184,7 +184,7 @@ public class LoginMetricsService {
 
                 ClientLoginMetrics clientLoginMetrics = new ClientLoginMetrics();
                 clientLoginMetrics.setClientId(((BigInteger) resultSet[0]).longValue());
-                clientLoginMetrics.setName((String) resultSet[1] + (String) resultSet[2]);
+                clientLoginMetrics.setName((String) resultSet[1] + " " + (String) resultSet[2]);
                 if(resultSet[3] != null){
                     clientLoginMetrics.setTotalLogins(((BigInteger) resultSet[4]).longValue());
                     clientLoginMetrics.setUniqueLogins(((BigInteger) resultSet[5]).longValue());

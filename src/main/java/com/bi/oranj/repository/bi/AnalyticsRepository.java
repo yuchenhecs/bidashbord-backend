@@ -9,9 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by jaloliddinbakirov on 6/29/17.
- */
 @Repository
 public interface AnalyticsRepository extends JpaRepository<Analytics, Long>{
 
