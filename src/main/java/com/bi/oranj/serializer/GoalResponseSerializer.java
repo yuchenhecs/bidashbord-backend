@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class GoalResponseSerializer extends StdSerializer<Goal>{
 
@@ -19,8 +20,8 @@ public class GoalResponseSerializer extends StdSerializer<Goal>{
 
     @Override
     public void serialize(Goal value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        String user = "";
-        if (!value.getUsers().isEmpty()){
+        String user = value.getType() + "s";
+        if (!value.getUsers().isEmpty()) {
             user = value.getUsers().iterator().next().getClass().getSimpleName() + "s";
         }
         jgen.writeStartObject();

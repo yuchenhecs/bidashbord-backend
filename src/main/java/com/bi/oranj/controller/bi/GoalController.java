@@ -75,81 +75,30 @@ public class GoalController {
             return RestResponse.error("Bad input parameter");
         }
 
-        RestResponse goalResponse = null;
+        Goal goal = null;
         if (startDate == null && endDate == null)
-            goalResponse = requestDefault(goalService, pageNum, userId, response);
+            goal = goalService.buildResponse(pageNum, userId, response);
         else if (startDate == null && dateValidator.validate(endDate))
-            goalResponse = requestWithEndDate(goalService, pageNum, userId, response, endDate);
+            goal = goalService.buildResponseWithEndDate(endDate, pageNum, userId, response);
         else if (endDate == null && dateValidator.validate(startDate))
-            goalResponse = requestWithStartDate(goalService, pageNum, userId, response, startDate);
+            goal = goalService.buildResponseWithStartDate(startDate, pageNum, userId, response);
         else if (startDate != null && startDate != null && dateValidator.validate(startDate)
                 && dateValidator.validate(endDate) && dateValidator.isLess(startDate, endDate))
-            goalResponse = requestByDateBetween(goalService, pageNum, userId, response, startDate, endDate);
+            goal = goalService.buildResponseByDateBetween(startDate, endDate, pageNum, userId, response);
         else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Bad input parameter");
         }
 
-        if (goalResponse == null) {
+        if (goal == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return RestResponse.error("Data not found");
         }
-        return goalResponse;
+
+
+        return RestResponse.successWithoutMessage(goal);
     }
 
-
-    private RestResponse requestByDateBetween(GoalService goalService, int pageNum, long userId,
-                                         HttpServletResponse response, String startDate, String endDate) throws IOException {
-        Goal goals;
-        try{
-            goals = goalService.buildResponseByDateBetween(startDate, endDate, pageNum, userId, response);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
-            return null;
-        }
-        return RestResponse.successWithoutMessage(goals);
-    }
-
-    private RestResponse requestWithEndDate (GoalService goalService, int pageNum, long userId,
-                                             HttpServletResponse response, String endDate) throws IOException {
-        Goal goals;
-        try{
-            goals = goalService.buildResponseWithEndDate(endDate, pageNum, userId, response);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
-            return null;
-        }
-        return RestResponse.successWithoutMessage(goals);
-    }
-
-    private RestResponse requestWithStartDate (GoalService goalService, int pageNum, long userId,
-                                             HttpServletResponse response, String startDate) throws IOException {
-        Goal goals;
-        try{
-            goals = goalService.buildResponseWithStartDate(startDate, pageNum, userId, response);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
-            return null;
-        }
-        return RestResponse.successWithoutMessage(goals);
-    }
-
-
-    private RestResponse requestDefault (GoalService goalService, int pageNum, long userId,
-                                         HttpServletResponse response) throws IOException {
-        Goal goals;
-        try{
-            goals = goalService.buildResponse(pageNum, userId, response);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while building response for firms: " + ex);
-            return null;
-        }
-        return RestResponse.successWithoutMessage(goals);
-    }
 
     /**
      * returns GoalService based on userType

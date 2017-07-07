@@ -104,7 +104,7 @@ public class OranjService {
         if (!dateValidator.validate(date)) return;
 
         List<OranjPositions> positions = oranjPositionsHistoryRepository.fetchPositionsHistoryByDate(date);
-        if (positions.isEmpty()) log.info("Empty data set for the given data -> {}", date);
+        if (positions.isEmpty()) log.info("Empty data set for the given date -> {}", date);
 
     }
 
@@ -115,7 +115,7 @@ public class OranjService {
             for (Object[] o : history) {
 
                 String assetClass =  (String) o[4];
-                if (assetClass == null) assetClass = getRandomAssetClass();
+                if (assetClass == null) assetClass = getRandomAssetClass(); // ! this is for dummy data
 
                 String date = "";
                 if (o[8].getClass() == Timestamp.class) date = ((Timestamp) o[8]).toString();

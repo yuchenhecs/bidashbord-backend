@@ -1,6 +1,5 @@
 package com.bi.oranj.repository.bi;
 
-import com.bi.oranj.model.bi.Advisor;
 import com.bi.oranj.model.bi.Firm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +38,7 @@ public interface FirmRepository extends JpaRepository<Firm, Integer> {
     @Query (value = "select f.id firmId, f.firm_name firmName, g.type, count(g.id) " +
             "from firms f " +
             "left join goals g on g.firm_id = f.id " +
-            "INNER JOIN (SELECT DISTINCT id FROM firms where active = 1 ORDER BY firm_name LIMIT :start, :next) a " +
+            "INNER JOIN (SELECT DISTINCT(f.id), f.firm_name FROM firms f where active = 1 ORDER BY firm_name LIMIT :start, :next) a " +
             "on a.id = f.id " +
             "GROUP BY f.id, f.firm_name, g.type " +
             "ORDER BY f.firm_name", nativeQuery = true)
