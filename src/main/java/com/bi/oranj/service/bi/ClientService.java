@@ -1,9 +1,8 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
-import com.bi.oranj.model.bi.wrapper.User;
 import com.bi.oranj.model.bi.wrapper.user.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,56 +26,56 @@ public class ClientService extends GoalService{
 
 
     @Override
-    public GoalResponse buildResponse(int pageNum, long advisorId, HttpServletResponse response) {
+    public Goal buildResponse(int pageNum, long advisorId, HttpServletResponse response) {
         int totalClients = clientRepository.findDistinctByAdvisor(advisorId);
         int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
 
         Collection<Client> clients = findGoals(advisorId, pageNum);
         int totalGoals = goalRepository.totalClientGoals(advisorId);
-        GoalResponse goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
+        Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public GoalResponse buildResponseWithStartDate (String startDate, int pageNum, long advisorId, HttpServletResponse response){
+    public Goal buildResponseWithStartDate (String startDate, int pageNum, long advisorId, HttpServletResponse response){
         int totalClients = clientRepository.findDistinctClientsWithStartDate(startDate, advisorId);
         int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
 
         Collection<Client> clients = findGoalsWithStartDate(advisorId, startDate, pageNum);
         int totalGoals = goalRepository.totalClientGoalsWithStartDate(startDate, advisorId);
-        GoalResponse goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
+        Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public GoalResponse buildResponseWithEndDate (String endDate, int pageNum, long advisorId, HttpServletResponse response){
+    public Goal buildResponseWithEndDate (String endDate, int pageNum, long advisorId, HttpServletResponse response){
         int totalClients = clientRepository.findDistinctClientsWithEndDate(endDate, advisorId);
         int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
 
         Collection<Client> clients = findGoalsWithEndDate(advisorId, endDate, pageNum);
         int totalGoals = goalRepository.totalClientGoalsWithEndDate(endDate, advisorId);
-        GoalResponse goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
+        Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public GoalResponse buildResponseByDateBetween (String startDate, String endDate, int pageNum, long advisorId, HttpServletResponse response){
+    public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long advisorId, HttpServletResponse response){
         int totalClients = clientRepository.findDistinctClientsByDateBetween(startDate, endDate, advisorId);
         int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
 
         Collection<Client> clients = findGoalsByDate(advisorId, startDate, endDate, pageNum);
         int totalGoals = goalRepository.totalClientGoalsByDateBetween(startDate, endDate, advisorId);
-        GoalResponse goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
+        Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
         response.setStatus(HttpServletResponse.SC_OK);
         return goals;
@@ -103,19 +102,19 @@ public class ClientService extends GoalService{
         return processObjectArrays(goalObjects);
     }
 
-    private GoalResponse processGoalresponse (Collection<Client> clients, int pageNum, int totalClients, int totalGoals){
+    private Goal processGoalresponse (Collection<Client> clients, int pageNum, int totalClients, int totalGoals){
 
         if (clients == null || clients.isEmpty())
             return null;
 
-        GoalResponse goalResponse = new GoalResponse();
-        goalResponse.setTotalUsers(totalClients);
-        goalResponse.setTotalGoals(totalGoals);
-        goalResponse.setUsers(clients);
-        goalResponse.setPage(pageNum);
-        goalResponse.setCount(clients.size());
+        Goal goal = new Goal();
+        goal.setTotalUsers(totalClients);
+        goal.setTotalGoals(totalGoals);
+        goal.setUsers(clients);
+        goal.setPage(pageNum);
+        goal.setCount(clients.size());
 
-        return goalResponse;
+        return goal;
     }
 
     private Collection<Client> processObjectArrays (List<Object[]> goalObjects){

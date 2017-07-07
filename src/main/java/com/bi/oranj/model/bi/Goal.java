@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @JsonSerialize(using = GoalResponseSerializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GoalResponse implements BIResponse{
+public class Goal implements BIResponse{
 
     private int totalGoals;
     private int totalUsers;

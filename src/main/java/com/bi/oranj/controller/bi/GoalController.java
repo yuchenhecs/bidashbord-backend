@@ -2,15 +2,13 @@ package com.bi.oranj.controller.bi;
 
 import com.bi.oranj.controller.bi.resp.BIResponse;
 import com.bi.oranj.controller.bi.resp.RestResponse;
-import com.bi.oranj.model.bi.GoalResponse;
+import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.service.bi.AdvisorService;
 import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.GoalService;
 import com.bi.oranj.utils.DateValidator;
-import com.bi.oranj.model.bi.GoalSummary;
 import com.bi.oranj.service.bi.*;
-import com.bi.oranj.model.bi.wrapper.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -21,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
 
 @Api(basePath = "/bi/goals", description = "Operations with BI DB", produces = "application/json")
 @RestController
@@ -86,32 +82,32 @@ public class GoalController {
             return RestResponse.error("Bad input parameter");
         }
 
-        GoalResponse goalResponse = null;
+        Goal goal = null;
         if (startDate == null && endDate == null)
-            goalResponse = requestDefault(goalService, pageNum, userId, response);
+            goal = requestDefault(goalService, pageNum, userId, response);
         else if (startDate == null && dateValidator.validate(endDate))
-            goalResponse = requestWithEndDate(goalService, pageNum, userId, response, endDate);
+            goal = requestWithEndDate(goalService, pageNum, userId, response, endDate);
         else if (endDate == null && dateValidator.validate(startDate))
-            goalResponse = requestWithStartDate(goalService, pageNum, userId, response, startDate);
+            goal = requestWithStartDate(goalService, pageNum, userId, response, startDate);
         else if (startDate != null && startDate != null && dateValidator.validate(startDate)
                 && dateValidator.validate(endDate) && dateValidator.isLess(startDate, endDate))
-            goalResponse = requestByDateBetween(goalService, pageNum, userId, response, startDate, endDate);
+            goal = requestByDateBetween(goalService, pageNum, userId, response, startDate, endDate);
         else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Bad input parameter");
         }
 
-        if (goalResponse == null) {
+        if (goal == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return RestResponse.error("Data not found");
         }
-        return goalResponse;
+        return goal;
     }
 
 
-    private GoalResponse requestByDateBetween(GoalService goalService, int pageNum, long userId,
-                                         HttpServletResponse response, String startDate, String endDate) throws IOException {
-        GoalResponse goals;
+    private Goal requestByDateBetween(GoalService goalService, int pageNum, long userId,
+                                      HttpServletResponse response, String startDate, String endDate) throws IOException {
+        Goal goals;
         try{
             goals = goalService.buildResponseByDateBetween(startDate, endDate, pageNum, userId, response);
         }catch (Exception ex){
@@ -122,9 +118,9 @@ public class GoalController {
         return goals;
     }
 
-    private GoalResponse requestWithEndDate (GoalService goalService, int pageNum, long userId,
-                                             HttpServletResponse response, String endDate) throws IOException {
-        GoalResponse goals;
+    private Goal requestWithEndDate (GoalService goalService, int pageNum, long userId,
+                                     HttpServletResponse response, String endDate) throws IOException {
+        Goal goals;
         try{
             goals = goalService.buildResponseWithEndDate(endDate, pageNum, userId, response);
         }catch (Exception ex){
@@ -135,9 +131,9 @@ public class GoalController {
         return goals;
     }
 
-    private GoalResponse requestWithStartDate (GoalService goalService, int pageNum, long userId,
-                                             HttpServletResponse response, String startDate) throws IOException {
-        GoalResponse goals;
+    private Goal requestWithStartDate (GoalService goalService, int pageNum, long userId,
+                                       HttpServletResponse response, String startDate) throws IOException {
+        Goal goals;
         try{
             goals = goalService.buildResponseWithStartDate(startDate, pageNum, userId, response);
         }catch (Exception ex){
@@ -149,9 +145,9 @@ public class GoalController {
     }
 
 
-    private GoalResponse requestDefault (GoalService goalService, int pageNum, long userId,
-                                         HttpServletResponse response) throws IOException {
-        GoalResponse goals;
+    private Goal requestDefault (GoalService goalService, int pageNum, long userId,
+                                 HttpServletResponse response) throws IOException {
+        Goal goals;
         try{
             goals = goalService.buildResponse(pageNum, userId, response);
         }catch (Exception ex){
