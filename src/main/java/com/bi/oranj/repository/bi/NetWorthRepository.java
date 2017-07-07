@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.annotation.security.PermitAll;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +27,10 @@ public interface NetWorthRepository extends JpaRepository<NetWorth, Long> {
             "where c.active = 1\n" +
             "group by f.id\n" +
             "order by f.firm_name\n" +
-            "limit :offset, 100", nativeQuery = true)
+            "limit :offset, :pageSize", nativeQuery = true)
     public List<Object[]> findNetWorthForAdmin(@Param("offset") Integer offset,
-                                               @Param("date") String date);
+                                               @Param("date") String date,
+                                               @Param("pageSize") Integer pageSize);
 
     @Query(value = "select a.id, a.advisor_first_name, a.advisor_last_name, sum(t.value), sum(t.value) / count(c.id) " +
             "from advisors a " +
@@ -41,10 +43,11 @@ public interface NetWorthRepository extends JpaRepository<NetWorth, Long> {
             "where c.active = 1 and a.firm_id = :id " +
             "group by a.id " +
             "order by a.advisor_first_name " +
-            "limit :offset, 100", nativeQuery = true)
+            "limit :offset, :pageSize", nativeQuery = true)
     public List<Object[]> findNetWorthForFirm(@Param("id") Long id,
                                               @Param("offset") Integer offset,
-                                              @Param("date") String date);
+                                              @Param("date") String date,
+                                              @Param("pageSize") Integer pageSize);
 
     @Query(value = "select c.id, c.client_first_name, c.client_last_name, sum(t.value), sum(t.value)/count(c.id) " +
             "from clients c " +
@@ -55,10 +58,11 @@ public interface NetWorthRepository extends JpaRepository<NetWorth, Long> {
             "where c.active = 1 and c.advisor_id = :id " +
             "group by c.id " +
             "order by c.client_first_name " +
-            "limit :offset, 100", nativeQuery = true)
+            "limit :offset, :pageSize", nativeQuery = true)
     public List<Object[]> findNetWorthForAdvisor(@Param("id") Long id,
                                                  @Param("offset") Integer offset,
-                                                 @Param("date") String date);
+                                                 @Param("date") String date,
+                                                 @Param("pageSize") Integer pageSize);
 
     @Query(value = "select sum(value) " +
             "from clients c " +

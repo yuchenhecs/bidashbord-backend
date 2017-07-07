@@ -59,7 +59,7 @@ public class NetWorthService {
 
     public RestResponse getNetWorthForAdmin(Integer pageNumber) {
         Integer totalFirms = firmRepository.findDistinctFromFirm();
-        Double maxPage = Math.ceil(totalFirms/100);
+        Double maxPage = Math.ceil(totalFirms/pageSize);
         if (pageNumber > maxPage) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return RestResponse.error("Data not found");
@@ -68,7 +68,7 @@ public class NetWorthService {
             NetWorthAdmin netWorthAdmin = new NetWorthAdmin();
             List<NetWorthForAdmin> networthList = new ArrayList<>();
             String yesterday = dateFormat.format(scheduledTasks.yesterday());
-            List<Object[]> dataList = networthRepository.findNetWorthForAdmin(pageNumber * pageSize, yesterday);
+            List<Object[]> dataList = networthRepository.findNetWorthForAdmin(pageNumber * pageSize, yesterday, pageSize);
             for (Object[] networth : dataList) {
                 NetWorthForAdmin netWorthForAdmin = new NetWorthForAdmin();
                 netWorthForAdmin.setFirmId(((BigInteger) networth[0]).longValue());
@@ -99,7 +99,7 @@ public class NetWorthService {
 
     public RestResponse getNetWorthForFirm(Long firmId, Integer pageNumber) {
         Integer totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
-        Double maxPage = Math.ceil(totalAdvisors/100);
+        Double maxPage = Math.ceil(totalAdvisors/pageSize);
         if (pageNumber > maxPage) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return RestResponse.error("Data not found");
@@ -108,7 +108,7 @@ public class NetWorthService {
             NetWorthFirm netWorthFirm = new NetWorthFirm();
             List<NetWorthForFirm> networthList = new ArrayList<>();
             String yesterday = dateFormat.format(scheduledTasks.yesterday());
-            List<Object[]> dataList = networthRepository.findNetWorthForFirm(firmId, pageNumber * pageSize, yesterday);
+            List<Object[]> dataList = networthRepository.findNetWorthForFirm(firmId, pageNumber * pageSize, yesterday, pageSize);
             for (Object[] networth : dataList) {
                 NetWorthForFirm netWorthForFirm = new NetWorthForFirm();
                 netWorthForFirm.setAdvisorId(((BigInteger) networth[0]).longValue());
@@ -139,7 +139,7 @@ public class NetWorthService {
 
     public RestResponse getNetWorthForAdvisor(Long advisorId, Integer pageNumber) {
         Integer totalAdvisors = advisorRepository.findDistinctByFirm(advisorId);
-        Double maxPage = Math.ceil(totalAdvisors/100);
+        Double maxPage = Math.ceil(totalAdvisors/pageSize);
         if (pageNumber > maxPage) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return RestResponse.error("Data not found");
@@ -148,7 +148,7 @@ public class NetWorthService {
             NetWorthAdvisor netWorthAdvisor = new NetWorthAdvisor();
             List<NetWorthForAdvisor> networthList = new ArrayList<>();
             String yesterday = dateFormat.format(scheduledTasks.yesterday());
-            List<Object[]> dataList = networthRepository.findNetWorthForAdvisor(advisorId, pageNumber * pageSize, yesterday);
+            List<Object[]> dataList = networthRepository.findNetWorthForAdvisor(advisorId, pageNumber * pageSize, yesterday, pageSize);
             for (Object[] networth : dataList) {
                 NetWorthForAdvisor netWorthForAdvisor = new NetWorthForAdvisor();
                 netWorthForAdvisor.setClientId(((BigInteger) networth[0]).longValue());
