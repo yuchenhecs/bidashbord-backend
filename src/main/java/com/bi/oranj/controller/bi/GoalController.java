@@ -75,26 +75,28 @@ public class GoalController {
             return RestResponse.error("Bad input parameter");
         }
 
-        RestResponse goalResponse = null;
+        Goal goal = null;
         if (startDate == null && endDate == null)
-            goalResponse = RestResponse.successWithoutMessage(goalService.buildResponse(pageNum, userId, response));
+            goal = goalService.buildResponse(pageNum, userId, response);
         else if (startDate == null && dateValidator.validate(endDate))
-            goalResponse = RestResponse.successWithoutMessage(goalService.buildResponseWithEndDate(endDate, pageNum, userId, response));
+            goal = goalService.buildResponseWithEndDate(endDate, pageNum, userId, response);
         else if (endDate == null && dateValidator.validate(startDate))
-            goalResponse = RestResponse.successWithoutMessage(goalService.buildResponseWithStartDate(startDate, pageNum, userId, response));
+            goal = goalService.buildResponseWithStartDate(startDate, pageNum, userId, response);
         else if (startDate != null && startDate != null && dateValidator.validate(startDate)
                 && dateValidator.validate(endDate) && dateValidator.isLess(startDate, endDate))
-            goalResponse = RestResponse.successWithoutMessage(goalService.buildResponseByDateBetween(startDate, endDate, pageNum, userId, response));
+            goal = goalService.buildResponseByDateBetween(startDate, endDate, pageNum, userId, response);
         else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error("Bad input parameter");
         }
 
-        if (goalResponse == null) {
+        if (goal == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return RestResponse.error("Data not found");
         }
-        return goalResponse;
+
+
+        return RestResponse.successWithoutMessage(goal);
     }
 
 

@@ -31,6 +31,8 @@ public class AdvisorService extends GoalService{
 
     /**
      * Goal is nothing but JSON Template
+     * returns ready Goal object to be send to the end user
+     * Goal is nothing but JSON Template
      * returns Goal object
      * @param pageNum
      * @param firmId

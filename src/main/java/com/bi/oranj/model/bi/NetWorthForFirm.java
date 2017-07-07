@@ -11,8 +11,7 @@ import java.math.BigDecimal;
 public class NetWorthForFirm {
 
     private Long advisorId;
-    private String firstName;
-    private String lastName;
+    private String name;
     private BigDecimal absNet;
     private BigDecimal avgNet;
 }

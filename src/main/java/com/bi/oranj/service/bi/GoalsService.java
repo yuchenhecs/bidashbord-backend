@@ -35,7 +35,7 @@ public class GoalsService {
         }catch (Exception e){
             log.error("Error in fetching goals" + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fecthing Goals");
+            return RestResponse.error("Error in fetching Goals");
         }
         return RestResponse.successWithoutMessage(goalSummaryList);
     }
