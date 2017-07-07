@@ -11,7 +11,7 @@ import java.math.BigInteger;
 public class BaseLoginMetrics {
 
     private String name;
-	private BigInteger totalLogins;
+	private Long totalLogins;
     private Long uniqueLogins;
-    private BigDecimal avgSessionTime;
+    private Double avgSessionTime;
 }
