@@ -16,4 +16,8 @@ public class Client extends User {
         super(clientId, firstName, lastName, goals, total);
     }
 
+    public Client (int clientId, String name, Map<String, Integer> goals, int total){
+        super(clientId, name, goals, total);
+    }
+
 }

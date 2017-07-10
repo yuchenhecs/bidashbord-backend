@@ -129,11 +129,15 @@ public class ClientService extends GoalService{
             return Collections.emptyList();
 
         Map<Integer, Client> linkedHashMap = new LinkedHashMap<>();
+        StringBuilder concatenatedName = new StringBuilder();
 
         for (Object[] goal : goalObjects){
+            concatenatedName.setLength(0); // clears string builder
+
             int advisorId = ((BigInteger) goal[0]).intValue();
             String firstName = (String) goal[1];
             String lastName = (String) goal[2];
+            concatenatedName.append(firstName).append(" ").append(lastName);
             int count = ((BigInteger) goal[4]).intValue();
 
             String type = "";
@@ -157,14 +161,14 @@ public class ClientService extends GoalService{
             } else {
 
                 if (type == null){
-                    linkedHashMap.put(advisorId, new Client(advisorId, firstName, lastName, Collections.emptyMap(), count));
+                    linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
                     continue;
                 }
 
                 HashMap<String, Integer> goalList = new HashMap<>();
                 goalList.put(type, count);
 
-                linkedHashMap.put(advisorId, new Client(advisorId, firstName, lastName, goalList, count));
+                linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), goalList, count));
             }
         }
 
