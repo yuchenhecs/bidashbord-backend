@@ -16,4 +16,13 @@ public class AumDiff {
     private String date;
     private BigDecimal total;
     private Map<String, BigDecimal> assetClass = new HashMap<>();
+
+    public AumDiff(){
+    }
+
+    public AumDiff(String date, BigDecimal total, Map<String, BigDecimal> assetClass){
+        this.date = date;
+        this.total = total;
+        this.assetClass = assetClass;
+    }
 }
