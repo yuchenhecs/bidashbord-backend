@@ -36,6 +36,68 @@ public class ScheduledTasks {
         return cal.getTime();
     }
 
+
+    @Scheduled(cron = "0 05 1 * * *")
+    public void fetchFirms() {
+        Cron cron = new Cron();
+        Date startTime = null;
+        Date endTime = null;
+        try{
+            startTime = new Date();
+            oranjService.getAllFirms();
+            log.info("Cron Saved All Newly added Firms");
+            endTime = new Date();
+        } catch (Exception ex){
+            cron.setErrorMessage(ex.toString());
+        }finally {
+            cron.setTaskName(getMethodName());
+            cron.setStartTime(startTime);
+            cron.setEndTime(endTime);
+            cronRepository.save(cron);
+        }
+    }
+
+    @Scheduled(cron = "0 10 1 * * *")
+    public void fetchAdvisors() {
+
+        Cron cron = new Cron();
+        Date startTime = null;
+        Date endTime = null;
+        try{
+            startTime = new Date();
+            oranjService.getAllAdvisors();
+            log.info("Cron Saved All Newly added Advisors");
+            endTime = new Date();
+        } catch (Exception ex){
+            cron.setErrorMessage(ex.toString());
+        }finally {
+            cron.setTaskName(getMethodName());
+            cron.setStartTime(startTime);
+            cron.setEndTime(endTime);
+            cronRepository.save(cron);
+        }
+    }
+
+    @Scheduled(cron = "0 15 1 * * *")
+    public void fetchClients() {
+        Cron cron = new Cron();
+        Date startTime = null;
+        Date endTime = null;
+        try{
+            startTime = new Date();
+            oranjService.getAllClients();
+            log.info("Cron Saved All Newly added Clients");
+            endTime = new Date();
+        } catch (Exception ex){
+            cron.setErrorMessage(ex.toString());
+        }finally {
+            cron.setTaskName(getMethodName());
+            cron.setStartTime(startTime);
+            cron.setEndTime(endTime);
+            cronRepository.save(cron);
+        }
+    }
+
     @Scheduled(cron = "0 40 1 * * *")
     public void triggerGetGoals() {
         Cron cron = new Cron();
@@ -56,63 +118,6 @@ public class ScheduledTasks {
             cron.setEndTime(endTime);
             cronRepository.save(cron);
         }
-
-    }
-
-    @Scheduled(cron = "0 05 1 * * *")
-    public void fetchFirms() {
-        Cron cron = new Cron();
-        Date startTime = null;
-        Date endTime = null;
-        try{
-            oranjService.getAllFirms();
-            log.info("Cron Saved All Newly added Firms");
-        } catch (Exception ex){
-            cron.setErrorMessage(ex.toString());
-        }finally {
-            cron.setTaskName(getMethodName());
-            cron.setStartTime(startTime);
-            cron.setEndTime(endTime);
-            cronRepository.save(cron);
-        }
-    }
-
-    @Scheduled(cron = "0 10 1 * * *")
-    public void fetchAdvisors() {
-
-        Cron cron = new Cron();
-        Date startTime = null;
-        Date endTime = null;
-        try{
-            oranjService.getAllAdvisors();
-            log.info("Cron Saved All Newly added Advisors");
-        } catch (Exception ex){
-            cron.setErrorMessage(ex.toString());
-        }finally {
-            cron.setTaskName(getMethodName());
-            cron.setStartTime(startTime);
-            cron.setEndTime(endTime);
-            cronRepository.save(cron);
-        }
-    }
-
-    @Scheduled(cron = "0 15 1 * * *")
-    public void fetchClients() {
-
-        Cron cron = new Cron();
-        Date startTime = null;
-        Date endTime = null;
-        try{
-            oranjService.getAllClients();
-            log.info("Cron Saved All Newly added Clients");
-        } catch (Exception ex){
-            cron.setErrorMessage(ex.toString());
-        }finally {
-            cron.setTaskName(getMethodName());
-            cron.setStartTime(startTime);
-            cron.setEndTime(endTime);
-            cronRepository.save(cron);
-        }
     }
 
     @Scheduled(cron = "0 30 2 * * *")
@@ -122,9 +127,11 @@ public class ScheduledTasks {
         Date startTime = null;
         Date endTime = null;
         try{
+            startTime = new Date();
             log.info("Fetching 'Positions' DATA");
             oranjService.fetchPositionsData();
             log.info("Fetching 'Positions' DATA: DONE");
+            endTime = new Date();
         } catch (Exception ex){
             cron.setErrorMessage(ex.toString());
         }finally {
@@ -142,10 +149,12 @@ public class ScheduledTasks {
         Date startTime = null;
         Date endTime = null;
         try{
+            startTime = new Date();
             String yesterday = dateFormat.format(yesterday());
             log.info("Fetching 'Net Worth' DATA");
             oranjService.getNetWorth(yesterday);
             log.info("Fetching 'Net Worth' DATA: DONE");
+            endTime = new Date();
         } catch (Exception ex){
             cron.setErrorMessage(ex.toString());
         }finally {
@@ -163,9 +172,11 @@ public class ScheduledTasks {
         Date startTime = null;
         Date endTime = null;
         try{
+            startTime = new Date();
             log.info("Fetching 'Google Analytics' DATA");
             analyticsService.getAnalyticsDataForYesterday();
             log.info("Fetching 'Google Analytics' DATA: DONE");
+            endTime = new Date();
         } catch (Exception ex){
             cron.setErrorMessage(ex.toString());
         }finally {

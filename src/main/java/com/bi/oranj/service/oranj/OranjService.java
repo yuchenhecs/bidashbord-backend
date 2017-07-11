@@ -57,9 +57,6 @@ public class OranjService {
     private OranjAUMRepository oranjAUMRepository;
 
     @Autowired
-    private OranjPositionsHistoryRepository oranjPositionsHistoryRepository;
-
-    @Autowired
     private OranjClientRepository oranjClientRepository;
 
     @Autowired
@@ -75,71 +72,85 @@ public class OranjService {
     private DateValidator dateValidator;
 
 
-    public void fetchPositionsData () {
+    public RestResponse fetchPositionsData () {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date1 = simpleDateFormat.format(new Date());
-        positionRepository.deleteAllAfterDate(date1);
 
-        List<Object[]> positionRows = oranjPositionsRepository.fetchPositionsData();
-        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        try{
+            positionRepository.deleteAllAfterDate(date1);
 
-        savePositions(positionRows, dateFormat1);
+            List<Object[]> positionRows = oranjPositionsRepository.fetchPositionsData();
+            DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+
+            savePositions(positionRows, dateFormat1);
+        } catch (Exception ex){
+            RestResponse.error("Error while fetching positions data" + ex);
+        }
+
+        return RestResponse.success();
     }
 
     /**
      *
      * @param limitNum - is how many rows of history to fetch from ORANJ DB
      */
-    public void fetchPositionsHistory (long limitNum){
+    public RestResponse fetchPositionsHistory (long limitNum){
         DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         List<Object[]> history = null;
 
-        if (limitNum == 0) history = oranjPositionsHistoryRepository.fetchPositionsHistory();
-        else history = oranjPositionsHistoryRepository.fetchPositionsHistoryWithLimit(limitNum);
-        savePositions(history, dateFormat1);
+        try{
+            if (limitNum == 0) history = oranjPositionsRepository.fetchPositionsHistory();
+            else history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(limitNum);
+            savePositions(history, dateFormat1);
+        }catch (Exception ex){
+            return RestResponse.error("Error while fetching positions history" + ex);
+        }
+
+        return RestResponse.success();
     }
 
-    public void fetchPositionsDataByDate(String date) {
-        if (!dateValidator.validate(date)) return;
+    public RestResponse fetchPositionsDataByDate(String date) {
+        if (!dateValidator.validate(date)) return RestResponse.error("Date is not valid");
 
-        List<OranjPositions> positions = oranjPositionsHistoryRepository.fetchPositionsHistoryByDate(date);
-        if (positions.isEmpty()) log.info("Empty data set for the given date -> {}", date);
+        List<OranjPositions> positions = oranjPositionsRepository.fetchPositionsHistoryByDate(date);
+        if (positions.isEmpty()){
+            log.info("Empty data set for the given date -> {}", date);
+            return RestResponse.error(String.format("Empty data set for the given date %s", date));
+        }
 
+        return RestResponse.success();
     }
 
-    private void savePositions (List<Object[]> history, DateFormat dateFormat1){
+    private void savePositions (List<Object[]> history, DateFormat dateFormat1) throws ParseException {
 
         List<Position> posHis = new ArrayList<>();
-        try {
-            for (Object[] o : history) {
+        for (Object[] o : history) {
 
-                String assetClass =  (String) o[4];
-                if (assetClass == null) assetClass = getRandomAssetClass(); // ! this is for dummy data
+            String assetClass =  (String) o[4];
+            if (assetClass == null) assetClass = getRandomAssetClass(); // ! this is for dummy data
 
-                String date = "";
-                if (o[8].getClass() == Timestamp.class) date = ((Timestamp) o[8]).toString();
-                else date = ((Date) o[8]).toString();
+            String date = "";
+            if (o[8].getClass() == Timestamp.class) date = ((Timestamp) o[8]).toString();
+            else date = ((Date) o[8]).toString();
 
-                if (date.length() <= 10) date += " 00:00:00";
+            if (date.length() <= 10) date += " 00:00:00";
 
-                Position positionHistory = new Position();
-                positionHistory.setPositionId((BigInteger) o[0]);
-                positionHistory.setPortfolioId((BigInteger) o[1]);
-                positionHistory.setClientId((BigInteger) o[2]);
-                positionHistory.setTickerName((String) o[3]);
-                positionHistory.setAssetClass(assetClass);
-                positionHistory.setPrice((BigDecimal) o[5]);
-                positionHistory.setQuantity((Double) o[6]);
-                positionHistory.setAmount((BigDecimal) o[7]);
-                positionHistory.setCurrencyCode("USD");
-                positionHistory.setCreationDate(dateFormat1.parse(date));
-                positionHistory.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
-                posHis.add(positionHistory);
-            }
-        } catch (ParseException e) {
-            log.error("ParseException ::", e);
+            Position positionHistory = new Position();
+            positionHistory.setPositionId((BigInteger) o[0]);
+            positionHistory.setPortfolioId((BigInteger) o[1]);
+            positionHistory.setClientId((BigInteger) o[2]);
+            positionHistory.setTickerName((String) o[3]);
+            positionHistory.setAssetClass(assetClass);
+            positionHistory.setPrice((BigDecimal) o[5]);
+            positionHistory.setQuantity((Double) o[6]);
+            positionHistory.setAmount((BigDecimal) o[7]);
+            positionHistory.setCurrencyCode("USD");
+            positionHistory.setCreationDate(dateFormat1.parse(date));
+            positionHistory.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
+            posHis.add(positionHistory);
         }
+
         positionRepository.save(posHis);
     }
 
@@ -147,7 +158,7 @@ public class OranjService {
 
         try{
             List<OranjGoal> oranjGoalList = oranjGoalRepository.findByCreationDate(date);
-            storeGoals(oranjGoalList);
+            saveGoals(oranjGoalList);
         }catch (Exception e){
             log.error(ERROR_IN_GETTING_GOALS_FROM_ORANJ, e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -160,7 +171,7 @@ public class OranjService {
 
         try{
             List<OranjGoal> oranjGoalList = oranjGoalRepository.findGoalsTillDate(date);
-            storeGoals(oranjGoalList);
+            saveGoals(oranjGoalList);
         }catch (Exception e){
             log.error("Error in fetching goals from Oranj." + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -169,7 +180,7 @@ public class OranjService {
         return RestResponse.success("Goals created till " + date + " have been saved");
     }
 
-    public void storeGoals(List<OranjGoal> oranjGoalList){
+    private void saveGoals(List<OranjGoal> oranjGoalList){
         try{
             for(int i=0; i<oranjGoalList.size(); i++){
 
@@ -295,7 +306,7 @@ public class OranjService {
     public RestResponse getNetWorthTillDate(String date){
         try{
             List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDate(date);
-            storeNetWorth(oranjNetWorthList);
+            saveNetWorth(oranjNetWorthList);
         }catch (Exception e){
             log.error("Error in fetching net worth from Oranj." + e);
             return RestResponse.error("Error in fetching net worth from Oranj DB. "+ e);
@@ -306,7 +317,7 @@ public class OranjService {
     public RestResponse getNetWorth(String date){
         try{
             List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findByCreationDate(date);
-            storeNetWorth(oranjNetWorthList);
+            saveNetWorth(oranjNetWorthList);
         }catch (Exception e){
             log.error("Error in fetching goals from Oranj." + e);
             return RestResponse.error("Error in fetching Goals from Oranj DB");
@@ -315,7 +326,7 @@ public class OranjService {
 
     }
 
-    public void storeNetWorth(List<Object[]> oranjNetWorthList){
+    private void saveNetWorth(List<Object[]> oranjNetWorthList){
         for (Object[] obj : oranjNetWorthList) {
             NetWorth netWorth = new NetWorth();
             netWorth.setId((BigInteger)obj[0]);

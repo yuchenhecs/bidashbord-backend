@@ -30,8 +30,5 @@ public class Cron {
     @Column (name = "end_time")
     private Date endTime;
 
-    @Column (name = "inserted_on")
-    private Date insertedOn;
-
     public Cron(){}
 }
