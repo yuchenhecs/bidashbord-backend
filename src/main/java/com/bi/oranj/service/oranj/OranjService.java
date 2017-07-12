@@ -271,6 +271,13 @@ public class OranjService {
                 client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
                 client.setCreatedOn((Timestamp) clientsResultSet[5]);
                 client.setActive((Boolean) clientsResultSet[6]);
+
+                client.setRoleId( clientsResultSet[7] == null ? 0: ((BigInteger)clientsResultSet[7]).intValue());
+                client.setConverted( ((BigInteger)clientsResultSet[8]).compareTo(BigInteger.valueOf(0)) == 0 ? false : true );
+                client.setConvertedDate((Timestamp) clientsResultSet[9]);
+
+
+
                 clientRepository.save(client);
             }
 //            List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.findAllClientsWhoAreAdvisors();
