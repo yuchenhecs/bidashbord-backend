@@ -273,18 +273,18 @@ public class OranjService {
                 client.setActive((Boolean) clientsResultSet[6]);
                 clientRepository.save(client);
             }
-            List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.findAllClientsWhoAreAdvisors();
-            for (Object[] clientsResultSet : oranjClientsWhoAreAdvisorsList) {
-                Client client = new Client();
-                client.setId(Long.parseLong(clientsResultSet[0].toString()));
-                client.setClientFirstName(clientsResultSet[1].toString());
-                client.setClientLastName(clientsResultSet[2].toString());
-                client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
-                client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
-                client.setCreatedOn((Timestamp) clientsResultSet[5]);
-                client.setActive((Boolean) clientsResultSet[6]);
-                clientRepository.save(client);
-            }
+//            List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.findAllClientsWhoAreAdvisors();
+//            for (Object[] clientsResultSet : oranjClientsWhoAreAdvisorsList) {
+//                Client client = new Client();
+//                client.setId(Long.parseLong(clientsResultSet[0].toString()));
+//                client.setClientFirstName(clientsResultSet[1].toString());
+//                client.setClientLastName(clientsResultSet[2].toString());
+//                client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
+//                client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
+//                client.setCreatedOn((Timestamp) clientsResultSet[5]);
+//                client.setActive((Boolean) clientsResultSet[6]);
+//                clientRepository.save(client);
+//            }
         }catch (Exception e){
             log.error("Error in fetching Clients from Oranj." + e);
             return RestResponse.error("Error in fecthing Clients from Oranj DB");

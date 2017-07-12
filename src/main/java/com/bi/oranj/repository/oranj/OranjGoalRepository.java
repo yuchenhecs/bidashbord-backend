@@ -23,7 +23,7 @@ public interface OranjGoalRepository extends JpaRepository<OranjGoal, Integer> {
     @Query(value = GET_ALL_ADVISORS_QUERY, nativeQuery = true)
     List<Object[]> findAllAdvisors();
 
-    @Query(value = GET_ALL_CLIENTS_QUERY, nativeQuery = true)
+    @Query(value = GET_ALL_CLIENTS, nativeQuery = true)
     List<Object[]> findAllClients();
 
     @Query(value = GET_ALL_CLIENTS_WHO_ARE_ADVISORS_QUERY, nativeQuery = true)

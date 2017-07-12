@@ -15,11 +15,17 @@ public class ConstantQueries {
 
     public static final String GET_ALL_CLIENTS_QUERY = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, a.advisor_id as advisorId, a.firm_id as firmId, a.created, a.active from auth_user a where advisor_id is not null";
 
-    public static final String GET_ALL_CLIENTS_WHO_ARE_ADVISORS_QUERY = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, ad.id as advisorId, a.firm_id as firmId, a.created, a.active\n" +
+    public static final String GET_ALL_CLIENTS_WHO_ARE_ADVISORS_QUERY  = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, ad.id as advisorId, a.firm_id as firmId, a.created, a.active\n" +
                                                                         "from auth_user a \n" +
                                                                             "\tjoin advisor ad\n" +
                                                                                 "\tON ad.advisor_user_id = a.id\n" +
                                                                         "where a.advisor_id is null";
+
+    public static final String GET_ALL_CLIENTS = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, IFNULL(a.advisor_id, ad.id)  as advisorId, a.firm_id as firmId, a.created, a.active\n" +
+            "from auth_user a\n" +
+                "\tleft join advisor ad\n" +
+                    "\tON  a.id = ad.advisor_user_id\n" +
+            "where IFNULL(a.advisor_id, ad.id) is not NULL";
 
     public static final String GET_ALL_ADVISORS_AND_THEIR_CLIENTS = "select a.id, a.advisor_first_name, a.advisor_last_name, a.firm_id, c.id as client_id\n" +
             "from advisors a\n" +
