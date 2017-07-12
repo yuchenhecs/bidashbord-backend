@@ -26,5 +26,15 @@ public interface OranjNetWorthRepository extends JpaRepository<OranjNetWorth, In
 
 
 
+
+    @Query(value = "select n.id, n.date, n.value, n.user_id, n.asset_value, n.liability_value " +
+            "from networth_history n " +
+            "inner join auth_user a " +
+            "ON n.user_id = a.id \n" +
+            "where date(date) <= (:date) limit (:index), (:step) ", nativeQuery = true)
+    List<Object[]> findNetWorthTillDateByStep(@Param("date") String date, @Param("index") long index, @Param("step") long step);
+
+
+
 }
 

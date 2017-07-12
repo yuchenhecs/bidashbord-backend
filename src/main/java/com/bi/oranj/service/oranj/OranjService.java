@@ -316,8 +316,20 @@ public class OranjService {
 
     public RestResponse getNetWorth(String date){
         try{
-            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findByCreationDate(date);
-            saveNetWorth(oranjNetWorthList);
+            long index = 0;
+            long step = 10000;
+            while(true){
+                List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDateByStep(date, index,step);
+                saveNetWorth(oranjNetWorthList);
+
+                if(oranjNetWorthList.size() < step){
+                    break;
+                }
+
+                index+=step;
+
+            }
+
         }catch (Exception e){
             log.error("Error in fetching goals from Oranj." + e);
             return RestResponse.error("Error in fetching Goals from Oranj DB");
