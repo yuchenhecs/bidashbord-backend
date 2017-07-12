@@ -322,12 +322,8 @@ public class OranjService {
                 List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDateByStep(date, index,step);
                 saveNetWorth(oranjNetWorthList);
 
-                if(oranjNetWorthList.size() < step){
-                    break;
-                }
-
+                if(oranjNetWorthList.size() < step) break;
                 index+=step;
-
             }
 
         }catch (Exception e){
@@ -339,6 +335,7 @@ public class OranjService {
     }
 
     private void saveNetWorth(List<Object[]> oranjNetWorthList){
+        List<NetWorth> netWorthList = new ArrayList<>();
         for (Object[] obj : oranjNetWorthList) {
             NetWorth netWorth = new NetWorth();
             netWorth.setId((BigInteger)obj[0]);
@@ -347,7 +344,9 @@ public class OranjService {
             netWorth.setUserId((BigInteger)obj[3]);
             netWorth.setAssetValue(BigDecimal.valueOf((double)obj[4]));
             netWorth.setLiabilityValue(BigDecimal.valueOf((double)obj[5]));
-            netWorthRepository.save(netWorth);
+            netWorthList.add(netWorth);
         }
+
+        netWorthRepository.save(netWorthList);
     }
 }
