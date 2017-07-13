@@ -37,7 +37,7 @@ public class Client {
     private boolean active;
 
     @Column(name = "role_id")
-    private int roleId;
+    private Integer roleId;
 
     private boolean converted;
 
