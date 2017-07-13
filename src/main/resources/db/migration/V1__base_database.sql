@@ -30,6 +30,10 @@ CREATE TABLE `clients` (
   `advisor_id` bigint(20) DEFAULT NULL,
   `client_created_on` datetime DEFAULT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
+  `role_id` INTEGER DEFAULT NULL,
+  `converted` bit(1) NOT NULL DEFAULT b'0',
+  `converted_date` datetime DEFAULT NULL,
+
   PRIMARY KEY (`id`),
   FOREIGN KEY (`advisor_id`) REFERENCES advisors(`id`),
   FOREIGN KEY (`firm_id`) REFERENCES firms(`id`)

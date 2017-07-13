@@ -21,11 +21,20 @@ public class ConstantQueries {
                                                                                 "\tON ad.advisor_user_id = a.id\n" +
                                                                         "where a.advisor_id is null";
 
-    public static final String GET_ALL_CLIENTS = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, IFNULL(a.advisor_id, ad.id)  as advisorId, a.firm_id as firmId, a.created, a.active\n" +
+    public static final String GET_ALL_CLIENTS = "select a.id, a.first_name as userFirstName, a.last_name as userLastName, IFNULL(a.advisor_id, ad.id)  as advisorId, a.firm_id as firmId, a.created, a.active, au.role_id, IFNULL(f.coverted, FALSE) as coverted, max(f.created_on) as converted_date\n" +
             "from auth_user a\n" +
-                "\tleft join advisor ad\n" +
-                    "\tON  a.id = ad.advisor_user_id\n" +
-            "where IFNULL(a.advisor_id, ad.id) is not NULL";
+            "\tleft join advisor ad\n" +
+            "\t\ton  a.id = ad.advisor_user_id\t\n" +
+            "\tleft join auth_user_role au\n" +
+            "\t\ton au.user_id = a.id\n" +
+            "\tleft join (\n" +
+            "\t\tselect fa.user_id, fa.created_on, TRUE as coverted from feed_activity_detail fad \n" +
+            "\t\t\tjoin feed_activity fa \n" +
+            "\t\t\t\ton fa.id = fad.feed_id\n" +
+            "\t) f\n" +
+            "\t\ton f.user_id = a.id\n" +
+            "where IFNULL(a.advisor_id, ad.id) is not NULL\n" +
+            "group by a.id;";
 
     public static final String GET_ALL_ADVISORS_AND_THEIR_CLIENTS = "select a.id, a.advisor_first_name, a.advisor_last_name, a.firm_id, c.id as client_id\n" +
             "from advisors a\n" +

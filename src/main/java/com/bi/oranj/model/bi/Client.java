@@ -36,6 +36,14 @@ public class Client {
 
     private boolean active;
 
+    @Column(name = "role_id")
+    private Integer roleId;
+
+    private boolean converted;
+
+    @Column(name = "converted_date")
+    private Timestamp convertedDate;
+
     public Client(){
     }
 }
