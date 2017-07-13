@@ -25,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.*;
+import java.util.stream.Collectors;
+
 
 import static com.bi.oranj.constant.Constants.ERROR_IN_GETTING_GOALS_FROM_ORANJ;
 
@@ -224,14 +226,30 @@ public class OranjService {
     public RestResponse getAllFirms(){
         try{
             List<Object[]> oranjFirmList = oranjGoalRepository.findAllFirms();
-            for (Object[] firmResultSet : oranjFirmList) {
-                Firm firm = new Firm();
-                firm.setId(Long.parseLong(firmResultSet[0].toString()));
-                firm.setFirmName(firmResultSet[1].toString());
-                firm.setCreatedOn((Timestamp) firmResultSet[2]);
-                firm.setActive((Boolean) firmResultSet[3]);
-                firmRepository.save(firm);
-            }
+            List<Firm> biFirmList = oranjFirmList.stream()
+                    .map(firmResultSet -> {
+                        Firm firm = new Firm();
+                        firm.setId(Long.parseLong(firmResultSet[0].toString()));
+                        firm.setFirmName(firmResultSet[1].toString());
+                        firm.setCreatedOn((Timestamp) firmResultSet[2]);
+                        firm.setActive((Boolean) firmResultSet[3]);
+                        return firm;
+                    })
+                    .collect(Collectors.toList());
+
+
+//            for (Object[] firmResultSet : oranjFirmList) {
+//                Firm firm = new Firm();
+//                firm.setId(Long.parseLong(firmResultSet[0].toString()));
+//                firm.setFirmName(firmResultSet[1].toString());
+//                firm.setCreatedOn((Timestamp) firmResultSet[2]);
+//                firm.setActive((Boolean) firmResultSet[3]);
+//
+//                biFirmList.add(firm);
+//
+//            }
+            firmRepository.save(biFirmList);
+
         }catch (Exception e){
             log.error("Error in fetching Firms from Oranj." + e);
             return RestResponse.error("Error in fecthing Firms from Oranj DB");
@@ -242,16 +260,22 @@ public class OranjService {
     public RestResponse getAllAdvisors(){
         try{
             List<Object[]> oranjAdvisorsList = oranjGoalRepository.findAllAdvisors();
-            for (Object[] advisorsResultSet : oranjAdvisorsList) {
-                Advisor advisor = new Advisor();
-                advisor.setId(Long.parseLong(advisorsResultSet[0].toString()));
-                advisor.setAdvisorFirstName(advisorsResultSet[1].toString());
-                advisor.setAdvisorLastName(advisorsResultSet[2].toString());
-                advisor.setFirmId(Long.parseLong(advisorsResultSet[3].toString()));
-                advisor.setCreatedOn((Timestamp) advisorsResultSet[4]);
-                advisor.setActive((Boolean) advisorsResultSet[5]);
-                advisorRepository.save(advisor);
-            }
+
+
+            List<Advisor> biAdvisorsList = oranjAdvisorsList.stream()
+                    .map(advisorsResultSet -> {
+                        Advisor advisor = new Advisor();
+                        advisor.setId(Long.parseLong(advisorsResultSet[0].toString()));
+                        advisor.setAdvisorFirstName(advisorsResultSet[1].toString());
+                        advisor.setAdvisorLastName(advisorsResultSet[2].toString());
+                        advisor.setFirmId(Long.parseLong(advisorsResultSet[3].toString()));
+                        advisor.setCreatedOn((Timestamp) advisorsResultSet[4]);
+                        advisor.setActive((Boolean) advisorsResultSet[5]);
+                        return advisor;
+                    })
+                    .collect(Collectors.toList());
+
+            advisorRepository.save(biAdvisorsList);
         }catch (Exception e){
             log.error("Error in fetching Advisors from Oranj." + e);
             return RestResponse.error("Error in fecthing Advisors from Oranj DB");
@@ -262,37 +286,30 @@ public class OranjService {
     public RestResponse getAllClients(){
         try{
             List<Object[]> oranjClientsList = oranjGoalRepository.findAllClients();
-            for (Object[] clientsResultSet : oranjClientsList) {
-                Client client = new Client();
-                client.setId(Long.parseLong(clientsResultSet[0].toString()));
-                client.setClientFirstName(clientsResultSet[1].toString());
-                client.setClientLastName(clientsResultSet[2].toString());
-                client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
-                client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
-                client.setCreatedOn((Timestamp) clientsResultSet[5]);
-                client.setActive((Boolean) clientsResultSet[6]);
 
-                client.setRoleId(clientsResultSet[7] == null? null: ((BigInteger)clientsResultSet[7]).intValue());
+            List<Client> biClientsList = oranjClientsList.stream()
+                    .map(clientsResultSet -> {
+                        Client client = new Client();
+                        client.setId(Long.parseLong(clientsResultSet[0].toString()));
+                        client.setClientFirstName(clientsResultSet[1].toString());
+                        client.setClientLastName(clientsResultSet[2].toString());
+                        client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
+                        client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
+                        client.setCreatedOn((Timestamp) clientsResultSet[5]);
+                        client.setActive((Boolean) clientsResultSet[6]);
 
-                client.setConverted( ((BigInteger)clientsResultSet[8]).compareTo(BigInteger.valueOf(0)) == 0 ? false : true );
-                client.setConvertedDate((Timestamp) clientsResultSet[9]);
+                        client.setRoleId(clientsResultSet[7] == null? null: ((BigInteger)clientsResultSet[7]).intValue());
+
+                        client.setConverted( ((BigInteger)clientsResultSet[8]).compareTo(BigInteger.valueOf(0)) == 0 ? false : true );
+                        client.setConvertedDate((Timestamp) clientsResultSet[9]);
+                        return client;
+                    })
+                    .collect(Collectors.toList());
 
 
+            clientRepository.save(biClientsList);
 
-                clientRepository.save(client);
-            }
-//            List<Object[]> oranjClientsWhoAreAdvisorsList = oranjGoalRepository.findAllClientsWhoAreAdvisors();
-//            for (Object[] clientsResultSet : oranjClientsWhoAreAdvisorsList) {
-//                Client client = new Client();
-//                client.setId(Long.parseLong(clientsResultSet[0].toString()));
-//                client.setClientFirstName(clientsResultSet[1].toString());
-//                client.setClientLastName(clientsResultSet[2].toString());
-//                client.setAdvisorId(Long.parseLong(clientsResultSet[3].toString()));
-//                client.setFirmId(Long.parseLong(clientsResultSet[4].toString()));
-//                client.setCreatedOn((Timestamp) clientsResultSet[5]);
-//                client.setActive((Boolean) clientsResultSet[6]);
-//                clientRepository.save(client);
-//            }
+
         }catch (Exception e){
             log.error("Error in fetching Clients from Oranj." + e);
             return RestResponse.error("Error in fecthing Clients from Oranj DB");
