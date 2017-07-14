@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import static com.bi.oranj.constant.Constants.ERROR_IN_GETTING_ADVISOR_SUMMARY;
 import static com.bi.oranj.constant.Constants.YEAR_MONTH_DAY_FORMAT;
@@ -34,13 +35,23 @@ public class GamificationService {
             if(advisorRepository.findById(advisorId) == null){
                 return RestResponse.error("Advisor "+  advisorId +" does not exist");
             }
-
-            GamificationCategories gamificationCategories = gamificationRepository.findOne(advisorId);
+            GamificationCategories gamificationCategories = gamificationRepository.findByAdvisorIdAndDate(advisorId, getDate(1));
+            if(gamificationCategories == null){
+                gamificationCategories = gamificationRepository.findByAdvisorIdAndDate(advisorId, getDate(2));
+            }
             return RestResponse.successWithoutMessage(gamificationCategories);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_ADVISOR_SUMMARY + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error(ERROR_IN_GETTING_ADVISOR_SUMMARY);
         }
+    }
+
+    public String getDate(int daysInThePast) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -daysInThePast);
+        String day = dateFormat.format(cal.getTime());
+        return day;
+
     }
 }

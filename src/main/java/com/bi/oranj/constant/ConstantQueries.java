@@ -159,5 +159,7 @@ public class ConstantQueries {
             "from analytics \n" +
             "where role_id = :role and date(session_start_date) between date(:start) and date(:end)\n" +
             "group by client_id) as o";
+
+    public static final String GET_GAMIFICATION_SUMMARY_QUERY = "select * from gamification_categories where advisor_id=:advisor and date(update_date) IN (:date)";
 }
 

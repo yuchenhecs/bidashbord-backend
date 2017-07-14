@@ -7,11 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 @Data
 @Entity
-@Table(name = "goals")
+@Table(name = "gamification_categories")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GamificationCategories {
 
@@ -23,33 +25,33 @@ public class GamificationCategories {
     private Long advisorId;
 
     @Column(name = "aum")
-    private Double aum;
+    private BigDecimal aum;
 
     @Column(name = "net_worth")
-    private Double netWorth;
+    private BigDecimal netWorth;
 
-    private Long hni;
+    private Integer hni;
 
     @Column(name = "conversion_rate")
-    private Double conversionRate;
+    private BigDecimal conversionRate;
 
     @Column(name = "avg_conversion_time")
-    private Double avgConversionTime;
+    private BigDecimal avgConversionTime;
 
     @Column(name = "retention_rate")
-    private Double retentionRate;
+    private BigDecimal retentionRate;
 
     @Column(name = "weekly_client_login")
-    private Long weeklyClientLogin;
+    private Integer weeklyClientLogin;
 
     @Column(name = "qoq_aum_growth")
-    private Double qoqAumGrowth;
+    private BigDecimal qoqAumGrowth;
 
     @Column(name = "qoq_net_worth")
-    private Double qoqNetWorthGrowth;
+    private BigDecimal qoqNetWorthGrowth;
 
     @Column(name = "clientele_growth")
-    private Double clienteleGrowth;
+    private BigDecimal clienteleGrowth;
 
     @Column(name = "update_date")
     private Timestamp updateDate;
