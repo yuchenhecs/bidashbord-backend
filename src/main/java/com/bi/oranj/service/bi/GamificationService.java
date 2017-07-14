@@ -50,8 +50,6 @@ public class GamificationService {
     public String getDate(int daysInThePast) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -daysInThePast);
-        String day = dateFormat.format(cal.getTime());
-        return day;
-
+        return dateFormat.format(cal.getTime());
     }
 }

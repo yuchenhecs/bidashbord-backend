@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 @Data
@@ -41,14 +40,14 @@ public class GamificationCategories {
     @Column(name = "retention_rate")
     private BigDecimal retentionRate;
 
-    @Column(name = "weekly_client_login")
-    private Integer weeklyClientLogin;
+    @Column(name = "weekly_logins")
+    private Integer weeklyLogins;
 
-    @Column(name = "qoq_aum_growth")
-    private BigDecimal qoqAumGrowth;
+    @Column(name = "aum_growth")
+    private BigDecimal aumGrowth;
 
-    @Column(name = "qoq_net_worth")
-    private BigDecimal qoqNetWorthGrowth;
+    @Column(name = "net_worth_growth")
+    private BigDecimal netWorthGrowth;
 
     @Column(name = "clientele_growth")
     private BigDecimal clienteleGrowth;
