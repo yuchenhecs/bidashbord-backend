@@ -1,7 +1,6 @@
 package com.bi.oranj.controller.bi;
 
 import com.bi.oranj.service.google.analytics.BiAnalyticsService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by jaloliddinbakirov on 6/28/17.
  */
-@Api(basePath = "/bi/analytics", description = "Operations with Google Analytics", produces = "application/json")
 @RestController
 @CrossOrigin
 @RequestMapping("bi/analytics")

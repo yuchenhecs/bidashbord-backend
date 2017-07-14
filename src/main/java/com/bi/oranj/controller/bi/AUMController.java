@@ -2,7 +2,6 @@ package com.bi.oranj.controller.bi;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.service.bi.AUMService;
-import com.bi.oranj.service.oranj.OranjService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

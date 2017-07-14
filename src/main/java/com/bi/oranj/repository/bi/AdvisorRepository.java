@@ -122,4 +122,6 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long> {
 
     public List<Advisor> findByFirmIdAndActiveTrueOrderByAdvisorFirstNameAsc(Long firmId);
 
+    public Advisor findById(Long advisorId);
+
 }

@@ -237,17 +237,6 @@ public class OranjService {
                     })
                     .collect(Collectors.toList());
 
-
-//            for (Object[] firmResultSet : oranjFirmList) {
-//                Firm firm = new Firm();
-//                firm.setId(Long.parseLong(firmResultSet[0].toString()));
-//                firm.setFirmName(firmResultSet[1].toString());
-//                firm.setCreatedOn((Timestamp) firmResultSet[2]);
-//                firm.setActive((Boolean) firmResultSet[3]);
-//
-//                biFirmList.add(firm);
-//
-//            }
             firmRepository.save(biFirmList);
 
         }catch (Exception e){
