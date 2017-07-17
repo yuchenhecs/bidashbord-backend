@@ -1,8 +1,8 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
+import com.bi.oranj.model.bi.Gamification;
 import com.bi.oranj.model.bi.GamificationAdvisor;
-import com.bi.oranj.model.bi.GamificationCategories;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.GamificationRankRepository;
 import com.bi.oranj.repository.bi.GamificationRepository;
@@ -13,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import static com.bi.oranj.constant.Constants.*;
 
@@ -43,11 +46,17 @@ public class GamificationService {
             if(advisorRepository.findById(advisorId) == null){
                 return RestResponse.error("Advisor "+  advisorId +" does not exist");
             }
-            GamificationCategories gamificationCategories = gamificationRepository.findByAdvisorIdAndDate(advisorId, getDate(1));
-            if(gamificationCategories == null){
-                gamificationCategories = gamificationRepository.findByAdvisorIdAndDate(advisorId, getDate(2));
+            Gamification gamification = null;
+            List<Object[]> gamificationResultSet = gamificationRepository.findByAdvisorIdAndDate(advisorId, getDate(1));
+            for (Object[] resultSet : gamificationResultSet) {
+                gamification = new Gamification((((BigInteger) resultSet[0]).longValue()), ((String) resultSet[1] + " " + (String) resultSet[2]),
+                        (((BigInteger) resultSet[3]).longValue()), ((BigDecimal) resultSet[4]),((BigDecimal) resultSet[5]),
+                        ((BigDecimal) resultSet[6]), ((BigDecimal) resultSet[7]), ((BigDecimal) resultSet[8]),
+                        ((Integer) resultSet[9]),((BigDecimal) resultSet[10]), ((BigDecimal) resultSet[11]),
+                        ((BigDecimal) resultSet[12]), ((Integer) resultSet[13]), ((BigDecimal) resultSet[14]),
+                        ((BigDecimal) resultSet[15]),((BigDecimal) resultSet[16]));
             }
-            return RestResponse.successWithoutMessage(gamificationCategories);
+            return RestResponse.successWithoutMessage(gamification);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_ADVISOR_SUMMARY + e);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -59,23 +68,5 @@ public class GamificationService {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -daysInThePast);
         return dateFormat.format(cal.getTime());
-    }
-
-    public RestResponse getAdvisorRankForGamification(Long advisorId) {
-
-        try{
-            if(advisorRepository.findById(advisorId) == null){
-                return RestResponse.error("Advisor "+  advisorId +" does not exist");
-            }
-            GamificationAdvisor gamificationAdvisor = gamificationRankRepository.findByAdvisorIdAndDate(advisorId, getDate(1));
-            if(gamificationAdvisor == null){
-                gamificationAdvisor = gamificationRankRepository.findByAdvisorIdAndDate(advisorId, getDate(2));
-            }
-            return RestResponse.successWithoutMessage(gamificationAdvisor);
-        }catch (Exception e) {
-            log.error(ERROR_IN_GETTING_ADVISOR_RANK + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_ADVISOR_RANK);
-        }
     }
 }
