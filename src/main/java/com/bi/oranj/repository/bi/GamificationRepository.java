@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface GamificationRepository extends JpaRepository<GamificationCategories, Long> {
 
-    @Query(value = ConstantQueries.GET_GAMIFICATION_SUMMARY_QUERY, nativeQuery = true)
-    public GamificationCategories findByAdvisorIdAndDate(@Param("advisor") Long advisor, @Param("date") String date);
+    @Query(value = ConstantQueries.GET_GAMIFICATION_QUERY, nativeQuery = true)
+    public List<Object[]> findByAdvisorIdAndDate(@Param("advisor") Long advisor, @Param("date") String date);
 
 }

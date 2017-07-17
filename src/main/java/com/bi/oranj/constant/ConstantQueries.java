@@ -160,8 +160,13 @@ public class ConstantQueries {
             "where role_id = :role and date(session_start_date) between date(:start) and date(:end)\n" +
             "group by client_id) as o";
 
-    public static final String GET_GAMIFICATION_SUMMARY_QUERY = "select * from gamification_categories where advisor_id=:advisor and date(update_date) IN (:date)";
-
-    public static final String GET_GAMIFICATION_RANK_QUERY = "select * from gamification_advisor where advisor_id=:advisor and date(updated_on) IN (:date)";
+    public static final String GET_GAMIFICATION_QUERY = "select g.advisor_id, a.advisor_first_name, a.advisor_last_name, g.points, g.percentile_overall, g.percentile_state, g.percentile_firm,\n" +
+            "    innerTable.aum, innerTable.net_worth, innerTable.hni, innerTable.conversion_rate, innerTable.avg_conversion_time, innerTable.retention_rate, innerTable.weekly_logins, innerTable.aum_growth, innerTable.net_worth_growth, innerTable.clientele_growth\n" +
+            "    from gamification_advisor g\n" +
+            "    left join advisors a\n" +
+            "    ON g.advisor_id = a.id\n" +
+            "    left join (select * from gamification_categories where advisor_id=:advisor and date(update_date) IN (:date)) as innerTable\n" +
+            "    ON g.advisor_id = innerTable.advisor_id\n" +
+            "    where g.advisor_id=:advisor and date(updated_on) IN (:date);";
 }
 
