@@ -25,6 +25,11 @@ public class Firm {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "state")
+    private String state;
+
+
+
     public Firm(){
     }
 }

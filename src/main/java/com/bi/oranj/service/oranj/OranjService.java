@@ -233,6 +233,7 @@ public class OranjService {
                         firm.setFirmName(firmResultSet[1].toString());
                         firm.setCreatedOn((Timestamp) firmResultSet[2]);
                         firm.setActive((Boolean) firmResultSet[3]);
+                        firm.setState(firmResultSet[4] == null? null :firmResultSet[4].toString());
                         return firm;
                     })
                     .collect(Collectors.toList());

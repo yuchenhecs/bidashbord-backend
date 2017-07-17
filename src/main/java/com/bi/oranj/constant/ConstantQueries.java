@@ -6,7 +6,7 @@ public class ConstantQueries {
         throw new IllegalStateException("ConstantQueries class");
     }
 
-    public static final String GET_ALL_FIRMS_QUERY = "select id, name, created_on, active from firm";
+    public static final String GET_ALL_FIRMS_QUERY = "select id, name, created_on, active, state from firm";
 
     public static final String GET_ALL_ADVISORS_QUERY = "select ad.id, ad.first_name as advisorFirstName, ad.last_name as advisorLastName, ad.firm_id, a.created, ad.active\n" +
                                                         "from advisor ad\n" +
