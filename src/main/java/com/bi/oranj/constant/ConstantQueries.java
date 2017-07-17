@@ -161,5 +161,7 @@ public class ConstantQueries {
             "group by client_id) as o";
 
     public static final String GET_GAMIFICATION_SUMMARY_QUERY = "select * from gamification_categories where advisor_id=:advisor and date(update_date) IN (:date)";
+
+    public static final String GET_GAMIFICATION_RANK_QUERY = "select * from gamification_advisor where advisor_id=:advisor and date(updated_on) IN (:date)";
 }
 
