@@ -320,7 +320,7 @@ public class OranjService {
     public RestResponse getNetWorthTillDate(String date){
         try{
             long index = 0;
-            long step = 10000;
+            long step = 100000;
             while(true){
                 List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDateByStep(date, index, step);
                 saveNetWorth(oranjNetWorthList);
@@ -328,7 +328,6 @@ public class OranjService {
                 if(oranjNetWorthList == null || oranjNetWorthList.size() < step) break;
 
                 index += step;
-                
 
             }
 
