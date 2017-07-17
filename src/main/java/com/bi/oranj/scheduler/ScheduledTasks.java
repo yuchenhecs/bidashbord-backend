@@ -152,7 +152,7 @@ public class ScheduledTasks {
             startTime = new Date();
             String yesterday = dateFormat.format(yesterday());
             log.info("Fetching 'Net Worth' DATA");
-            oranjService.getNetWorth(yesterday);
+            oranjService.getNetWorthForDate(yesterday);
             log.info("Fetching 'Net Worth' DATA: DONE");
             endTime = new Date();
         } catch (Exception ex){

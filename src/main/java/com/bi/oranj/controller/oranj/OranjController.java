@@ -105,7 +105,7 @@ public class OranjController {
     @RequestMapping (path = "/networth", method = RequestMethod.GET)
     public RestResponse getNetworth (@RequestParam(value = "date", required = true) String date){
         log.info("Fetching Net Worth From Oranj DB for ", date);
-        return oranjService.getNetWorth(date);
+        return oranjService.getNetWorthForDate(date);
     }
 
 }

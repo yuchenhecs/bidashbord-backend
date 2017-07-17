@@ -328,19 +328,10 @@ public class OranjService {
         return RestResponse.success("Net worth till " + date + " have been saved");
     }
 
-    public RestResponse getNetWorth(String date){
+    public RestResponse getNetWorthForDate(String date){
         try{
-            long index = 0;
-            long step = 1000;
-            while(true){
-                List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDateByStep(date, index, step);
-                saveNetWorth(oranjNetWorthList);
-
-                if(oranjNetWorthList.size() < step) break;
-                index+=step;
-                oranjNetWorthList.clear();
-            }
-
+            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findByCreationDate(date);
+            saveNetWorth(oranjNetWorthList);
         }catch (Exception e){
             log.error("Error in fetching goals from Oranj." + e);
             return RestResponse.error("Error in fetching Goals from Oranj DB");
@@ -350,19 +341,20 @@ public class OranjService {
     }
 
     private void saveNetWorth(List<Object[]> oranjNetWorthList){
-        List<NetWorth> netWorthList = new ArrayList<>();
-        for (Object[] obj : oranjNetWorthList) {
-            NetWorth netWorth = new NetWorth();
-            netWorth.setId((BigInteger)obj[0]);
-            netWorth.setDate((Timestamp)obj[1]);
-            netWorth.setValue( BigDecimal.valueOf((double)obj[2]) );
-            netWorth.setUserId((BigInteger)obj[3]);
-            netWorth.setAssetValue(BigDecimal.valueOf((double)obj[4]));
-            netWorth.setLiabilityValue(BigDecimal.valueOf((double)obj[5]));
-            netWorthList.add(netWorth);
-        }
+        List<NetWorth> netWorthList = oranjNetWorthList.stream()
+                .map(obj -> {
+                    NetWorth netWorth = new NetWorth();
+                    netWorth.setId((BigInteger)obj[0]);
+                    netWorth.setDate((Timestamp)obj[1]);
+                    netWorth.setValue( BigDecimal.valueOf((double)obj[2]) );
+                    netWorth.setUserId((BigInteger)obj[3]);
+                    netWorth.setAssetValue(BigDecimal.valueOf((double)obj[4]));
+                    netWorth.setLiabilityValue(BigDecimal.valueOf((double)obj[5]));
+                    return netWorth;
+                })
+                .collect(Collectors.toList());
+
 
         netWorthRepository.save(netWorthList);
-        netWorthList.clear();
     }
 }
