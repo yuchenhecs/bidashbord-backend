@@ -16,8 +16,14 @@ public class GamificationController {
     private GamificationService gamificationService;
 
     @ApiOperation(value = "Get advisor summary", notes = "'advisorId' should be an integer value")
-    @RequestMapping(value="/advisors/{advisorId}", method = RequestMethod.GET)
+    @RequestMapping(value="/advisors/{advisorId}/summary", method = RequestMethod.GET)
     public RestResponse getAdvisorSummaryForGamification(@PathVariable("advisorId") Long advisorId) {
         return gamificationService.getAdvisorSummaryForGamification(advisorId);
+    }
+
+    @ApiOperation(value = "Get advisor Rank", notes = "'advisorId' should be an integer value")
+    @RequestMapping(value="/advisors/{advisorId}/rank", method = RequestMethod.GET)
+    public RestResponse getAdvisorRankForGamification(@PathVariable("advisorId") Long advisorId) {
+        return gamificationService.getAdvisorRankForGamification(advisorId);
     }
 }

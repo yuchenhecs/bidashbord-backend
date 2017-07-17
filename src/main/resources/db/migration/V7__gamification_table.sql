@@ -15,3 +15,16 @@ CREATE TABLE gamification_categories (
     PRIMARY KEY (id),
     FOREIGN KEY (advisor_id) REFERENCES advisors(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE gamification_advisor (
+    id bigint(20) not null auto_increment,
+    advisor_id bigint(20) not null,
+    points bigint(20) default 0,
+    percentile_state decimal(19,4) default 0,
+    percentile_overall decimal(19,4) default 0,
+    percentile_firm decimal(19,4) default 0,
+    updated_on datetime default CURRENT_TIMESTAMP,
+    primary key (id),
+    foreign key (advisor_id) references advisors (id)
+);

@@ -34,7 +34,6 @@ public class InputValidator {
         return (user.equals(CLIENT) || user.equals(PROSPECT));
     }
 
-
     public boolean validateInputRangeType(String range){
         return (range.equals(WEEK) || range.equals(MONTH));
     }

@@ -18,14 +18,18 @@ public class Constants {
     public static final String MONTH = "month";
     public static final String TWO_WEEKS = "twoWeeks";
     public static final String MINUTE = "minute";
+    public static final String OVERALL = "overall";
+    public static final String STATE = "state";
 
     public static final String ERROR_DATE_VALIDATION = "Date should be in 'yyyy-MM-dd' format";
     public static final String ERROR_USER_TYPE_VALIDATION = "'user' should be either 'prospect' or 'client'";
+    public static final String ERROR_REGION_VALIDATION = "'region' should be either 'overall' or 'state' or 'firm'";
     public static final String ERROR_RANGE_TYPE_VALIDATION = "'range' should be either 'week' or 'month'";
     public static final String ERROR_PAGE_NUMBER_VALIDATION = "Page number should be a positive integer";
     public static final String ERROR_IN_GETTING_AUM = "Error in fetching AUMs";
     public static final String ERROR_IN_GETTING_LOGIN_METRICS = "Error in fetching Login Metrics";
     public static final String ERROR_IN_GETTING_ADVISOR_SUMMARY = "Error in getting advisor summary";
+    public static final String ERROR_IN_GETTING_ADVISOR_RANK = "Error in getting advisor Rank";
     public static final String ERROR_IN_GETTING_NET_WORTH = "Error in fetching net worth";
     public static final String ERROR_IN_GETTING_GOALS_FROM_ORANJ = "Error in fetching goals from Oranj";
     public static final String ERROR_IN_GETTING_DATE = "Error in Getting date";
