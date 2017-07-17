@@ -328,7 +328,6 @@ public class OranjService {
                 if(oranjNetWorthList == null || oranjNetWorthList.size() < step) break;
 
                 index += step;
-                
 
             }
 
