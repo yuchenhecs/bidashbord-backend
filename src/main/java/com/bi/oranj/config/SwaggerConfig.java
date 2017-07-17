@@ -26,7 +26,7 @@ public class SwaggerConfig {
 
     @SuppressWarnings("deprecation")
     private ApiInfo apiInfo() {
-        ApiInfo apiInfo = new ApiInfo(
+        return new ApiInfo(
                 "BI Backend APIs",
                 "Use these APIs to get BI Dashboard data.",
                 "API TOS",
@@ -34,6 +34,5 @@ public class SwaggerConfig {
                 "Oranj",
                 "http://runoranj.com/", null
         );
-        return apiInfo;
     }
 }
