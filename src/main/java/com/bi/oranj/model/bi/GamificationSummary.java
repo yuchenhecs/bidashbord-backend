@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
-public class Gamification {
+public class GamificationSummary {
 
     private Long advisorId;
     private String name;
