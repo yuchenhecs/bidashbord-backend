@@ -207,7 +207,6 @@ public class NetWorthService {
             }
 
             netWorthSummary.setSummary(networthList);
-
             return RestResponse.successWithoutMessage(netWorthSummary);
 
         } catch (Exception e) {
@@ -231,7 +230,4 @@ public class NetWorthService {
 
         return monthList;
     }
-
 }
-
-//added files NetWorth/Admin/Firm/Advisor to replace the files NetWorth/Firms/Advisors/Clients to make it consistent within the networth feature

@@ -7,6 +7,7 @@ import com.bi.oranj.repository.bi.AumRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.utils.InputValidator;
+import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,9 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.temporal.IsoFields;
 import java.util.*;
 
 import static com.bi.oranj.constant.Constants.*;
-import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 
 @Service
 public class AUMService {
@@ -33,9 +31,6 @@ public class AUMService {
     private AumRepository aumRepository;
 
     @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
     private AdvisorRepository advisorRepository;
 
     @Autowired
@@ -43,6 +38,12 @@ public class AUMService {
 
     @Autowired
     private InputValidator inputValidator;
+
+    @Autowired
+    DateUtility dateUtility;
+
+    @Autowired
+    ClientRepository clientRepository;
 
     public RestResponse getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
 
@@ -230,7 +231,7 @@ public class AUMService {
 
         try {
             List<AumDiff> aumDiffList = new ArrayList<>();
-            List<String> dateList = getQuarterFirstDates();
+            List<String> dateList = dateUtility.getQuarterFirstDates();
             for (int i=0; i<dateList.size(); i++){
 
                 List<Object[]> aumSummaryResultSet = aumRepository.findAUMsSummary(dateList.get(i));
@@ -253,28 +254,6 @@ public class AUMService {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error(ERROR_IN_GETTING_AUM);
         }
-    }
-
-    public List<String> getQuarterFirstDates(){
-
-        List<String> dateList = new ArrayList<>();
-        long totalNumberOfQuarters = IsoFields.QUARTER_YEARS.between(
-                        LocalDate.of(START_YEAR, START_MONTH, START_DAY),
-                        LocalDate.of(Calendar.getInstance().get(Calendar.YEAR),
-                                     (Calendar.getInstance().get(Calendar.MONTH)+1),
-                                      Calendar.getInstance().get(Calendar.DAY_OF_MONTH)))+1;
-        log.info("totalNumberOfQuarters ::: {}", totalNumberOfQuarters);
-
-        LocalDate beginningYear = LocalDate.parse(START_YEAR + "-0" + START_MONTH + "-0" + START_DAY);
-        LocalDate firstQuarter = beginningYear.with(firstDayOfYear());
-
-        int monthsToAdd=0;
-        for(int i=0; i<totalNumberOfQuarters; i++){
-            dateList.add(firstQuarter.plusMonths(monthsToAdd).toString());
-            monthsToAdd = monthsToAdd + 3;
-        }
-        dateList.add(LocalDate.now().toString());
-        return dateList;
     }
 }
 

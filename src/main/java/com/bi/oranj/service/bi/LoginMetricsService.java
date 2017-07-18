@@ -7,6 +7,7 @@ import com.bi.oranj.repository.bi.AnalyticsRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.utils.InputValidator;
+import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class LoginMetricsService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    DateUtility dateUtility;
+
     public RestResponse getLoginMetricsForAdmin(Integer pageNumber, String user, String range){
 
         List<String> dateRange = new ArrayList<>();
@@ -63,7 +67,7 @@ public class LoginMetricsService {
         if (!inputValidator.validateInputRangeType(range)) {
             return RestResponse.error(ERROR_RANGE_TYPE_VALIDATION);
         } else {
-            dateRange = getDates(dateRange, range);
+            dateRange = dateUtility.getDates(dateRange, range);
         }
 
         try {
@@ -118,7 +122,7 @@ public class LoginMetricsService {
         if (!inputValidator.validateInputRangeType(range)) {
             return RestResponse.error(ERROR_RANGE_TYPE_VALIDATION);
         } else {
-            dateRange = getDates(dateRange, range);
+            dateRange = dateUtility.getDates(dateRange, range);
         }
 
         try {
@@ -173,7 +177,7 @@ public class LoginMetricsService {
         if (!inputValidator.validateInputRangeType(range)) {
             return RestResponse.error(ERROR_RANGE_TYPE_VALIDATION);
         } else {
-            dateRange = getDates(dateRange, range);
+            dateRange = dateUtility.getDates(dateRange, range);
         }
 
         try {
@@ -222,7 +226,7 @@ public class LoginMetricsService {
 
         List<String> dateRange = new ArrayList<>();
         try {
-            dateRange = getDates(dateRange, WEEK);
+            dateRange = dateUtility.getDates(dateRange, WEEK);
             LoginMetricsSummary loginMetricsSummary = new LoginMetricsSummary();
             Map<String, LoginMetricsSummary> map = new HashMap<>();
             List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(1), dateRange.get(0));
@@ -237,7 +241,7 @@ public class LoginMetricsService {
                     loginMetricsSummary.setAvgSessionTime(BigDecimal.ZERO);
                 }
             }
-            dateRange = getDates(dateRange, TWO_WEEKS);
+            dateRange = dateUtility.getDates(dateRange, TWO_WEEKS);
             loginMetricsResultSet = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(3), dateRange.get(2));
             for (Object[] resultSet : loginMetricsResultSet){
                 if(resultSet[0] != null){
@@ -257,38 +261,6 @@ public class LoginMetricsService {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
         }
-    }
-
-    public List<String> getDates(List<String> dateRange, String range) {
-
-        try{
-            Calendar cal = Calendar.getInstance();
-            switch (range){
-                case WEEK:
-                    cal.add(Calendar.DATE, -1);
-                    dateRange.add(dateFormat.format(cal.getTime()));
-                    cal.add(Calendar.DATE, -6);
-                    dateRange.add(dateFormat.format(cal.getTime()));
-                    break;
-                case MONTH:
-                    cal.add(Calendar.DATE, -1);
-                    dateRange.add(dateFormat.format(cal.getTime()));
-                    cal.add(Calendar.DATE, -29);
-                    dateRange.add(dateFormat.format(cal.getTime()));
-                    break;
-                case TWO_WEEKS:
-                    cal.add(Calendar.DATE, -8);
-                    dateRange.add(dateFormat.format(cal.getTime()));
-                    cal.add(Calendar.DATE, -6);
-                    dateRange.add(dateFormat.format(cal.getTime()));
-                    break;
-                default:
-                    break;
-            }
-        } catch (Exception e){
-            log.error(ERROR_IN_GETTING_DATE + e);
-        }
-        return dateRange;
     }
 
     public Long getRoleId(String role){
