@@ -233,6 +233,7 @@ public class OranjService {
                         firm.setFirmName(firmResultSet[1].toString());
                         firm.setCreatedOn((Timestamp) firmResultSet[2]);
                         firm.setActive((Boolean) firmResultSet[3]);
+                        firm.setState(firmResultSet[4] == null? null :firmResultSet[4].toString());
                         return firm;
                     })
                     .collect(Collectors.toList());
@@ -319,17 +320,21 @@ public class OranjService {
 
     public RestResponse getNetWorthTillDate(String date){
         try{
-            long index = 0;
-            long step = 10000;
-            while(true){
-                List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDateByStep(date, index, step);
+
+                List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDate(date);
                 saveNetWorth(oranjNetWorthList);
 
-                if(oranjNetWorthList == null || oranjNetWorthList.size() < step) break;
-
-                index += step;
-
-            }
+//            long index = 0;
+//            long step = 10000;
+//            while(true){
+//                List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDateByStep(date, index, step);
+//                saveNetWorth(oranjNetWorthList);
+//
+//                if(oranjNetWorthList == null || oranjNetWorthList.size() < step) break;
+//
+//                index += step;
+//
+//            }
 
         }catch (Exception e){
             log.error("Error in fetching net worth from Oranj." + e);
