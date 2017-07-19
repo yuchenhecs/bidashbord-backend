@@ -5,6 +5,10 @@ value decimal (19, 4) default null,
 primary key (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `gamification_config` (`id`, `config_name`, `value`)
+VALUES
+	(1, 'benchmark', 1000000.0000);
+
 
 DELIMITER //
 CREATE PROCEDURE compute_category_values (date1 varchar(15), date2 varchar(15), date3 varchar(15),
