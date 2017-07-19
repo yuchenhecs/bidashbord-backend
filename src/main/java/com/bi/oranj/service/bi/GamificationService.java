@@ -60,4 +60,15 @@ public class GamificationService {
             return RestResponse.error(ERROR_IN_GETTING_ADVISOR_SUMMARY);
         }
     }
+
+    public RestResponse getAdvisorAchievements(Long advisorId, String region){
+        try {
+
+            return RestResponse.successWithoutMessage(null);
+        } catch (Exception e) {
+        log.error(ERROR_IN_GETTING_ACHIEVEMENTS + e);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return RestResponse.error(ERROR_IN_GETTING_ACHIEVEMENTS);
+    }
+    }
 }

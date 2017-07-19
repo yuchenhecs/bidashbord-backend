@@ -20,4 +20,11 @@ public class GamificationController {
     public RestResponse getAdvisorSummaryForGamification(@PathVariable("advisorId") Long advisorId) {
         return gamificationService.getAdvisorSummaryForGamification(advisorId);
     }
+
+    @ApiOperation(value = "Get advisor achievements", notes = "'advisorId' should be an integer value")
+    @RequestMapping(value="/advisors/{advisorId}/patOnTheBack", method = RequestMethod.GET)
+    public RestResponse getPatOnTheBackMessage(@PathVariable("advisorId") Long advisorId,
+                                               @RequestParam (value = "region", required = true) String region) {
+        return gamificationService.getAdvisorAchievements(advisorId, region);
+    }
 }
