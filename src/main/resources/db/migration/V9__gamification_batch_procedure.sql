@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `gamification_config`;
 create table gamification_config(
 id bigint(20) not null auto_increment,
 config_name varchar(100) default null,
@@ -10,6 +11,7 @@ VALUES
 	(1, 'benchmark', 1000000.0000);
 
 
+DROP PROCEDURE IF EXISTS compute_category_values;
 DELIMITER //
 CREATE PROCEDURE compute_category_values (date1 varchar(15), date2 varchar(15), date3 varchar(15),
                                           date4 varchar(15), today varchar(15), week_ago varchar(15), benchmark bigint(10))
@@ -175,6 +177,7 @@ DELIMITER ;
 
 -- delimiter to compute points
 
+DROP PROCEDURE IF EXISTS compute_points;
 DELIMITER //
 			CREATE PROCEDURE compute_points(aum_v decimal(5,4), net_worth_v decimal(5,4), hni_v decimal(5,4), financial_v decimal(5,4), conversion_rate_v decimal(5,4), 																avg_conversion_time_v decimal(5,4), retention_rate_v decimal(5,4),
 											weekly_logins_v decimal(5,4), client_management_v decimal(5,4), aum_growth_v decimal(5,4), net_worth_growth_v decimal(5,4),
@@ -186,11 +189,12 @@ DELIMITER //
 	   			   (aum_growth * aum_growth_v + net_worth_growth * net_worth_growth_v + clientele_growth * clientele_growth_v) * growth_v) score
 	   			   from gamification_categories;
 			END//
-DELIMITER ;
+DELIMITER;
 
 ---------------------------------
 -- delimiter to update overall_percentile
 
+DROP PROCEDURE IF EXISTS update_overall_percentile;
 DELIMITER //
 CREATE PROCEDURE update_overall_percentile()
 BEGIN
@@ -208,12 +212,13 @@ BEGIN
 	on t.advisor_id = ga.advisor_id
 	set ga.percentile_overall = t.percentrank;
 END//
-DELIMITER ;
+DELIMITER;
 
 
 -----------------------------------
 -- delimiter to update firm_percentile
 
+DROP PROCEDURE IF EXISTS update_percentile_firm;
 DELIMITER //
 CREATE PROCEDURE update_percentile_firm()
 BEGIN
@@ -244,8 +249,9 @@ DELIMITER ;
 ------------------------------------------
 ----- delimiter to update state_percentile
 
-    DELIMITER //
-    CREATE PROCEDURE update_state_percentile()
+DROP PROCEDURE IF EXISTS update_state_percentile;
+DELIMITER //
+CREATE PROCEDURE update_state_percentile()
     BEGIN
     	UPDATE gamification_advisor ga
     	left join
@@ -269,5 +275,5 @@ DELIMITER ;
 	ORDER BY state, points desc) tt
 	on tt.advisor_id = ga.advisor_id
 	set ga.percentile_state = tt.percent_state;
-    END//
-    DELIMITER ;
+END//
+DELIMITER ;
