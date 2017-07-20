@@ -2,18 +2,17 @@ package com.bi.oranj.model.bi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
-/**
- * Model class bi_goal table
- */
 @Data
 @Entity
 @Table(name = "goals")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
 public class BiGoal {
 
     @Id
@@ -43,8 +42,4 @@ public class BiGoal {
 
     @Column(name = "last_updated_on")
     private Timestamp updatedOn = new Timestamp((new Date()).getTime());
-
-    public BiGoal(){
-        // For JPA to use
-    }
 }

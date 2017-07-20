@@ -2,6 +2,7 @@ package com.bi.oranj.model.bi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "clients")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
 public class Client {
 
     @Id
@@ -43,7 +45,4 @@ public class Client {
 
     @Column(name = "converted_date")
     private Timestamp convertedDate;
-
-    public Client(){
-    }
 }

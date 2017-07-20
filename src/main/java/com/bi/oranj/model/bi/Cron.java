@@ -1,6 +1,7 @@
 package com.bi.oranj.model.bi;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,11 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 
-/**
- * Created by jaloliddinbakirov on 7/10/17.
- */
 @Data
 @Entity(name = "cron_monitoring")
+@NoArgsConstructor
 public class Cron {
     @Id
     @GeneratedValue
@@ -29,6 +28,4 @@ public class Cron {
 
     @Column (name = "end_time")
     private Date endTime;
-
-    public Cron(){}
 }

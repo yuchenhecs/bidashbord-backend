@@ -1,13 +1,11 @@
 package com.bi.oranj.model.bi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javafx.scene.Parent;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity

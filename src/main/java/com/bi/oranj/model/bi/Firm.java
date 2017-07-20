@@ -2,6 +2,7 @@ package com.bi.oranj.model.bi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -10,6 +11,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "firms")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
 public class Firm {
 
     @Id
@@ -27,9 +29,4 @@ public class Firm {
 
     @Column(name = "state")
     private String state;
-
-
-
-    public Firm(){
-    }
 }

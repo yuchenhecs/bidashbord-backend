@@ -1,6 +1,5 @@
 package com.bi.oranj.model.bi;
 
-import com.bi.oranj.repository.bi.GoalRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 

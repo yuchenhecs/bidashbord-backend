@@ -37,4 +37,8 @@ public class InputValidator {
     public boolean validateInputRangeType(String range){
         return (range.equals(WEEK) || range.equals(MONTH));
     }
+
+    public boolean validateInputRegion(String region){
+        return (region.equals(OVERALL) || region.equals(STATE) || region.equals(FIRM));
+    }
 }

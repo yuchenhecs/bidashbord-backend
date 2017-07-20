@@ -2,6 +2,7 @@ package com.bi.oranj.model.bi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,13 +13,11 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 
-/**
- * Model class networth table
- */
 @Data
 @Entity
 @Table(name = "networth")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
 public class NetWorth {
 
 
@@ -46,8 +45,4 @@ public class NetWorth {
 
     @Column(name = "last_updated_on")
     private Timestamp updatedOn = new Timestamp((new Date()).getTime());
-
-    public NetWorth(){
-        // For JPA to use
-    }
 }

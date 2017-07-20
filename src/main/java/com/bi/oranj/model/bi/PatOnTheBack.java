@@ -1,6 +1,7 @@
 package com.bi.oranj.model.bi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,15 +9,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 @Data
-@Entity
-@Table(name = "gamification_categories")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@AllArgsConstructor
 @NoArgsConstructor
-public class GamificationCategories {
+@Table(name = "gamification_pat_on_the_back")
+public class PatOnTheBack {
 
     @Id
     @Column(name = "id")
@@ -25,35 +25,35 @@ public class GamificationCategories {
     @Column(name = "advisor_id")
     private Long advisorId;
 
+    private String region;
+
     @Column(name = "aum")
-    private BigDecimal aum;
+    private String aumAchievement;
 
     @Column(name = "net_worth")
-    private BigDecimal netWorth;
+    private String netWorthAchievement;
 
-    private Integer hni;
+    @Column(name = "hni")
+    private String hniAchievement;
 
     @Column(name = "conversion_rate")
-    private BigDecimal conversionRate;
+    private String conversionRateAchievement;
 
     @Column(name = "avg_conversion_time")
-    private BigDecimal avgConversionTime;
+    private String avgConversionRateAchievement;
 
     @Column(name = "retention_rate")
-    private BigDecimal retentionRate;
+    private String retentionRateAchievement;
 
     @Column(name = "weekly_logins")
-    private Integer weeklyLogins;
+    private String weeklyClientLoginsAchievement;
 
     @Column(name = "aum_growth")
-    private BigDecimal aumGrowth;
+    private String aumGrowthAchievement;
 
     @Column(name = "net_worth_growth")
-    private BigDecimal netWorthGrowth;
+    private String netWorthGrowthAchievement;
 
     @Column(name = "clientele_growth")
-    private BigDecimal clienteleGrowth;
-
-    @Column(name = "update_date")
-    private Timestamp updateDate;
+    private String clienteleGrowthAchievement;
 }
