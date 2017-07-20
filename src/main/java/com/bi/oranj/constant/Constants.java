@@ -26,6 +26,7 @@ public class Constants {
     public static final String RANK_THREE = "RANK_THREE";
     public static final String TOP_X = "TOP_X";
     public static final String ABOVE_AVG = "ABOVE_AVG";
+    public static final String NO_RANK = "NO_RANK";
 
     public static final String AUM = "AUM";
     public static final String NET_WORTH = "NET WORTH";

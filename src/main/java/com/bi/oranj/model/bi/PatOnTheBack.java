@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -25,35 +22,36 @@ public class PatOnTheBack {
     @Column(name = "advisor_id")
     private Long advisorId;
 
+    @Column(name = "region", columnDefinition = "enum('STATE','OVERALL','FIRM')")
     private String region;
 
-    @Column(name = "aum")
+    @Column(name = "aum", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String aumAchievement;
 
-    @Column(name = "net_worth")
+    @Column(name = "net_worth", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String netWorthAchievement;
 
-    @Column(name = "hni")
+    @Column(name = "hni", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String hniAchievement;
 
-    @Column(name = "conversion_rate")
+    @Column(name = "conversion_rate", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String conversionRateAchievement;
 
-    @Column(name = "avg_conversion_time")
+    @Column(name = "avg_conversion_time", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String avgConversionRateAchievement;
 
-    @Column(name = "retention_rate")
+    @Column(name = "retention_rate", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String retentionRateAchievement;
 
-    @Column(name = "weekly_logins")
+    @Column(name = "weekly_logins", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String weeklyClientLoginsAchievement;
 
-    @Column(name = "aum_growth")
+    @Column(name = "aum_growth", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String aumGrowthAchievement;
 
-    @Column(name = "net_worth_growth")
+    @Column(name = "net_worth_growth", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String netWorthGrowthAchievement;
 
-    @Column(name = "clientele_growth")
+    @Column(name = "clientele_growth", columnDefinition = "enum('RANK_ONE', 'RANK_TWO', 'RANK_THREE', 'TOP_X', 'ABOVE_AVG', 'NO_RANK')")
     private String clienteleGrowthAchievement;
 }

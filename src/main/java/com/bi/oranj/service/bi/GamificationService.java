@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +81,7 @@ public class GamificationService {
             for (Object[] resultSet : patOnTheBackResultSet) {
                 Map<String, String> sentenceMap = getSentences(resultSet, region);
                 patOnTheBack = new PatOnTheBack(((BigInteger) resultSet[0]).longValue(), ((BigInteger) resultSet[1]).longValue(),
-                        ((String) resultSet[2]).toLowerCase(), sentenceMap.get(AUM), sentenceMap.get(NET_WORTH), sentenceMap.get(HNI),
+                        resultSet[2].toString().toLowerCase(), sentenceMap.get(AUM), sentenceMap.get(NET_WORTH), sentenceMap.get(HNI),
                         sentenceMap.get(CONVERSION_RATE), sentenceMap.get(AVG_CONVERSION_TIME), sentenceMap.get(RETENTION_RATE),
                         sentenceMap.get(WEEKLY_CLIENT_LOGINS), sentenceMap.get(AUM_GROWTH), sentenceMap.get(NET_WORTH_GROWTH),
                         sentenceMap.get(CLIENTELE_GROWTH));
@@ -125,43 +124,43 @@ public class GamificationService {
         Map<String, String> sentenceMap = new HashMap<>();
         String aum = null; String netWorth = null; String hni = null; String conversionRate = null; String avgConversionTime = null; String retentionRate = null;
         String weeklyLogins = null; String aumGrowth = null; String netWorthGrowth = null; String clienteleGrowth = null;
-        if(!resultSet[3].equals("0")){
+        if(!resultSet[3].equals(NO_RANK)){
             aum = formSentence((String) resultSet[3],AUM, region);
             sentenceMap.put(AUM, aum);
         }
-        if(!resultSet[4].equals("0")){
+        if(!resultSet[4].equals(NO_RANK)){
             netWorth = formSentence((String) resultSet[4],NET_WORTH, region);
             sentenceMap.put(NET_WORTH, netWorth);
         }
-        if(!resultSet[5].equals("0")){
+        if(!resultSet[5].equals(NO_RANK)){
             hni = formSentence((String) resultSet[5],HNI, region);
             sentenceMap.put(HNI, hni);
         }
-        if(!resultSet[6].equals("0")){
+        if(!resultSet[6].equals(NO_RANK)){
             conversionRate = formSentence((String) resultSet[6],CONVERSION_RATE, region);
             sentenceMap.put(CONVERSION_RATE, conversionRate);
         }
-        if(!resultSet[7].equals("0")){
+        if(!resultSet[7].equals(NO_RANK)){
             avgConversionTime = formSentence((String) resultSet[7],AVG_CONVERSION_TIME, region);
             sentenceMap.put(AVG_CONVERSION_TIME, avgConversionTime);
         }
-        if(!resultSet[8].equals("0")){
+        if(!resultSet[8].equals(NO_RANK)){
             retentionRate = formSentence((String) resultSet[8],RETENTION_RATE, region);
             sentenceMap.put(RETENTION_RATE, retentionRate);
         }
-        if(!resultSet[9].equals("0")){
+        if(!resultSet[9].equals(NO_RANK)){
             weeklyLogins = formSentence((String) resultSet[9],WEEKLY_CLIENT_LOGINS, region);
             sentenceMap.put(WEEKLY_CLIENT_LOGINS, weeklyLogins);
         }
-        if(!resultSet[10].equals("0")){
+        if(!resultSet[10].equals(NO_RANK)){
             aumGrowth = formSentence((String) resultSet[10],AUM_GROWTH, region);
             sentenceMap.put(AUM_GROWTH, aumGrowth);
         }
-        if(!resultSet[11].equals("0")){
+        if(!resultSet[11].equals(NO_RANK)){
             netWorthGrowth = formSentence((String) resultSet[11],NET_WORTH_GROWTH, region);
             sentenceMap.put(NET_WORTH_GROWTH, netWorthGrowth);
         }
-        if(!resultSet[12].equals("0")){
+        if(!resultSet[12].equals(NO_RANK)){
             clienteleGrowth = formSentence((String) resultSet[12],CLIENTELE_GROWTH, region);
             sentenceMap.put(CLIENTELE_GROWTH, clienteleGrowth);
         }
