@@ -18,34 +18,3 @@ CREATE TABLE `gamification_pat_on_the_back` (
   KEY `advisor_id` (`advisor_id`),
   CONSTRAINT `gamification_pat_on_the_back_ibfk_1` FOREIGN KEY (`advisor_id`) REFERENCES `advisors` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-
-
-alter table positions drop index idx_position_updated_on;
-create index idx_position_updated_on on positions (position_updated_on);
-
-alter table networth drop index idx_networth_date;
-create index idx_networth_date on networth (date);
-
-alter table networth drop index idx_networth_value;
-create index idx_networth_value on networth (value);
-
-alter table advisors drop index idx_advisor_active;
-create index idx_advisor_active on advisors (active);
-
-alter table clients drop index idx_client_active;
-create index idx_client_active on clients (active);
-
-alter table clients drop index idx_client_converted;
-create index idx_client_converted on clients (converted);
-
-alter table clients drop index idx_client_created_on;
-create index idx_client_created_on on clients (client_created_on);
-
-alter table clients drop index idx_client_converted_date;
-create index idx_client_converted_date on clients (converted_date);
-
-alter table clients drop index idx_client_role_id;
-create index idx_client_role_id on clients (role_id);
-
-alter table analytics drop index idx_analytics_session_start_date;
-create index idx_analytics_session_start_date on analytics (session_start_date);
