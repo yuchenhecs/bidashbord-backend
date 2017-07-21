@@ -99,13 +99,13 @@ public class GamificationService {
         String sentence = null;
         switch (value){
             case RANK_ONE:
-                sentence = "You are Ranked 1st in "+ kpi +" among all advisors in the " + region;
+                sentence = "You are ranked 1st in "+ kpi +" among all advisors in the " + region;
                 break;
             case RANK_TWO:
-                sentence = "You are Ranked 2nd in "+ kpi +" among all advisors in the " + region;
+                sentence = "You are ranked 2nd in "+ kpi +" among all advisors in the " + region;
                 break;
             case RANK_THREE:
-                sentence = "You are Ranked 3rd in "+ kpi +" among all advisors in the " + region;
+                sentence = "You are ranked 3rd in "+ kpi +" among all advisors in the " + region;
                 break;
             case TOP_X:
                 sentence = "You are among top 40% of the advisors in "+ kpi +" in the " + region;
