@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 @Configuration
 @PropertySource({ "classpath:application.properties" })
-@EnableJpaRepositories(basePackages = "com.bi.oranj.repository.bi",
+@EnableJpaRepositories(basePackages = {"com.bi.oranj.repository.bi", "com.bi.oranj.repository.gamification"},
         entityManagerFactoryRef = "biEntityManager",
         transactionManagerRef = "biTransactionManager")
 public class BiConfig {
@@ -38,7 +38,7 @@ public class BiConfig {
     public LocalContainerEntityManagerFactoryBean biEntityManager() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(biDataSource());
-        em.setPackagesToScan(new String[] { "com.bi.oranj.model.bi", "com.bi.oranj.model.bi.OranjAum" });
+        em.setPackagesToScan(new String[] { "com.bi.oranj.model.bi", "com.bi.oranj.model.bi.OranjAum", "com.bi.oranj.model.gamification" });
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
