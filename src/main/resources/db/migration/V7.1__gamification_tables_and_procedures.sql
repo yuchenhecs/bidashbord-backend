@@ -242,7 +242,7 @@ CREATE PROCEDURE kpi_percentile_overall (today varchar(15), clm varchar(25))
 	    (
     	    SELECT advisor_id, ',clm,' FROM gamification_categories gc
     	    left join advisors a on a.id = gc.advisor_id
-    	    ,(SELECT @tmp:=0, @rnk := 0, @rank:=0, @curscore:=0, @total:=count(*) FROM gamification_categories) t  WHERE date(gc.update_date)  = (?)
+    	    ,(SELECT @tmp:=0, @rnk := 0, @rank:=0, @curscore:=0, @total:=count(*) FROM gamification_categories WHERE date(update_date)  = (?)) t  WHERE date(gc.update_date)  = (?)
     	    ORDER BY ',clm,' DESC
 
 		) ordered left join
@@ -254,7 +254,8 @@ CREATE PROCEDURE kpi_percentile_overall (today varchar(15), clm varchar(25))
 		SET @a = today;
 		SET @b = today;
 		SET @c = today;
-		EXECUTE stmt USING @a, @b, @c;
+		SET @d = today;
+		EXECUTE stmt USING @a, @b, @c, @d;
 		DEALLOCATE PREPARE stmt;
 	END//
 DELIMITER ;

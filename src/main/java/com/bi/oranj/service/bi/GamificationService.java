@@ -49,8 +49,6 @@ public class GamificationService {
     @Autowired
     PatOnTheBackRepository patOnTheBackRepository;
 
-    private static final StringBuilder stringBuilder = new StringBuilder();
-
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private static final String[] scopes = {"state", "firm", "overall"};
@@ -63,11 +61,18 @@ public class GamificationService {
         for (String scope : scopes){
             BigDecimal percentile = gamificationRepository.findAdvisorKpiPercentile(advisorId, kpiName, date, scope);
             List<Object[]> maxMin = gamificationRepository.findMaxAndMinInTheGivenKpi(kpiName, scope, advisorId, date);
-
+            BigDecimal max = maxMin.get(0)[0] instanceof Integer ? new BigDecimal((Integer) maxMin.get(0)[0]) : (BigDecimal) maxMin.get(0)[0];
+            BigDecimal min = maxMin.get(0)[1] instanceof Integer ? new BigDecimal((Integer) maxMin.get(0)[1]) : (BigDecimal) maxMin.get(0)[1];
             KpiScope kpiScope = new KpiScope();
             kpiScope.setPercentile(percentile);
-            kpiScope.setBest((BigDecimal) maxMin.get(0)[0]);
-            kpiScope.setWorst((BigDecimal) maxMin.get(0)[1]);
+
+            if (kpiName.equalsIgnoreCase("avg_conversion_time")){
+                kpiScope.setWorst(max);
+                kpiScope.setBest(min);
+            } else{
+                kpiScope.setBest(max);
+                kpiScope.setWorst(min);
+            }
 
             if (scope.equalsIgnoreCase("state")) advisorPerformance.setState(kpiScope);
             else if (scope.equalsIgnoreCase("overall")) advisorPerformance.setOverall(kpiScope);
