@@ -1,7 +1,9 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
+import com.bi.oranj.model.bi.AdvisorPerformance;
 import com.bi.oranj.model.bi.GamificationSummary;
+import com.bi.oranj.model.bi.KpiScope;
 import com.bi.oranj.model.bi.PatOnTheBack;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.GamificationRepository;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +48,39 @@ public class GamificationService {
 
     @Autowired
     PatOnTheBackRepository patOnTheBackRepository;
+
+    private static final StringBuilder stringBuilder = new StringBuilder();
+
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private static final String[] scopes = {"state", "firm", "overall"};
+
+    public RestResponse getAdvisorsPerformance(String kpiName, Long advisorId){
+        AdvisorPerformance advisorPerformance = new AdvisorPerformance();
+//        String date = simpleDateFormat.format(new Date());
+        String date = "2017-07-24";
+
+        for (String scope : scopes){
+            BigDecimal percentile = gamificationRepository.findAdvisorKpiPercentile(advisorId, kpiName, date, scope);
+            List<Object[]> maxMin = gamificationRepository.findMaxAndMinInTheGivenKpi(kpiName, scope, advisorId, date);
+
+            KpiScope kpiScope = new KpiScope();
+            kpiScope.setPercentile(percentile);
+            kpiScope.setBest((BigDecimal) maxMin.get(0)[0]);
+            kpiScope.setWorst((BigDecimal) maxMin.get(0)[1]);
+
+            if (scope.equalsIgnoreCase("state")) advisorPerformance.setState(kpiScope);
+            else if (scope.equalsIgnoreCase("overall")) advisorPerformance.setOverall(kpiScope);
+            else if (scope.equalsIgnoreCase("firm")) advisorPerformance.setFirm(kpiScope);
+        }
+
+        advisorPerformance.setStateCode(advisorRepository.findAdvisorsState(advisorId));
+        advisorPerformance.setAdvisorKpi(advisorRepository.findAdvisorsKpi(advisorId, date, kpiName));
+
+        return RestResponse.successWithoutMessage(advisorPerformance);
+    }
+
+
 
     public RestResponse getAdvisorSummaryForGamification(Long advisorId) {
         try {

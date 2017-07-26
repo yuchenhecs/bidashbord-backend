@@ -237,7 +237,7 @@ DELIMITER //
                    (aum_growth * aum_growth_v + net_worth_growth * net_worth_growth_v + clientele_growth * clientele_growth_v) * growth_v) score
                    from gamification_categories;
          END//
-DELIMITER;
+DELIMITER ;
 
 ---------------------------------
 -- delimiter to update overall_percentile
@@ -260,7 +260,7 @@ BEGIN
    on t.advisor_id = ga.advisor_id
    set ga.percentile_overall = t.percentrank;
 END//
-DELIMITER;
+DELIMITER ;
 
 
 -----------------------------------

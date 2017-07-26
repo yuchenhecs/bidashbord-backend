@@ -27,4 +27,10 @@ public class GamificationController {
                                                @RequestParam (value = "region", required = true) String region) {
         return gamificationService.getAdvisorAchievements(advisorId, region);
     }
+
+    @ApiOperation(value = "Get advisor performance")
+    @RequestMapping(value = "/{kpiName}")
+    public RestResponse getAdvisorPerformance (@PathVariable String kpiName, @RequestParam (value = "advisorId") Long advisorId){
+        return gamificationService.getAdvisorsPerformance(kpiName, advisorId);
+    }
 }

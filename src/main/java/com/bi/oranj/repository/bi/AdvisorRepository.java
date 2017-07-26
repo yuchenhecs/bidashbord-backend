@@ -6,9 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.bi.oranj.model.bi.BiGoal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.bi.oranj.constant.ConstantQueries.GET_ALL_ADVISORS_AND_THEIR_CLIENTS;
@@ -124,4 +127,10 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long> {
 
     public Advisor findById(Long advisorId);
 
+    @Query (value = "SELECT state from firms f left join advisors a on f.id = a.firm_id WHERE a.id = :id", nativeQuery = true)
+    public String findAdvisorsState(@Param("id") Long id);
+
+    @Transactional
+    @Query (value = "call advisor_kpi(:id, :kpi, :date)", nativeQuery = true)
+    public BigDecimal findAdvisorsKpi(@Param("id") Long advisorId, @Param("date") String date, @Param("kpi") String kpi);
 }
