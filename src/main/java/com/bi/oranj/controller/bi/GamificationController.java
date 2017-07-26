@@ -2,6 +2,7 @@ package com.bi.oranj.controller.bi;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.service.bi.GamificationService;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ public class GamificationController {
     private GamificationService gamificationService;
 
     @ApiOperation(value = "Get advisor summary", notes = "'advisorId' should be an integer value")
+    @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping(value="/advisors/{advisorId}/summary", method = RequestMethod.GET)
     public RestResponse getAdvisorSummaryForGamification(@PathVariable("advisorId") Long advisorId) {
         return gamificationService.getAdvisorSummaryForGamification(advisorId);
@@ -23,6 +25,7 @@ public class GamificationController {
 
     @ApiOperation(value = "Get advisor achievements", notes = "'advisorId' should be an integer value")
     @RequestMapping(value="/advisors/{advisorId}/patOnTheBack", method = RequestMethod.GET)
+    @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     public RestResponse getPatOnTheBackMessage(@PathVariable("advisorId") Long advisorId,
                                                @RequestParam (value = "region", required = true) String region) {
         return gamificationService.getAdvisorAchievements(advisorId, region);
