@@ -27,7 +27,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/**/aums/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/config/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/gamification/**/summary").hasAuthority("HouseholdCreate")
-                .antMatchers(HttpMethod.GET, "/**/gamification/**/patOnTheBack").hasAuthority("HouseholdCreateTEST")
+                .antMatchers(HttpMethod.GET, "/**/gamification/**/patOnTheBack").hasAuthority("HouseholdCreate")
                 .antMatchers(HttpMethod.GET, "/**/goals/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/stats/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/networth/**").permitAll()

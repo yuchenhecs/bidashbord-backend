@@ -1,6 +1,5 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.Client;
 import com.bi.oranj.model.bi.GamificationSummary;
 import com.bi.oranj.model.bi.PatOnTheBack;
@@ -8,11 +7,14 @@ import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GamificationRepository;
 import com.bi.oranj.repository.bi.PatOnTheBackRepository;
+import com.bi.oranj.utils.ApiError;
 import com.bi.oranj.utils.InputValidator;
 import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -52,10 +54,10 @@ public class GamificationService {
     @Autowired
     ClientRepository clientRepository;
 
-    public RestResponse getAdvisorSummaryForGamification() {
+    public ResponseEntity<Object> getAdvisorSummaryForGamification() {
         try {
             if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
-                return RestResponse.error("Unauthorized");
+                return new ResponseEntity<>(new ApiError(UNAUTHORIZED, HttpStatus.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
             }
 
             Client client = clientRepository.findOne(authorizationService.getUserId());
@@ -69,23 +71,22 @@ public class GamificationService {
                         ((BigDecimal) resultSet[12]), ((Integer) resultSet[13]), ((BigDecimal) resultSet[14]),
                         ((BigDecimal) resultSet[15]),((BigDecimal) resultSet[16]));
             }
-            return RestResponse.successWithoutMessage(gamificationSummary);
+            return new ResponseEntity<>(gamificationSummary, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_ADVISOR_SUMMARY + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_ADVISOR_SUMMARY);
+            log.error(ERROR_IN_GETTING_ADVISOR_SUMMARY, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_ACHIEVEMENTS, HttpStatus.NOT_FOUND), HttpStatus.NOT_FOUND);
         }
     }
 
-    public RestResponse getAdvisorAchievements(String region){
+    public ResponseEntity<Object> getAdvisorAchievements(String region){
         try {
             if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
-                return RestResponse.error("Unauthorized");
+                return new ResponseEntity<>(new ApiError(UNAUTHORIZED, HttpStatus.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
             }
 
             Client client = clientRepository.findOne(authorizationService.getUserId());
             if (!inputValidator.validateInputRegion(region)) {
-                return RestResponse.error(ERROR_REGION_VALIDATION);
+                return new ResponseEntity<>(new ApiError(ERROR_REGION_VALIDATION, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
             }
             PatOnTheBack patOnTheBack = null;
             List<Object[]> patOnTheBackResultSet = patOnTheBackRepository.findByAdvisorIdRegionAndDate(client.getAdvisorId(), region.toUpperCase() ,dateUtility.getDate(1));
@@ -97,11 +98,10 @@ public class GamificationService {
                         sentenceMap.get(WEEKLY_CLIENT_LOGINS), sentenceMap.get(AUM_GROWTH), sentenceMap.get(NET_WORTH_GROWTH),
                         sentenceMap.get(CLIENTELE_GROWTH));
             }
-            return RestResponse.successWithoutMessage(patOnTheBack);
+            return new ResponseEntity<>(patOnTheBack, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_ACHIEVEMENTS + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_ACHIEVEMENTS);
+            log.error(ERROR_IN_GETTING_ACHIEVEMENTS, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_ACHIEVEMENTS, HttpStatus.NOT_FOUND), HttpStatus.NOT_FOUND);
         }
     }
 

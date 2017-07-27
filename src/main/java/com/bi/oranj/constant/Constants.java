@@ -51,5 +51,6 @@ public class Constants {
     public static final String ERROR_IN_GETTING_NET_WORTH = "Error in fetching net worth";
     public static final String ERROR_IN_GETTING_GOALS_FROM_ORANJ = "Error in fetching goals from Oranj";
     public static final String ERROR_IN_GETTING_DATE = "Error in Getting date";
+    public static final String UNAUTHORIZED = "Unauthorized";
 
 }
