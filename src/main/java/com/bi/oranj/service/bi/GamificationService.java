@@ -1,9 +1,11 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.controller.bi.resp.RestResponse;
+import com.bi.oranj.model.bi.Client;
 import com.bi.oranj.model.bi.GamificationSummary;
 import com.bi.oranj.model.bi.PatOnTheBack;
 import com.bi.oranj.repository.bi.AdvisorRepository;
+import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GamificationRepository;
 import com.bi.oranj.repository.bi.PatOnTheBackRepository;
 import com.bi.oranj.utils.InputValidator;
@@ -27,7 +29,6 @@ public class GamificationService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-
     HttpServletResponse response;
 
     @Autowired
@@ -43,15 +44,23 @@ public class GamificationService {
     DateUtility dateUtility;
 
     @Autowired
+    AuthorizationService authorizationService;
+
+    @Autowired
     PatOnTheBackRepository patOnTheBackRepository;
 
-    public RestResponse getAdvisorSummaryForGamification(Long advisorId) {
+    @Autowired
+    ClientRepository clientRepository;
+
+    public RestResponse getAdvisorSummaryForGamification() {
         try {
-            if(advisorRepository.findById(advisorId) == null){
-                return RestResponse.error("Advisor "+  advisorId +" does not exist");
+            if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
+                return RestResponse.error("Unauthorized");
             }
+
+            Client client = clientRepository.findOne(authorizationService.getUserId());
             GamificationSummary gamificationSummary = null;
-            List<Object[]> gamificationResultSet = gamificationRepository.findByAdvisorIdAndDate(advisorId, dateUtility.getDate(1));
+            List<Object[]> gamificationResultSet = gamificationRepository.findByAdvisorIdAndDate(client.getAdvisorId(), dateUtility.getDate(1));
             for (Object[] resultSet : gamificationResultSet) {
                 gamificationSummary = new GamificationSummary((((BigInteger) resultSet[0]).longValue()), ((String) resultSet[1] + " " + (String) resultSet[2]),
                         (((BigInteger) resultSet[3]).longValue()), ((BigDecimal) resultSet[4]),((BigDecimal) resultSet[5]),
@@ -68,16 +77,18 @@ public class GamificationService {
         }
     }
 
-    public RestResponse getAdvisorAchievements(Long advisorId, String region){
+    public RestResponse getAdvisorAchievements(String region){
         try {
+            if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
+                return RestResponse.error("Unauthorized");
+            }
+
+            Client client = clientRepository.findOne(authorizationService.getUserId());
             if (!inputValidator.validateInputRegion(region)) {
                 return RestResponse.error(ERROR_REGION_VALIDATION);
             }
-            if(advisorRepository.findById(advisorId) == null){
-                return RestResponse.error("Advisor "+  advisorId +" does not exist");
-            }
             PatOnTheBack patOnTheBack = null;
-            List<Object[]> patOnTheBackResultSet = patOnTheBackRepository.findByAdvisorIdRegionAndDate(advisorId, region.toUpperCase() ,dateUtility.getDate(1));
+            List<Object[]> patOnTheBackResultSet = patOnTheBackRepository.findByAdvisorIdRegionAndDate(client.getAdvisorId(), region.toUpperCase() ,dateUtility.getDate(1));
             for (Object[] resultSet : patOnTheBackResultSet) {
                 Map<String, String> sentenceMap = getSentences(resultSet, region);
                 patOnTheBack = new PatOnTheBack(((BigInteger) resultSet[0]).longValue(), ((BigInteger) resultSet[1]).longValue(),

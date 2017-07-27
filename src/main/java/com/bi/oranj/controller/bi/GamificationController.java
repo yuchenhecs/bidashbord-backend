@@ -18,16 +18,15 @@ public class GamificationController {
 
     @ApiOperation(value = "Get advisor summary", notes = "'advisorId' should be an integer value")
     @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
-    @RequestMapping(value="/advisors/{advisorId}/summary", method = RequestMethod.GET)
-    public RestResponse getAdvisorSummaryForGamification(@PathVariable("advisorId") Long advisorId) {
-        return gamificationService.getAdvisorSummaryForGamification(advisorId);
+    @RequestMapping(value="/advisors/summary", method = RequestMethod.GET)
+    public RestResponse getAdvisorSummaryForGamification() {
+        return gamificationService.getAdvisorSummaryForGamification();
     }
 
     @ApiOperation(value = "Get advisor achievements", notes = "'advisorId' should be an integer value")
-    @RequestMapping(value="/advisors/{advisorId}/patOnTheBack", method = RequestMethod.GET)
+    @RequestMapping(value="/advisors/patOnTheBack", method = RequestMethod.GET)
     @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
-    public RestResponse getPatOnTheBackMessage(@PathVariable("advisorId") Long advisorId,
-                                               @RequestParam (value = "region", required = true) String region) {
-        return gamificationService.getAdvisorAchievements(advisorId, region);
+    public RestResponse getPatOnTheBackMessage(@RequestParam (value = "region", required = true) String region) {
+        return gamificationService.getAdvisorAchievements(region);
     }
 }

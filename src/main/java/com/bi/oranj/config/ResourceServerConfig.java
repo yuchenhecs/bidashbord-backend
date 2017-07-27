@@ -1,10 +1,8 @@
 package com.bi.oranj.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -27,8 +25,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/analytics/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/aums/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/gamification/**/summary").hasAuthority("HouseholdCreateTEST")
-                .antMatchers(HttpMethod.GET, "/**/gamification/**/patOnTheBack").hasAuthority("HouseholdCreate")
+                .antMatchers(HttpMethod.GET, "/**/config/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/**/gamification/**/summary").hasAuthority("HouseholdCreate")
+                .antMatchers(HttpMethod.GET, "/**/gamification/**/patOnTheBack").hasAuthority("HouseholdCreateTEST")
                 .antMatchers(HttpMethod.GET, "/**/goals/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/stats/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/networth/**").permitAll()

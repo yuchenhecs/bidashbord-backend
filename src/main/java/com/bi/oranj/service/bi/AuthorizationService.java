@@ -17,8 +17,7 @@ public class AuthorizationService {
     public Long getUserId() {
 
         Integer userId = (Integer) ((OranjAuthenticationToken)
-                ((OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication())
-                        .getUserAuthentication()).getUserId();
+                ((OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication()).getUserAuthentication()).getUserId();
         if (userId == null) {
             throw new ForbiddenTargetException("user not found");
         }
