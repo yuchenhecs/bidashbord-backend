@@ -192,7 +192,7 @@ CREATE PROCEDURE kpi_percentile_state (today varchar(15), clm varchar(25))
 (
 	SELECT advisor_id, points, t.state, t.state_count,
       (@rn := @rn+1),
-       (@rank := if(@state = t.state, if(@curscore = points, @rank, @rn), @rn := 1)) as rank,
+       (@rank := if(@state = t.state, if(@curscore = points, @rank, @rn + 1), (@rn := 0) + 1)) as rank,
        (@curscore := points),
        (@state := t.state),
        TRUNCATE(((t.state_count - t.point_count - @rank + 1)/t.state_count) * 100, 2) as percentrank
@@ -213,7 +213,7 @@ CREATE PROCEDURE kpi_percentile_state (today varchar(15), clm varchar(25))
 	  ORDER BY state, points desc
 	  ) t
 ) tt on tt.advisor_id = gkp.advisor_id
-		set gkp.',clm,' = tt.percentrank WHERE DATE(gkp.update_date) = (?);');
+		set gkp.',clm,' = IFNULL(tt.percentrank, 0) WHERE DATE(gkp.update_date) = (?);');
 
 		PREPARE stmt FROM @query;
 		SET @a = today;
@@ -248,7 +248,7 @@ CREATE PROCEDURE kpi_percentile_overall (today varchar(15), clm varchar(25))
 		) ordered left join
 		(SELECT ',clm,', COUNT(',clm,') count from gamification_categories gc WHERE date(gc.update_date) = (?) group by ',clm,') s on ordered.',clm,' = s.',clm,'
 ) tt on tt.advisor_id = gkp.advisor_id
-		set gkp.',clm,' = tt.percentrank WHERE DATE(gkp.update_date) = (?);');
+		set gkp.',clm,' = IFNULL(tt.percentrank, 0) WHERE DATE(gkp.update_date) = (?);');
 
 		PREPARE stmt FROM @query;
 		SET @a = today;
@@ -269,7 +269,7 @@ CREATE PROCEDURE kpi_percentile_firm (today varchar(15), clm varchar(25))
 		left join (
 	SELECT advisor_id, firm_id, points, t.firm_count,
       (@rn := @rn+1),
-       (@rank := if(@firm = firm_id, if(@curscore = points, @rank, @rn), @rn := 1)) as rank,
+       (@rank := if(@firm = firm_id, if(@curscore = points, @rank, @rn + 1), (@rn := 0) + 1)) as rank,
        (@curscore := points),
        (@firm := firm_id),
        TRUNCATE(((t.firm_count - t.count - @rank + 1)/t.firm_count) * 100, 2) as percentrank, t.count
@@ -290,7 +290,7 @@ CREATE PROCEDURE kpi_percentile_firm (today varchar(15), clm varchar(25))
       GROUP BY ga.advisor_id, a.firm_id, f.firm_count, p.count, ga.',clm,') t
    ORDER BY firm_id, points desc
 ) tt on tt.advisor_id = gkp.advisor_id
-		set gkp.',clm,' = tt.percentrank WHERE DATE(gkp.update_date) = (?);');
+		set gkp.',clm,' = IFNULL(tt.percentrank, 0) WHERE DATE(gkp.update_date) = (?);');
 
 		PREPARE stmt FROM @query;
 		SET @a = today;
@@ -305,14 +305,15 @@ DELIMITER ;
 ----------- to calculate points
 DROP PROCEDURE IF EXISTS compute_points;
 DELIMITER //
-     CREATE PROCEDURE compute_points(aum_v decimal(19,4), net_worth_v decimal(19,4), hni_v decimal(19,4), financial_v decimal(19,4), conversion_rate_v decimal(19,4),                                                 			avg_conversion_time_v decimal(5,4), retention_rate_v decimal(5,4),
-                             weekly_logins_v decimal(19,4), client_management_v decimal(19,4), aum_growth_v decimal(19,4), net_worth_growth_v decimal(19,4),
-                             clientele_growth_v decimal(19,4), growth_v decimal(19,4), today varchar(15))
+     CREATE PROCEDURE compute_points(aum_w decimal(19,4), net_worth_w decimal(19,4), hni_w decimal(19,4), financial_w decimal(19,4),
+                            conversion_rate_w decimal(19,4), avg_conversion_time_w decimal(19,4), retention_rate_w decimal(19,4),
+                             weekly_logins_w decimal(19,4), client_management_w decimal(19,4), aum_growth_w decimal(19,4),
+                             net_worth_growth_w decimal(19,4), clientele_growth_w decimal(19,4), growth_w decimal(19,4), today varchar(15))
      BEGIN
         update gamification_advisor ga left join
-        (select advisor_id, ceil((aum * aum_v + net_worth * net_worth_v + hni * hni_v) * financial_v +
-               (conversion_rate * conversion_rate_v + avg_conversion_time * avg_conversion_time_v + retention_rate * retention_rate_v + weekly_logins * weekly_logins_v) * client_management_v +
-               (aum_growth * aum_growth_v + net_worth_growth * net_worth_growth_v + clientele_growth * clientele_growth_v) * growth_v) score
+        (select advisor_id, ceil((aum * aum_w + net_worth * net_worth_w + hni * hni_w) * financial_w +
+               (conversion_rate * conversion_rate_w + avg_conversion_time * avg_conversion_time_w + retention_rate * retention_rate_w + weekly_logins * weekly_logins_w) * client_management_w +
+               (aum_growth * aum_growth_w + net_worth_growth * net_worth_growth_w + clientele_growth * clientele_growth_w) * growth_w) score
                from gamification_kpi_percentile_overall WHERE DATE(update_date) = today) t on t.advisor_id = ga.advisor_id
         SET ga.points = t.score WHERE DATE(ga.updated_on) = today;
      END//
@@ -337,8 +338,8 @@ BEGIN
     	FROM
 	    (
     	    SELECT advisor_id, points FROM gamification_advisor ga,
-    	    (SELECT @tmp:=0, @rnk := 0, @rank:=0, @curscore:=0, @total:=count(*) FROM gamification_advisor WHERE date(update_date) = (today)) t
-    	    WHERE date(ga.update_date)  = (today)
+    	    (SELECT @tmp:=0, @rnk := 0, @rank:=0, @curscore:=0, @total:=count(*) FROM gamification_advisor WHERE date(updated_on) = (today)) t
+    	    WHERE date(ga.updated_on)  = (today)
     	    ORDER BY points DESC
 		) ordered left join
 		(SELECT points, COUNT(points) count from gamification_advisor WHERE date(updated_on) = (today) group by points) s on ordered.points = s.points
@@ -363,7 +364,7 @@ SELECT advisor_id, firm_id, points, t.firm_count,
        (@rank := if(@firm = firm_id, if(@curscore = points, @rank, @rn + 1), (@rn := 0) + 1)) as rank,
        (@curscore := points),
        (@firm := firm_id),
-       TRUNCATE(((t.firm_count - t.count - @rank + 1)/t.firm_count) * 100, 2) as percent_firm, t.count
+       TRUNCATE(((t.firm_count - t.count - @rank + 1)/t.firm_count) * 100, 2) as percentrank, t.count
    FROM
       (SELECT @firm := -1, @rn := 0, @curscore := 0, @rank := 0, ga.advisor_id, a.firm_id, ga.points as points, f.firm_count, p.count
        FROM gamification_advisor ga
