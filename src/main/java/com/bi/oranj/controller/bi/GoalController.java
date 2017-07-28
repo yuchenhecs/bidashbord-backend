@@ -1,15 +1,17 @@
 package com.bi.oranj.controller.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.service.bi.AdvisorService;
 import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.GoalService;
+import com.bi.oranj.utils.ApiError;
 import com.bi.oranj.utils.date.DateValidator;
 import com.bi.oranj.service.bi.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,15 +40,15 @@ public class GoalController {
 
     @ApiOperation(value = "Get Goals at Admin level", notes = "returns goals")
     @RequestMapping (value = "/firms", method = RequestMethod.GET)
-    public RestResponse getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
-                                HttpServletResponse response, @RequestParam (value = "startDate", required = false) String startDate,
-                                    @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
+    public ResponseEntity<Object> getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+                                                HttpServletResponse response, @RequestParam (value = "startDate", required = false) String startDate,
+                                                @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
         return processRequest("firms", null, pageNum, response, startDate, endDate);
     }
 
     @ApiOperation(value = "Get Goals for Firm", notes = "returns goals")
     @RequestMapping (value = "/advisors", method = RequestMethod.GET)
-    public RestResponse getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+    public ResponseEntity<Object> getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "firmId", required = true) Long firmId,
                                        @RequestParam (value = "startDate", required = false) String startDate,
                                        @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
@@ -55,7 +57,7 @@ public class GoalController {
 
     @ApiOperation(value = "Get Goals for Advisor", notes = "returns goals")
     @RequestMapping (value = "/clients", method = RequestMethod.GET)
-    public RestResponse getClientGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
+    public ResponseEntity<Object> getClientGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "advisorId", required = true) Long advisorId,
                                       @RequestParam (value = "startDate", required = false) String startDate,
                                       @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
@@ -63,7 +65,7 @@ public class GoalController {
     }
 
 
-    private RestResponse processRequest (String userType, Long userId, Integer pageNum,
+    private ResponseEntity<Object> processRequest (String userType, Long userId, Integer pageNum,
                                        HttpServletResponse response, String startDate, String endDate) throws IOException {
         GoalService goalService = getService(userType);
 
@@ -71,8 +73,7 @@ public class GoalController {
         if (pageNum == null) pageNum = Integer.valueOf(0);
 
         if (goalService == null || pageNum < 0){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST, "Bad input parameter");
-            return RestResponse.error("Bad input parameter");
+            return new ResponseEntity<>(new ApiError("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
         Goal goal = null;
@@ -86,17 +87,13 @@ public class GoalController {
                 && dateValidator.validate(endDate) && dateValidator.isLess(startDate, endDate))
             goal = goalService.buildResponseByDateBetween(startDate, endDate, pageNum, userId, response);
         else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Bad input parameter");
+            return new ResponseEntity<>(new ApiError("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
         if (goal == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return RestResponse.error("Data not found");
+            return new ResponseEntity<>(new ApiError("Data not found"), HttpStatus.NOT_FOUND);
         }
-
-
-        return RestResponse.successWithoutMessage(goal);
+        return new ResponseEntity<>(goal, HttpStatus.OK);
     }
 
 
@@ -123,7 +120,7 @@ public class GoalController {
 
     @ApiOperation(value = "Get All Goals grouped by type", notes = "returns all goals grouped by type")
     @RequestMapping (method = RequestMethod.GET)
-    public RestResponse getGoalsSummary () throws IOException {
+    public ResponseEntity<Object> getGoalsSummary () throws IOException {
         return goalsService.getGoalsSummary();
     }
 }

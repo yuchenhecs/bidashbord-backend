@@ -1,16 +1,15 @@
 package com.bi.oranj.service.gamification;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.gamification.Config;
 import com.bi.oranj.repository.gamification.ConfigRepository;
+import com.bi.oranj.utils.ApiError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by jaloliddinbakirov on 7/20/17.
@@ -21,18 +20,18 @@ public class ConfigService {
     @Autowired
     private ConfigRepository configRepository;
 
-    public RestResponse getConfig(){
+    public ResponseEntity<Object> getConfig(){
         List<Config> configs =  configRepository.findAll();
-        return RestResponse.successWithoutMessage(configs);
+        return new ResponseEntity<>(configs, HttpStatus.OK);
     }
 
-    public RestResponse getConfigByName(String configName){
+    public ResponseEntity<Object> getConfigByName(String configName){
         Config config = configRepository.findByConfigName(configName);
-        if (config == null) return RestResponse.error("Config with the given config name not found");
-        return RestResponse.successWithoutMessage(config);
+        if (config == null) return new ResponseEntity<>(new ApiError("Config with the given config name not found"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(config, HttpStatus.OK);
     }
 
-    public RestResponse updateConfig(String configName, BigDecimal newValue){
+    public ResponseEntity<Object> updateConfig(String configName, BigDecimal newValue){
         List<Config> configs = configRepository.findAll();
         boolean exists = false;
         for (Config config : configs){
@@ -41,10 +40,10 @@ public class ConfigService {
                 break;
             }
         }
-        if (!exists) return RestResponse.error("Config with the given config name does not exist");
+        if (!exists) return new ResponseEntity<>(new ApiError("Config with the given config name does not exist"), HttpStatus.BAD_REQUEST);
 
         configRepository.updateByConfigName(configName, newValue);
-        return RestResponse.success();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

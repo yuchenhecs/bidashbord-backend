@@ -1,11 +1,13 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.GoalSummary;
 import com.bi.oranj.repository.bi.GoalRepository;
+import com.bi.oranj.utils.ApiError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +24,7 @@ public class GoalsService {
     @Autowired
     private GoalRepository goalRepository;
 
-    public RestResponse getGoalsSummary() {
+    public ResponseEntity<Object> getGoalsSummary() {
 
         List<GoalSummary> goalSummaryList = new ArrayList<>();
         try {
@@ -33,10 +35,9 @@ public class GoalsService {
                 goalSummaryList.add(goalSummary);
             }
         }catch (Exception e){
-            log.error("Error in fetching goals" + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching Goals");
+            log.error("Error in fetching goals", e);
+            return new ResponseEntity<>(new ApiError("Error in fetching Goals"), HttpStatus.BAD_REQUEST);
         }
-        return RestResponse.successWithoutMessage(goalSummaryList);
+        return new ResponseEntity<>(goalSummaryList, HttpStatus.OK);
     }
 }

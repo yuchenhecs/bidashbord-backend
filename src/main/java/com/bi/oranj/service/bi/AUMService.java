@@ -1,16 +1,18 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.AumRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
+import com.bi.oranj.utils.ApiError;
 import com.bi.oranj.utils.InputValidator;
 import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -45,17 +47,15 @@ public class AUMService {
     @Autowired
     ClientRepository clientRepository;
 
-    public RestResponse getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
-
-        if (!inputValidator.validateInputDate(previousDate, currentDate)) {
-            return RestResponse.error(ERROR_DATE_VALIDATION);
-        }
-
-        if(!inputValidator.validateInputPageNumber(pageNumber)){
-            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
-        }
-
+    public ResponseEntity<Object> getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
         try {
+            if (!inputValidator.validateInputDate(previousDate, currentDate)) {
+                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
+
+            if(!inputValidator.validateInputPageNumber(pageNumber)){
+                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
             Map<Long, FirmAUM> map = new HashMap<>();
             AUMForAdmin aumForAdmin = new AUMForAdmin();
             List<FirmAUM> firmAUMList = new ArrayList<>();
@@ -97,25 +97,24 @@ public class AUMService {
             aumForAdmin.setHasNext(false);
             aumForAdmin.setPage(pageNumber);
             aumForAdmin.setCount(firmAUMList.size());
-            return RestResponse.successWithoutMessage(aumForAdmin);
+            return new ResponseEntity<>(aumForAdmin, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_AUM + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_AUM);
+            log.error(ERROR_IN_GETTING_AUM, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getAUMForFirm(Long firmId, String previousDate, String currentDate, Integer pageNumber) {
-
-        if (!inputValidator.validateInputDate(previousDate, currentDate)) {
-            return RestResponse.error(ERROR_DATE_VALIDATION);
-        }
-
-        if(!inputValidator.validateInputPageNumber(pageNumber)){
-            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
-        }
+    public ResponseEntity<Object> getAUMForFirm(Long firmId, String previousDate, String currentDate, Integer pageNumber) {
 
         try {
+            if (!inputValidator.validateInputDate(previousDate, currentDate)) {
+                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
+
+            if(!inputValidator.validateInputPageNumber(pageNumber)){
+                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
+
             Map<Long, AdvisorAUM> map = new HashMap<>();
             AUMForFirm aumForFirm = new AUMForFirm();
             List<AdvisorAUM> advisorAUMList = new ArrayList<>();
@@ -158,25 +157,24 @@ public class AUMService {
             aumForFirm.setHasNext(false);
             aumForFirm.setPage(0);
             aumForFirm.setCount(advisorAUMList.size());
-            return RestResponse.successWithoutMessage(aumForFirm);
+            return new ResponseEntity<>(aumForFirm, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_AUM + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_AUM);
+            log.error(ERROR_IN_GETTING_AUM, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getAUMForAdvisor(Long advisorId, String previousDate, String currentDate, Integer pageNumber) {
-
-        if (!inputValidator.validateInputDate(previousDate, currentDate)){
-            return RestResponse.error(ERROR_DATE_VALIDATION);
-        }
-
-        if(!inputValidator.validateInputPageNumber(pageNumber)){
-            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
-        }
+    public ResponseEntity<Object> getAUMForAdvisor(Long advisorId, String previousDate, String currentDate, Integer pageNumber) {
 
         try {
+            if (!inputValidator.validateInputDate(previousDate, currentDate)){
+                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
+
+            if(!inputValidator.validateInputPageNumber(pageNumber)){
+                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
+
             Map<Long, ClientAUM> map = new HashMap<>();
             AUMForAdvisor aumForAdvisor = new AUMForAdvisor();
             List<ClientAUM> clientAUMList = new ArrayList<>();
@@ -219,17 +217,17 @@ public class AUMService {
             aumForAdvisor.setHasNext(false);
             aumForAdvisor.setPage(pageNumber);
             aumForAdvisor.setCount(clientAUMList.size());
-            return RestResponse.successWithoutMessage(aumForAdvisor);
+            return new ResponseEntity<>(aumForAdvisor, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_AUM + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_AUM);
+            log.error(ERROR_IN_GETTING_AUM, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getAUMSummary() {
+    public ResponseEntity<Object> getAUMSummary() {
 
         try {
+            AUMForSummary aumForSummary = new AUMForSummary();
             List<AumDiff> aumDiffList = new ArrayList<>();
             List<String> dateList = dateUtility.getQuarterFirstDates();
             for (int i=0; i<dateList.size(); i++){
@@ -248,11 +246,11 @@ public class AUMService {
                 aumDiff.setAssetClass(assetClass);
                 aumDiffList.add(aumDiff);
             }
-            return RestResponse.successWithoutMessage(aumDiffList);
+            aumForSummary.setSummary(aumDiffList);
+            return new ResponseEntity<>(aumForSummary, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_AUM + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_AUM);
+            log.error(ERROR_IN_GETTING_AUM, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 }

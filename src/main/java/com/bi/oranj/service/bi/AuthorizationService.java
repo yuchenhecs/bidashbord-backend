@@ -1,7 +1,6 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.config.OranjAuthenticationToken;
-import netscape.security.ForbiddenTargetException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -9,6 +8,7 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,7 +19,7 @@ public class AuthorizationService {
         Integer userId = (Integer) ((OranjAuthenticationToken)
                 ((OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication()).getUserAuthentication()).getUserId();
         if (userId == null) {
-            throw new ForbiddenTargetException("user not found");
+            throw new NoSuchElementException("user not found");
         }
         return userId.longValue();
     }

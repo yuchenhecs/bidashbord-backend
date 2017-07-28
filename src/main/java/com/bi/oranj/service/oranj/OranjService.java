@@ -1,6 +1,5 @@
 package com.bi.oranj.service.oranj;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.model.oranj.OranjGoal;
 import com.bi.oranj.model.oranj.OranjPositions;
@@ -8,10 +7,13 @@ import com.bi.oranj.repository.bi.*;
 import com.bi.oranj.repository.oranj.OranjAUMRepository;
 import com.bi.oranj.repository.oranj.OranjGoalRepository;
 import com.bi.oranj.repository.oranj.*;
+import com.bi.oranj.utils.ApiError;
 import com.bi.oranj.utils.date.DateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
+import static com.bi.oranj.constant.Constants.ERROR_DATE_VALIDATION;
 import static com.bi.oranj.constant.Constants.ERROR_IN_GETTING_GOALS_FROM_ORANJ;
 
 @Service
@@ -74,7 +77,7 @@ public class OranjService {
     private DateValidator dateValidator;
 
 
-    public RestResponse fetchPositionsData () {
+    public ResponseEntity<Object> fetchPositionsData () {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date1 = simpleDateFormat.format(new Date());
@@ -87,17 +90,16 @@ public class OranjService {
 
             savePositions(positionRows, dateFormat1);
         } catch (Exception ex){
-            RestResponse.error("Error while fetching positions data" + ex);
+            return new ResponseEntity<>(new ApiError("Error while fetching positions data"), HttpStatus.BAD_REQUEST);
         }
-
-        return RestResponse.success();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
      *
      * @param limitNum - is how many rows of history to fetch from ORANJ DB
      */
-    public RestResponse fetchPositionsHistory (long limitNum){
+    public ResponseEntity<Object> fetchPositionsHistory (long limitNum){
         DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         List<Object[]> history = null;
 
@@ -106,22 +108,20 @@ public class OranjService {
             else history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(limitNum);
             savePositions(history, dateFormat1);
         }catch (Exception ex){
-            return RestResponse.error("Error while fetching positions history" + ex);
+            return new ResponseEntity<>(new ApiError("Error while fetching positions data"), HttpStatus.BAD_REQUEST);
         }
-
-        return RestResponse.success();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public RestResponse fetchPositionsDataByDate(String date) {
-        if (!dateValidator.validate(date)) return RestResponse.error("Date is not valid");
+    public ResponseEntity<Object> fetchPositionsDataByDate(String date) {
+        if (!dateValidator.validate(date)) return new ResponseEntity<>(new ApiError("Date is not valid"), HttpStatus.BAD_REQUEST);
 
         List<OranjPositions> positions = oranjPositionsRepository.fetchPositionsHistoryByDate(date);
         if (positions.isEmpty()){
             log.info("Empty data set for the given date -> {}", date);
-            return RestResponse.error(String.format("Empty data set for the given date %s", date));
+            return new ResponseEntity<>(new ApiError(String.format("Empty data set for the given date %s", date)), HttpStatus.BAD_REQUEST);
         }
-
-        return RestResponse.success();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private void savePositions (List<Object[]> history, DateFormat dateFormat1) throws ParseException {
@@ -156,30 +156,28 @@ public class OranjService {
         positionRepository.save(posHis);
     }
 
-    public RestResponse getGoals(String date){
+    public ResponseEntity<Object> getGoals(String date){
 
         try{
             List<OranjGoal> oranjGoalList = oranjGoalRepository.findByCreationDate(date);
             saveGoals(oranjGoalList);
         }catch (Exception e){
             log.error(ERROR_IN_GETTING_GOALS_FROM_ORANJ, e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_GOALS_FROM_ORANJ);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_GOALS_FROM_ORANJ), HttpStatus.BAD_REQUEST);
         }
-        return RestResponse.success("Goals created on " + date + " have been saved");
+        return new ResponseEntity<>("Goals created on " + date + " have been saved", HttpStatus.OK);
     }
 
-    public RestResponse getGoalsTillDate(String date){
+    public ResponseEntity<Object> getGoalsTillDate(String date){
 
         try{
             List<OranjGoal> oranjGoalList = oranjGoalRepository.findGoalsTillDate(date);
             saveGoals(oranjGoalList);
         }catch (Exception e){
-            log.error("Error in fetching goals from Oranj." + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching Goals from Oranj DB");
+            log.error("Error in fetching goals from Oranj.", e);
+            return new ResponseEntity<>(new ApiError("Error in fetching Goals from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return RestResponse.success("Goals created till " + date + " have been saved");
+        return new ResponseEntity<>("Goals created till " + date + " have been saved", HttpStatus.OK);
     }
 
     private void saveGoals(List<OranjGoal> oranjGoalList){
@@ -219,11 +217,10 @@ public class OranjService {
             }
         }catch (Exception e){
             log.error("Error in storing goals in BI DB", e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
-    public RestResponse getAllFirms(){
+    public ResponseEntity<Object> getAllFirms(){
         try{
             List<Object[]> oranjFirmList = oranjGoalRepository.findAllFirms();
             List<Firm> biFirmList = oranjFirmList.stream()
@@ -241,13 +238,13 @@ public class OranjService {
             firmRepository.save(biFirmList);
 
         }catch (Exception e){
-            log.error("Error in fetching Firms from Oranj." + e);
-            return RestResponse.error("Error in fecthing Firms from Oranj DB");
+            log.error("Error in fetching Firms from Oranj.", e);
+            return new ResponseEntity<>(new ApiError("Error in fecthing Firms from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return RestResponse.success("All Firms have been saved");
+        return new ResponseEntity<>("All Firms have been saved", HttpStatus.OK);
     }
 
-    public RestResponse getAllAdvisors(){
+    public ResponseEntity<Object> getAllAdvisors(){
         try{
             List<Object[]> oranjAdvisorsList = oranjGoalRepository.findAllAdvisors();
 
@@ -267,13 +264,13 @@ public class OranjService {
 
             advisorRepository.save(biAdvisorsList);
         }catch (Exception e){
-            log.error("Error in fetching Advisors from Oranj." + e);
-            return RestResponse.error("Error in fecthing Advisors from Oranj DB");
+            log.error("Error in fetching Advisors from Oranj.", e);
+            return new ResponseEntity<>(new ApiError("Error in fecthing Advisors from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return RestResponse.success("All Advisors have been saved");
+        return new ResponseEntity<>("All Advisors have been saved", HttpStatus.OK);
     }
 
-    public RestResponse getAllClients(){
+    public ResponseEntity<Object> getAllClients(){
         try{
             List<Object[]> oranjClientsList = oranjGoalRepository.findAllClients();
 
@@ -301,10 +298,10 @@ public class OranjService {
 
 
         }catch (Exception e){
-            log.error("Error in fetching Clients from Oranj." + e);
-            return RestResponse.error("Error in fecthing Clients from Oranj DB");
+            log.error("Error in fetching Clients from Oranj.", e);
+            return new ResponseEntity<>(new ApiError("Error in fecthing Clients from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return RestResponse.success("All Clients have been saved");
+        return new ResponseEntity<>("All Clients have been saved", HttpStatus.OK);
     }
 
     private String getRandomAssetClass (){
@@ -318,40 +315,28 @@ public class OranjService {
         return assetClasses.get(new Random().nextInt(assetClasses.size()));
     }
 
-    public RestResponse getNetWorthTillDate(String date){
+    public ResponseEntity<Object> getNetWorthTillDate(String date){
         try{
 
-                List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDate(date);
-                saveNetWorth(oranjNetWorthList);
-
-//            long index = 0;
-//            long step = 10000;
-//            while(true){
-//                List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDateByStep(date, index, step);
-//                saveNetWorth(oranjNetWorthList);
-//
-//                if(oranjNetWorthList == null || oranjNetWorthList.size() < step) break;
-//
-//                index += step;
-//
-//            }
+            List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findNetWorthTillDate(date);
+            saveNetWorth(oranjNetWorthList);
 
         }catch (Exception e){
-            log.error("Error in fetching net worth from Oranj." + e);
-            return RestResponse.error("Error in fetching net worth from Oranj DB. "+ e);
+            log.error("Error in fetching net worth from Oranj.", e);
+            return new ResponseEntity<>(new ApiError("Error in fetching net worth from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return RestResponse.success("Net worth till " + date + " have been saved");
+        return new ResponseEntity<>("Net worth till " + date + " have been saved", HttpStatus.OK);
     }
 
-    public RestResponse getNetWorthForDate(String date){
+    public ResponseEntity<Object> getNetWorthForDate(String date){
         try{
             List<Object[]> oranjNetWorthList = oranjNetWorthRepository.findByCreationDate(date);
             saveNetWorth(oranjNetWorthList);
         }catch (Exception e){
-            log.error("Error in fetching goals from Oranj." + e);
-            return RestResponse.error("Error in fetching Goals from Oranj DB");
+            log.error("Error in fetching goals from Oranj", e);
+            return new ResponseEntity<>(new ApiError("Error in fetching goals from Oranj"), HttpStatus.BAD_REQUEST);
         }
-        return RestResponse.success("Goals created on " + date + " have been saved");
+        return new ResponseEntity<>("Goals created on " + date + " have been saved", HttpStatus.OK);
 
     }
 

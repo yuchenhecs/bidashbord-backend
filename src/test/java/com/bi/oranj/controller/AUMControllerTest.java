@@ -1,9 +1,9 @@
 package com.bi.oranj.controller;
 
 import com.bi.oranj.controller.bi.AUMController;
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.service.bi.AUMService;
+import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Test;
@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -46,7 +48,7 @@ public class AUMControllerTest {
         String expected = data.toJSONString();
 
         Mockito.when(aumService.getAUMForAdmin(Mockito.anyInt(), Mockito.anyString(),Mockito.anyString()))
-                .thenReturn(RestResponse.successWithoutMessage(getAUMForAdminBody()));
+                .thenReturn(new ResponseEntity<>(getAUMForAdminBody(), HttpStatus.OK));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/bi/aums/firms?page=0&previousDate=2017-01-01&currentDate=2017-01-01")
@@ -66,7 +68,7 @@ public class AUMControllerTest {
         String expected = data.toJSONString();
 
         Mockito.when(aumService.getAUMForFirm(Mockito.anyLong(), Mockito.anyString(),Mockito.anyString(), Mockito.anyInt()))
-                .thenReturn(RestResponse.successWithoutMessage(getAUMForFirmBody()));
+                .thenReturn(new ResponseEntity<>(getAUMForFirmBody(), HttpStatus.OK));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/bi/aums/advisors?firmId=283&page=0&previousDate=2017-04-01&currentDate=2017-04-01")
@@ -87,7 +89,7 @@ public class AUMControllerTest {
         String expected = data.toJSONString();
 
         Mockito.when(aumService.getAUMForAdvisor(Mockito.anyLong(), Mockito.anyString(),Mockito.anyString(), Mockito.anyInt()))
-                .thenReturn(RestResponse.successWithoutMessage(getAUMForAdvisorBody()));
+                .thenReturn(new ResponseEntity<>(getAUMForAdvisorBody(), HttpStatus.OK));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/bi/aums/clients?advisorId=283&page=0&previousDate=2017-04-01&currentDate=2017-04-01")
@@ -106,7 +108,7 @@ public class AUMControllerTest {
         JSONObject data = (JSONObject) parser.parse(new FileReader("src/test/resources/json/AUMSummaryLanding.json"));
         String expected = data.toJSONString();
 
-        Mockito.when(aumService.getAUMSummary()).thenReturn(RestResponse.successWithoutMessage(getAUMSummaryBody()));
+        Mockito.when(aumService.getAUMSummary()).thenReturn(new ResponseEntity<>(getAUMSummaryBody(), HttpStatus.OK));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/bi/aums")
                 .accept(MediaType.APPLICATION_JSON);
@@ -175,13 +177,15 @@ public class AUMControllerTest {
         return mockAUMForFirm;
     }
 
-    public List<AumDiff> getAUMSummaryBody(){
+    public AUMForSummary getAUMSummaryBody(){
 
+        AUMForSummary aumForSummary = new AUMForSummary();
         List<AumDiff> aumDiffList = new ArrayList<AumDiff>();
         aumDiffList.add(getAUMDiff());
         aumDiffList.add(getAUMDiff());
         aumDiffList.add(getAUMDiff());
-        return aumDiffList;
+        aumForSummary.setSummary(aumDiffList);
+        return aumForSummary;
     }
 
     public AumDiff getAUMDiff(){

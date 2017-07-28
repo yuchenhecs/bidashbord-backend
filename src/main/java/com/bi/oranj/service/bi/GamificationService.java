@@ -57,7 +57,7 @@ public class GamificationService {
     public ResponseEntity<Object> getAdvisorSummaryForGamification() {
         try {
             if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
-                return new ResponseEntity<>(new ApiError(UNAUTHORIZED, HttpStatus.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(new ApiError(UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
             }
 
             Client client = clientRepository.findOne(authorizationService.getUserId());
@@ -74,19 +74,19 @@ public class GamificationService {
             return new ResponseEntity<>(gamificationSummary, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_ADVISOR_SUMMARY, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_ACHIEVEMENTS, HttpStatus.NOT_FOUND), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_ACHIEVEMENTS), HttpStatus.BAD_REQUEST);
         }
     }
 
     public ResponseEntity<Object> getAdvisorAchievements(String region){
         try {
             if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
-                return new ResponseEntity<>(new ApiError(UNAUTHORIZED, HttpStatus.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(new ApiError(UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
             }
 
             Client client = clientRepository.findOne(authorizationService.getUserId());
             if (!inputValidator.validateInputRegion(region)) {
-                return new ResponseEntity<>(new ApiError(ERROR_REGION_VALIDATION, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiError(ERROR_REGION_VALIDATION), HttpStatus.BAD_REQUEST);
             }
             PatOnTheBack patOnTheBack = null;
             List<Object[]> patOnTheBackResultSet = patOnTheBackRepository.findByAdvisorIdRegionAndDate(client.getAdvisorId(), region.toUpperCase() ,dateUtility.getDate(1));
@@ -101,7 +101,7 @@ public class GamificationService {
             return new ResponseEntity<>(patOnTheBack, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_ACHIEVEMENTS, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_ACHIEVEMENTS, HttpStatus.NOT_FOUND), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_ACHIEVEMENTS), HttpStatus.BAD_REQUEST);
         }
     }
 

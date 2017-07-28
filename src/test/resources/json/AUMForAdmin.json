@@ -1,51 +1,49 @@
 {
-  "data": {
-    "hasNext": false,
-    "page": 0,
-    "count": 0,
-    "totalFirms": 2,
-    "firms": [{
-      "name": "UnitTest",
-      "previous": {
-        "date": "2017-06-11",
-        "total": 287346,
-        "assetClass": {
-          "US Stocks": 1782,
-          "Non US Stocks": 12345,
-          "Cash": 1234
-        }
-      },
-      "current": {
-        "date": "2017-06-11",
-        "total": 287346,
-        "assetClass": {
-          "US Stocks": 1782,
-          "Non US Stocks": 12345,
-          "Cash": 1234
-        }
-      },
-      "firmId": 123
-    }, {
-      "name": "UnitTest",
-      "previous": {
-        "date": "2017-06-11",
-        "total": 287346,
-        "assetClass": {
-          "US Stocks": 1782,
-          "Non US Stocks": 12345,
-          "Cash": 1234
-        }
-      },
-      "current": {
-        "date": "2017-06-11",
-        "total": 287346,
-        "assetClass": {
-          "US Stocks": 1782,
-          "Non US Stocks": 12345,
-          "Cash": 1234
-        }
-      },
-      "firmId": 123
-    }]
-  }
+  "hasNext": false,
+  "page": 0,
+  "count": 0,
+  "totalFirms": 2,
+  "firms": [{
+    "name": "UnitTest",
+    "previous": {
+      "date": "2017-06-11",
+      "total": 287346,
+      "assetClass": {
+        "US Stocks": 1782,
+        "Non US Stocks": 12345,
+        "Cash": 1234
+      }
+    },
+    "current": {
+      "date": "2017-06-11",
+      "total": 287346,
+      "assetClass": {
+        "US Stocks": 1782,
+        "Non US Stocks": 12345,
+        "Cash": 1234
+      }
+    },
+    "firmId": 123
+  }, {
+    "name": "UnitTest",
+    "previous": {
+      "date": "2017-06-11",
+      "total": 287346,
+      "assetClass": {
+        "US Stocks": 1782,
+        "Non US Stocks": 12345,
+        "Cash": 1234
+      }
+    },
+    "current": {
+      "date": "2017-06-11",
+      "total": 287346,
+      "assetClass": {
+        "US Stocks": 1782,
+        "Non US Stocks": 12345,
+        "Cash": 1234
+      }
+    },
+    "firmId": 123
+  }]
 }

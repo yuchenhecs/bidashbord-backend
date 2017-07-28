@@ -1,9 +1,9 @@
 package com.bi.oranj.controller.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.service.bi.LoginMetricsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +16,7 @@ public class LoginMetricsController {
 
     @ApiOperation(value = "Get Login Metrics for Oranj Admin", notes = "returns Login Metrics for Oranj Admin")
     @RequestMapping(path="/firms", method = RequestMethod.GET)
-    public RestResponse getLoginMetricsForAdmin(@RequestParam(value = "page", required = true) Integer pageNumber,
+    public ResponseEntity<Object> getLoginMetricsForAdmin(@RequestParam(value = "page", required = true) Integer pageNumber,
                                                 @RequestParam(value = "user", required = true) String user,
                                                 @RequestParam(value = "range", required = true) String range) {
         return loginMetricsService.getLoginMetricsForAdmin(pageNumber, user, range);
@@ -24,7 +24,7 @@ public class LoginMetricsController {
 
     @ApiOperation(value = "Get Login Metrics for Firm", notes = "returns Login Metrics for Firm Admin")
     @RequestMapping(path="/advisors", method = RequestMethod.GET)
-    public RestResponse getLoginMetricsForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
+    public ResponseEntity<Object> getLoginMetricsForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
                                                @RequestParam(value = "page", required = true) Integer pageNumber,
                                                @RequestParam(value = "user", required = true) String user,
                                                @RequestParam(value = "range", required = true) String range) {
@@ -33,7 +33,7 @@ public class LoginMetricsController {
 
     @ApiOperation(value = "Get Login Metrics for Firm", notes = "returns Login Metrics for Firm Admin")
     @RequestMapping(path="/clients", method = RequestMethod.GET)
-    public RestResponse getLoginMetricsForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId,
+    public ResponseEntity<Object> getLoginMetricsForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId,
                                                   @RequestParam(value = "page", required = true) Integer pageNumber,
                                                   @RequestParam(value = "user", required = true) String user,
                                                   @RequestParam(value = "range", required = true) String range) {
@@ -42,7 +42,7 @@ public class LoginMetricsController {
 
     @ApiOperation(value = "Get Login Metrics for Firm", notes = "returns Login Metrics for Firm Admin")
     @RequestMapping(method = RequestMethod.GET)
-    public RestResponse getLoginMetricsSummary(@RequestParam(value = "user", required = true) String user) {
+    public ResponseEntity<Object> getLoginMetricsSummary(@RequestParam(value = "user", required = true) String user) {
         return loginMetricsService.getLoginMetricsSummary(user);
     }
 

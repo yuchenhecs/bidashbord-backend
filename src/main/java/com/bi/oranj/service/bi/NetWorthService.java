@@ -1,27 +1,23 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.repository.bi.NetWorthRepository;
 import com.bi.oranj.scheduler.ScheduledTasks;
+import com.bi.oranj.utils.ApiError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -57,12 +53,11 @@ public class NetWorthService {
     private Integer pageSize;
 
 
-    public RestResponse getNetWorthForAdmin(Integer pageNumber) {
+    public ResponseEntity<Object> getNetWorthForAdmin(Integer pageNumber) {
         Integer totalFirms = firmRepository.findDistinctFromFirm();
         Double maxPage = Math.ceil(totalFirms/pageSize);
         if (pageNumber > maxPage) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return RestResponse.error("Data not found");
+            return new ResponseEntity<>(new ApiError("Data not found"), HttpStatus.BAD_REQUEST);
         }
         try {
             NetWorthAdmin netWorthAdmin = new NetWorthAdmin();
@@ -89,20 +84,18 @@ public class NetWorthService {
             }
             netWorthAdmin.setPage(pageNumber);
             netWorthAdmin.setFirms(networthList);
-            return RestResponse.successWithoutMessage(netWorthAdmin);
+            return new ResponseEntity<>(netWorthAdmin, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Error in fetching net worth" + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching net worth");
+            log.error("Error in fetching net worth", e);
+            return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getNetWorthForFirm(Long firmId, Integer pageNumber) {
+    public ResponseEntity<Object> getNetWorthForFirm(Long firmId, Integer pageNumber) {
         Integer totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
         Double maxPage = Math.ceil(totalAdvisors/pageSize);
         if (pageNumber > maxPage) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return RestResponse.error("Data not found");
+            return new ResponseEntity<>(new ApiError("Data not found"), HttpStatus.BAD_REQUEST);
         }
         try {
             NetWorthFirm netWorthFirm = new NetWorthFirm();
@@ -129,20 +122,18 @@ public class NetWorthService {
             }
             netWorthFirm.setPage(pageNumber);
             netWorthFirm.setAdvisors(networthList);
-            return RestResponse.successWithoutMessage(netWorthFirm);
+            return new ResponseEntity<>(netWorthFirm, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Error in fetching net worth" + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching net worth");
+            log.error("Error in fetching net worth", e);
+            return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getNetWorthForAdvisor(Long advisorId, Integer pageNumber) {
+    public ResponseEntity<Object> getNetWorthForAdvisor(Long advisorId, Integer pageNumber) {
         Integer totalAdvisors = advisorRepository.findDistinctByFirm(advisorId);
         Double maxPage = Math.ceil(totalAdvisors/pageSize);
         if (pageNumber > maxPage) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return RestResponse.error("Data not found");
+            return new ResponseEntity<>(new ApiError("Data not found"), HttpStatus.BAD_REQUEST);
         }
         try {
             NetWorthAdvisor netWorthAdvisor = new NetWorthAdvisor();
@@ -171,15 +162,14 @@ public class NetWorthService {
             }
             netWorthAdvisor.setPage(pageNumber);
             netWorthAdvisor.setClients(networthList);
-            return RestResponse.successWithoutMessage(netWorthAdvisor);
+            return new ResponseEntity<>(netWorthAdvisor, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Error in fetching net worth" + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching net worth");
+            log.error("Error in fetching net worth", e);
+            return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getNetWorthSummary() {
+    public ResponseEntity<Object> getNetWorthSummary() {
         try {
             NetWorthSummary netWorthSummary = new NetWorthSummary();
             List<NetWorthForSummary> networthList = new ArrayList<>();
@@ -205,14 +195,11 @@ public class NetWorthService {
                     }
                 }
             }
-
             netWorthSummary.setSummary(networthList);
-            return RestResponse.successWithoutMessage(netWorthSummary);
-
+            return new ResponseEntity<>(netWorthSummary, HttpStatus.OK);
         } catch (Exception e) {
-            log.error("Error in fetching net worth" + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error("Error in fetching net worth");
+            log.error("Error in fetching net worth", e);
+            return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -227,7 +214,6 @@ public class NetWorthService {
             firstDayDate = firstDayDate.plusMonths(1);
         }
         monthList.add(currentDate.toString());
-
         return monthList;
     }
 }

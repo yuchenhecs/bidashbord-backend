@@ -1,16 +1,18 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.*;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.AnalyticsRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
+import com.bi.oranj.utils.ApiError;
 import com.bi.oranj.utils.InputValidator;
 import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -49,23 +51,23 @@ public class LoginMetricsService {
     @Autowired
     DateUtility dateUtility;
 
-    public RestResponse getLoginMetricsForAdmin(Integer pageNumber, String user, String range){
+    public ResponseEntity<Object> getLoginMetricsForAdmin(Integer pageNumber, String user, String range){
 
         List<String> dateRange = new ArrayList<>();
         Long roleId;
 
         if (!inputValidator.validateInputPageNumber(pageNumber)) {
-            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
         }
 
         if (!inputValidator.validateInputUserType(user)) {
-            return RestResponse.error(ERROR_USER_TYPE_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             roleId = getRoleId(user);
         }
 
         if (!inputValidator.validateInputRangeType(range)) {
-            return RestResponse.error(ERROR_RANGE_TYPE_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             dateRange = dateUtility.getDates(dateRange, range);
         }
@@ -96,31 +98,30 @@ public class LoginMetricsService {
             loginMetricsForAdmin.setHasNext(false);
             loginMetricsForAdmin.setPage(pageNumber);
             loginMetricsForAdmin.setCount(firmLoginMetricsList.size());
-            return RestResponse.successWithoutMessage(loginMetricsForAdmin);
+            return new ResponseEntity<>(loginMetricsForAdmin, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_LOGIN_METRICS + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
+            log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getLoginMetricsForFirm(Long firmId, Integer pageNumber, String user, String range){
+    public ResponseEntity<Object> getLoginMetricsForFirm(Long firmId, Integer pageNumber, String user, String range){
 
         List<String> dateRange = new ArrayList<>();
         Long roleId;
 
         if (!inputValidator.validateInputPageNumber(pageNumber)) {
-            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
         }
 
         if (!inputValidator.validateInputUserType(user)) {
-            return RestResponse.error(ERROR_USER_TYPE_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             roleId = getRoleId(user);
         }
 
         if (!inputValidator.validateInputRangeType(range)) {
-            return RestResponse.error(ERROR_RANGE_TYPE_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             dateRange = dateUtility.getDates(dateRange, range);
         }
@@ -151,31 +152,30 @@ public class LoginMetricsService {
             loginMetricsForFirm.setHasNext(false);
             loginMetricsForFirm.setPage(pageNumber);
             loginMetricsForFirm.setCount(advisorLoginMetricsList.size());
-            return RestResponse.successWithoutMessage(loginMetricsForFirm);
+            return new ResponseEntity<>(loginMetricsForFirm, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_LOGIN_METRICS + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
+            log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getLoginMetricsForAdvisor(Long advisorId, Integer pageNumber, String user, String range){
+    public ResponseEntity<Object> getLoginMetricsForAdvisor(Long advisorId, Integer pageNumber, String user, String range){
 
         List<String> dateRange = new ArrayList<>();
         Long roleId;
 
         if (!inputValidator.validateInputPageNumber(pageNumber)) {
-            return RestResponse.error(ERROR_PAGE_NUMBER_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
         }
 
         if (!inputValidator.validateInputUserType(user)) {
-            return RestResponse.error(ERROR_USER_TYPE_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             roleId = getRoleId(user);
         }
 
         if (!inputValidator.validateInputRangeType(range)) {
-            return RestResponse.error(ERROR_RANGE_TYPE_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             dateRange = dateUtility.getDates(dateRange, range);
         }
@@ -206,20 +206,19 @@ public class LoginMetricsService {
             loginMetricsForAdvisor.setHasNext(false);
             loginMetricsForAdvisor.setPage(pageNumber);
             loginMetricsForAdvisor.setCount(clientLoginMetricsList.size());
-            return RestResponse.successWithoutMessage(loginMetricsForAdvisor);
+            return new ResponseEntity<>(loginMetricsForAdvisor, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_LOGIN_METRICS + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
+            log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public RestResponse getLoginMetricsSummary(String user){
+    public ResponseEntity<Object> getLoginMetricsSummary(String user){
 
         Long roleId;
 
         if (!inputValidator.validateInputUserType(user)) {
-            return RestResponse.error(ERROR_USER_TYPE_VALIDATION);
+            return new ResponseEntity<>(new ApiError(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             roleId = getRoleId(user);
         }
@@ -255,11 +254,10 @@ public class LoginMetricsService {
                 }
             }
             map.put(user, loginMetricsSummary);
-            return RestResponse.successWithoutMessage(map);
+            return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_LOGIN_METRICS + e);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return RestResponse.error(ERROR_IN_GETTING_LOGIN_METRICS);
+            log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
         }
     }
 
