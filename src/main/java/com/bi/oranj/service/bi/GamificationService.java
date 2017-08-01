@@ -55,8 +55,8 @@ public class GamificationService {
 
     public RestResponse getAdvisorsPerformance(String kpiName, Long advisorId){
         AdvisorPerformance advisorPerformance = new AdvisorPerformance();
-//        String date = simpleDateFormat.format(new Date());
-        String date = "2017-07-24";
+        String date = simpleDateFormat.format(new Date());
+//        String date = "2017-07-31";
 
         for (String scope : scopes){
             BigDecimal percentile = gamificationRepository.findAdvisorKpiPercentile(advisorId, kpiName, date, scope);

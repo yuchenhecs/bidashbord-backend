@@ -29,7 +29,7 @@ public class GamificationController {
     }
 
     @ApiOperation(value = "Get advisor performance")
-    @RequestMapping(value = "/{kpiName}")
+    @RequestMapping(value = "/{kpiName}", method = RequestMethod.GET)
     public RestResponse getAdvisorPerformance (@PathVariable String kpiName, @RequestParam (value = "advisorId") Long advisorId){
         return gamificationService.getAdvisorsPerformance(kpiName, advisorId);
     }
