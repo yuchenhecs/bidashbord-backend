@@ -160,6 +160,18 @@ public class ConstantQueries {
             "where role_id = :role and date(session_start_date) between date(:start) and date(:end)\n" +
             "group by client_id) as o";
 
+    public static final String GET_LOGIN_METRICS_FOR_ADVISOR_SUMMARY_QUERY = "select sum(totalLogins) as totalLogins, count(client_id) as uniqueLogins, sum(totalSessionDuration) as totalSessionTime from (\n" +
+            "select count(*) as totalLogins, client_id, sum(session_duration) as totalSessionDuration\n" +
+            "from analytics a join clients c on a.client_id = c.id\n" +
+            "where c.advisor_id = :advisorId and a.role_id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
+            "group by client_id) as o";
+
+    public static final String GET_LOGIN_METRICS_FOR_FIRM_SUMMARY_QUERY = "select sum(totalLogins) as totalLogins, count(client_id) as uniqueLogins, sum(totalSessionDuration) as totalSessionTime from (\n" +
+            "select count(*) as totalLogins, client_id, sum(session_duration) as totalSessionDuration\n" +
+            "from analytics a join clients c on a.client_id = c.id\n" +
+            "where c.firm_id = :firmId and a.role_id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
+            "group by client_id) as o";
+
     public static final String GET_GAMIFICATION_QUERY = "select g.advisor_id, a.advisor_first_name, a.advisor_last_name, g.points, g.percentile_overall, g.percentile_state, g.percentile_firm,\n" +
             "innerTable.aum, innerTable.net_worth, innerTable.hni, innerTable.conversion_rate, innerTable.avg_conversion_time, innerTable.retention_rate, innerTable.weekly_logins,\n" +
             "innerTable.aum_growth, innerTable.net_worth_growth, innerTable.clientele_growth\n" +
