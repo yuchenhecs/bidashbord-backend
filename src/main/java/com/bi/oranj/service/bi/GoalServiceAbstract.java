@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by jaloliddinbakirov on 5/30/17.
  */
-public abstract class GoalService {
+public abstract class GoalServiceAbstract {
 
     public Goal buildResponseByDateBetween(String startDate, String endDate, int pageNum, long userId, HttpServletResponse response){
         return null;

@@ -17,7 +17,7 @@ import java.util.*;
  * This service is responsible for advisor related logic
  */
 @Service
-public class AdvisorService extends GoalService{
+public class AdvisorServiceAbstract extends GoalServiceAbstract {
 
     @Autowired
     private AdvisorRepository advisorRepository;

@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 import static com.bi.oranj.constant.ConstantQueries.GET_GOALS_GROUPED_BY_TYPE;
+import static com.bi.oranj.constant.ConstantQueries.GET_GOALS_GROUPED_BY_TYPE_FOR_ADVISOR;
+import static com.bi.oranj.constant.ConstantQueries.GET_GOALS_GROUPED_BY_TYPE_FOR_FIRM;
 
 public interface GoalRepository extends JpaRepository<BiGoal, Integer> {
 
@@ -20,8 +22,14 @@ public interface GoalRepository extends JpaRepository<BiGoal, Integer> {
     @Query(value = "SELECT count(id) FROM BiGoal WHERE advisorId = ?1")
     public Integer totalClientGoals (long advisorId);
 
-    @Query(value = GET_GOALS_GROUPED_BY_TYPE)
+    @Query(value = GET_GOALS_GROUPED_BY_TYPE, nativeQuery = true)
     public List<Object[]> findGoalsGroupedByType();
+
+    @Query(value = GET_GOALS_GROUPED_BY_TYPE_FOR_FIRM, nativeQuery = true)
+    public List<Object[]> findGoalsGroupedByTypeForFirm(@Param("firmId") Long firmId);
+
+    @Query(value = GET_GOALS_GROUPED_BY_TYPE_FOR_ADVISOR, nativeQuery = true)
+    public List<Object[]> findGoalsGroupedByTypeForAdvisor(@Param("advisorId") Long advisorId);
 
     @Query(value = "SELECT count(id) FROM goals WHERE goal_creation_date >= :startDate' 00:00:00' ", nativeQuery = true)
     public Integer totalGoalsWithStartDate (@Param(value = "startDate") String startDate);

@@ -56,7 +56,9 @@ public class ConstantQueries {
                                                                         "ON f.id = a.firm_id \n" +
                                                                 "where date(creation_date) IN (:date)";
 
-    public static final String GET_GOALS_GROUPED_BY_TYPE = "select type as type, count(*) as count from BiGoal group by type";
+    public static final String GET_GOALS_GROUPED_BY_TYPE = "select type as type, count(*) as count from goals group by type";
+    public static final String GET_GOALS_GROUPED_BY_TYPE_FOR_FIRM = "select type as type, count(*) as count from goals where firm_id = :firmId group by type";
+    public static final String GET_GOALS_GROUPED_BY_TYPE_FOR_ADVISOR = "select type as type, count(*) as count from goals where advisor_id = :advisorId group by type";
 
 
     public static final String GET_GOALS_TILL_DATE_QUERY = "select g.*," +
