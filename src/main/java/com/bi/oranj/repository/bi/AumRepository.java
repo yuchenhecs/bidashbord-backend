@@ -8,8 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-import static com.bi.oranj.constant.ConstantQueries.GET_AUM_FOR_ADVISOR_QUERY;
-import static com.bi.oranj.constant.ConstantQueries.GET_AUM_SUMMARY_QUERY;
+import static com.bi.oranj.constant.ConstantQueries.*;
 
 public interface AumRepository extends JpaRepository<Position, Long> {
 
@@ -24,4 +23,12 @@ public interface AumRepository extends JpaRepository<Position, Long> {
 
     @Query(value = GET_AUM_SUMMARY_QUERY, nativeQuery = true)
     public List<Object[]> findAUMsSummary(@Param("date") String date);
+
+    @Query(value = GET_AUM_SUMMARY_ADVISOR_QUERY, nativeQuery = true)
+    public List<Object[]> findAUMsSummaryForAdvisor(@Param("advisorId") Long advisorId,
+                                                    @Param("date") String date);
+
+    @Query(value = GET_AUM_SUMMARY_FIRM_QUERY, nativeQuery = true)
+    public List<Object[]> findAUMsSummaryForFirm(@Param("firmId") Long firmId,
+                                                 @Param("date") String date);
 }

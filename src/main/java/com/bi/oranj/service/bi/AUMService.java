@@ -42,6 +42,9 @@ public class AUMService {
     private InputValidator inputValidator;
 
     @Autowired
+    private AuthorizationService authorizationService;
+
+    @Autowired
     DateUtility dateUtility;
 
     @Autowired
@@ -226,33 +229,52 @@ public class AUMService {
 
     public ResponseEntity<Object> getAUMSummary() {
 
+        String methodName = "";
+        if (authorizationService.isAdmin()){
+            methodName = "findAUMsSummaryForFirm";
+        } else if (authorizationService.isAdvisor()) {
+            methodName = "findAUMsSummaryForAdvisor";
+        } else if (authorizationService.isSuperAdmin()) {
+            methodName = "findAUMsSummary";
+        } else {
+            new ResponseEntity<>("FORBIDDEN", HttpStatus.FORBIDDEN);
+        }
+
         try {
-            AUMForSummary aumForSummary = new AUMForSummary();
-            List<AumDiff> aumDiffList = new ArrayList<>();
-            List<String> dateList = dateUtility.getQuarterFirstDates();
-            for (int i=0; i<dateList.size(); i++){
-
-                List<Object[]> aumSummaryResultSet = aumRepository.findAUMsSummary(dateList.get(i));
-
-                AumDiff aumDiff = new AumDiff();
-                aumDiff.setDate(dateList.get(i));
-                aumDiff.setTotal(new BigDecimal(0));
-                Map<String, BigDecimal> assetClass = new HashMap<>();
-
-                for (Object[] resultSet : aumSummaryResultSet){
-                    assetClass.put(resultSet[0].toString(), (BigDecimal) resultSet[1]);
-                    aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[1]));
-                }
-                aumDiff.setAssetClass(assetClass);
-                aumDiffList.add(aumDiff);
-            }
-            aumForSummary.setSummary(aumDiffList);
+            AUMForSummary aumForSummary = getAuthorizedData(methodName);
             return new ResponseEntity<>(aumForSummary, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM, e);
             return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
+
+    private AUMForSummary getAuthorizedData (String methodName) throws Exception{
+        AUMForSummary aumForSummary = new AUMForSummary();
+        List<AumDiff> aumDiffList = new ArrayList<>();
+        List<String> dateList = dateUtility.getQuarterFirstDates();
+        for (int i=0; i<dateList.size(); i++){
+
+//            List<Object[]> aumSummaryResultSet = aumRepository.findAUMsSummary(dateList.get(i));
+            List<Object[]> aumSummaryResultSet = (List<Object[]>) AumRepository.class.getMethod(methodName).invoke(dateList.get(i));
+
+            AumDiff aumDiff = new AumDiff();
+            aumDiff.setDate(dateList.get(i));
+            aumDiff.setTotal(new BigDecimal(0));
+            Map<String, BigDecimal> assetClass = new HashMap<>();
+
+            for (Object[] resultSet : aumSummaryResultSet){
+                assetClass.put(resultSet[0].toString(), (BigDecimal) resultSet[1]);
+                aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[1]));
+            }
+            aumDiff.setAssetClass(assetClass);
+            aumDiffList.add(aumDiff);
+        }
+        aumForSummary.setSummary(aumDiffList);
+
+        return aumForSummary;
+    }
+
 }
 
 
