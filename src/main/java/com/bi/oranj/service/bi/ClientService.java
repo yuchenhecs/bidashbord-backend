@@ -13,7 +13,7 @@ import java.math.BigInteger;
 import java.util.*;
 
 @Service
-public class ClientServiceAbstract extends GoalServiceAbstract {
+public class ClientService extends GoalServiceAbstract {
 
     @Autowired
     private ClientRepository clientRepository;
@@ -146,7 +146,6 @@ public class ClientServiceAbstract extends GoalServiceAbstract {
 
             if (linkedHashMap.containsKey(advisorId)){
                 Client advisor = linkedHashMap.get(advisorId);
-
                 HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
                 if (goalList.containsKey(type)){
