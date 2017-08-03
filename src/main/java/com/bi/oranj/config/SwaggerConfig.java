@@ -32,7 +32,6 @@ public class SwaggerConfig {
                 "API TOS",
                 "http://runoranj.com/",
                 "Oranj",
-                "http://runoranj.com/", null
-        );
+                "http://runoranj.com/", null);
     }
 }

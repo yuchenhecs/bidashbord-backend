@@ -8,6 +8,7 @@ import com.bi.oranj.service.bi.GoalService;
 import com.bi.oranj.utils.ApiError;
 import com.bi.oranj.utils.date.DateValidator;
 import com.bi.oranj.service.bi.*;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,7 @@ public class GoalController {
     DateValidator dateValidator;
 
     @ApiOperation(value = "Get Goals at Admin level", notes = "returns goals")
+    @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping (value = "/firms", method = RequestMethod.GET)
     public ResponseEntity<Object> getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                                 HttpServletResponse response, @RequestParam (value = "startDate", required = false) String startDate,
@@ -47,6 +49,7 @@ public class GoalController {
     }
 
     @ApiOperation(value = "Get Goals for Firm", notes = "returns goals")
+    @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping (value = "/advisors", method = RequestMethod.GET)
     public ResponseEntity<Object> getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "firmId", required = true) Long firmId,
@@ -56,6 +59,7 @@ public class GoalController {
     }
 
     @ApiOperation(value = "Get Goals for Advisor", notes = "returns goals")
+    @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping (value = "/clients", method = RequestMethod.GET)
     public ResponseEntity<Object> getClientGoals (@RequestParam (value = "page", required = false) Integer pageNum, HttpServletRequest request,
                                 HttpServletResponse response, @RequestParam (value = "advisorId", required = true) Long advisorId,
@@ -119,6 +123,7 @@ public class GoalController {
     }
 
     @ApiOperation(value = "Get All Goals grouped by type", notes = "returns all goals grouped by type")
+    @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping (method = RequestMethod.GET)
     public ResponseEntity<Object> getGoalsSummary () throws IOException {
         return goalsService.getGoalsSummary();
