@@ -1,6 +1,5 @@
 package com.bi.oranj.service.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.Grid;
 import com.bi.oranj.model.bi.GridContainer;
 import com.bi.oranj.model.bi.GridEntity;
@@ -12,12 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
-/**
- * Created by jaloliddinbakirov on 8/3/17.
- */
 @Service
 public class GridConfigService {
 
@@ -37,16 +32,19 @@ public class GridConfigService {
                     convertGridToString(gridContainer.getLogins()));
         } catch (Exception e){
             log.error("Error occurred while insert/updating grid config", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(gridContainer, HttpStatus.OK);
+        return new ResponseEntity<>("Successfully inserted", HttpStatus.OK);
     }
+
+
 
     public ResponseEntity<Object> getGridConfig (Long userId){
 
         GridContainer gridContainer = new GridContainer();
         try{
             GridEntity gridConfig = gridRepository.getGridConfig(userId);
+            gridContainer.setUserId(userId);
             gridContainer.setGoals(convertStringToGrid(gridConfig.getGoals()));
             gridContainer.setAum(convertStringToGrid(gridConfig.getAum()));
             gridContainer.setNetWorth(convertStringToGrid(gridConfig.getNetWorth()));
@@ -76,9 +74,9 @@ public class GridConfigService {
 
     private String convertGridToString (Grid grid){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("x:").append(grid.getX())
-                .append("y:").append(grid.getY())
-                .append("height:").append(grid.getHeight())
+        stringBuilder.append("x:").append(grid.getX()).append(",")
+                .append("y:").append(grid.getY()).append(",")
+                .append("height:").append(grid.getHeight()).append(",")
                 .append("width:").append(grid.getWidth());
         return stringBuilder.toString();
     }

@@ -1,10 +1,7 @@
 package com.bi.oranj.controller.bi;
 
-import com.bi.oranj.controller.bi.resp.RestResponse;
 import com.bi.oranj.model.bi.GridContainer;
-import com.bi.oranj.model.bi.GridEntity;
 import com.bi.oranj.service.bi.GridConfigService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

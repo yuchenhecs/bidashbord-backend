@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public interface GridRepository extends JpaRepository<GridEntity, Long>{
     @Query (value = "SELECT * FROM grid_config WHERE user_id = :userId", nativeQuery = true)
     public GridEntity getGridConfig (@Param("userId") Long userId);
 
+    @Transactional
     @Modifying
     @Query (value = "INSERT INTO grid_config (user_id, goals, aum, net_worth, logins) \n" +
             "values (:userId, :goals, :aum, :netWorth, :logins) \n" +
