@@ -28,14 +28,32 @@ public class GoalController {
     GoalsService goalsService;
 
 
-    @ApiOperation(value = "Get Goals for Users", notes = "returns goals")
-    @RequestMapping (value = "/{userType}", method = RequestMethod.GET)
-    public RestResponse getUserGoals (@RequestParam (value = "page", required = false) Integer pageNum,
-                                                @RequestParam (value = "userId", required = true) Long userId,
+    @ApiOperation(value = "Get Goals for Super Admin", notes = "returns goals")
+    @RequestMapping (value = "/firms", method = RequestMethod.GET)
+    public RestResponse getSuperAdminGoals (@RequestParam (value = "page", required = false) Integer pageNum,
                                                 @RequestParam (value = "startDate", required = false) String startDate,
-                                                @RequestParam (value = "endDate", required = false) String endDate,
-                                                @PathVariable String userType) throws IOException {
-        return goalsService.getUserGoals(userType, userId, pageNum, startDate, endDate);
+                                                @RequestParam (value = "endDate", required = false) String endDate
+                                                ) throws IOException {
+        return goalsService.getUserGoals("firms", null, pageNum, startDate, endDate);
+    }
+
+    @ApiOperation(value = "Get Goals for Firms", notes = "returns goals")
+    @RequestMapping (value = "/advisors", method = RequestMethod.GET)
+    public RestResponse getFirmGoals (@RequestParam (value = "page", required = false) Integer pageNum,
+                                      @RequestParam (value = "firmId", required = true) Long userId,
+                                      @RequestParam (value = "startDate", required = false) String startDate,
+                                      @RequestParam (value = "endDate", required = false) String endDate
+                                      ) throws IOException {
+        return goalsService.getUserGoals("advisors", userId, pageNum, startDate, endDate);
+    }
+
+    @ApiOperation(value = "Get Goals for Advisors", notes = "returns goals")
+    @RequestMapping (value = "/clients", method = RequestMethod.GET)
+    public RestResponse getAdvisorGoals (@RequestParam (value = "page", required = false) Integer pageNum,
+                                      @RequestParam (value = "advisorId", required = true) Long userId,
+                                      @RequestParam (value = "startDate", required = false) String startDate,
+                                      @RequestParam (value = "endDate", required = false) String endDate) throws IOException {
+        return goalsService.getUserGoals("clients", userId, pageNum, startDate, endDate);
     }
 
     @ApiOperation(value = "Get All Goals grouped by type", notes = "returns all goals grouped by type")
