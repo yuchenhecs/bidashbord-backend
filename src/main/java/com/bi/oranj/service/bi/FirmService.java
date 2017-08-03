@@ -25,7 +25,7 @@ public class FirmService extends GoalService{
 
 
     @Override
-    public Goal buildResponse(int pageNum, long userId, HttpServletResponse response) {
+    public Goal buildResponse(int pageNum, long userId) {
         int totalFirms = firmRepository.findDistinctFromFirm();
         int totalPages = totalPages(totalFirms);
         if (pageNum > totalPages) return null;
@@ -36,12 +36,11 @@ public class FirmService extends GoalService{
         int totalGoals = goalRepository.totalGoals();
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public Goal buildResponseWithStartDate (String startDate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseWithStartDate (String startDate, int pageNum, long userId){
         int totalFirms = firmRepository.findDistinctFirmsWithStartDate(startDate);
         int totalPages = totalPages(totalFirms);
         if (pageNum > totalPages) return null;
@@ -52,12 +51,11 @@ public class FirmService extends GoalService{
         int totalGoals = goalRepository.totalGoalsWithStartDate(startDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if ( goals!=null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public Goal buildResponseWithEndDate (String endDate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseWithEndDate (String endDate, int pageNum, long userId){
         int totalFirms = firmRepository.findDistinctFirmsWithEndDate(endDate);
         int totalPages = totalPages(totalFirms);
         if (pageNum > totalPages) return null;
@@ -68,12 +66,11 @@ public class FirmService extends GoalService{
         int totalGoals = goalRepository.totalGoalsWithEndDate(endDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long userId){
         int totalFirms = firmRepository.findDistinctFirmsByDateBetween(startDate, endDate);
         int totalPages = totalPages(totalFirms);
         if (pageNum > totalPages) return null;
@@ -84,7 +81,6 @@ public class FirmService extends GoalService{
         int totalGoals = goalRepository.totalGoalsByDateBetween(startDate, endDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
