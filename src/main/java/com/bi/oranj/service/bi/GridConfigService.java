@@ -23,6 +23,8 @@ public class GridConfigService {
 
     public ResponseEntity<Object> insertOrUpdateIfExits (GridContainer gridContainer){
         try{
+            if (gridContainer.getUserId() == null)
+                return new ResponseEntity<>("I need a userId !", HttpStatus.BAD_REQUEST);
 
             gridRepository.insertOrUpdateIfExists(
                     gridContainer.getUserId(),
@@ -38,12 +40,14 @@ public class GridConfigService {
     }
 
 
-
     public ResponseEntity<Object> getGridConfig (Long userId){
 
         GridContainer gridContainer = new GridContainer();
         try{
             GridEntity gridConfig = gridRepository.getGridConfig(userId);
+
+            if (gridConfig == null) return new ResponseEntity<>(null, HttpStatus.OK);
+
             gridContainer.setUserId(userId);
             gridContainer.setGoals(convertStringToGrid(gridConfig.getGoals()));
             gridContainer.setAum(convertStringToGrid(gridConfig.getAum()));
@@ -59,15 +63,17 @@ public class GridConfigService {
 
 // x:3,y:3,height:3,width:4
     private Grid convertStringToGrid (String stringConfig) throws Exception{
+        if (stringConfig.equalsIgnoreCase("null")) return null;
+
         StringTokenizer stringTokenizer = new StringTokenizer(stringConfig, ",");
 
         Grid grid = new Grid();
         while (stringTokenizer.hasMoreTokens()){
             String[] vals = stringTokenizer.nextToken().split(":");
-            if (vals[0].equalsIgnoreCase("x")) grid.setX(Integer.parseInt(vals[1].trim()));
-            else if (vals[0].equalsIgnoreCase("y")) grid.setY(Integer.parseInt(vals[1].trim()));
-            else if (vals[0].equalsIgnoreCase("height")) grid.setHeight(Integer.parseInt(vals[1].trim()));
-            else if (vals[0].equalsIgnoreCase("width")) grid.setWidth(Integer.parseInt(vals[1].trim()));
+            if (vals[0].equalsIgnoreCase("x")) grid.setX(vals[1].equals("null") ? null : Integer.parseInt(vals[1].trim()));
+            else if (vals[0].equalsIgnoreCase("y")) grid.setY(vals[1].equals("null") ? null : Integer.parseInt(vals[1].trim()));
+            else if (vals[0].equalsIgnoreCase("height")) grid.setHeight(vals[1].equals("null") ? null : Integer.parseInt(vals[1].trim()));
+            else if (vals[0].equalsIgnoreCase("width")) grid.setWidth(vals[1].equals("null") ? null : Integer.parseInt(vals[1].trim()));
         }
         return grid;
     }
