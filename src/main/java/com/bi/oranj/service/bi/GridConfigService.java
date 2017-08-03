@@ -46,7 +46,7 @@ public class GridConfigService {
         try{
             GridEntity gridConfig = gridRepository.getGridConfig(userId);
 
-            if (gridConfig == null) return new ResponseEntity<>(null, HttpStatus.OK);
+            if (gridConfig == null) return new ResponseEntity<>("null", HttpStatus.OK);
 
             gridContainer.setUserId(userId);
             gridContainer.setGoals(convertStringToGrid(gridConfig.getGoals()));
@@ -63,7 +63,7 @@ public class GridConfigService {
 
 // x:3,y:3,height:3,width:4
     private Grid convertStringToGrid (String stringConfig) throws Exception{
-        if (stringConfig.equalsIgnoreCase("null")) return null;
+        if (stringConfig == null) return null;
 
         StringTokenizer stringTokenizer = new StringTokenizer(stringConfig, ",");
 
@@ -79,6 +79,8 @@ public class GridConfigService {
     }
 
     private String convertGridToString (Grid grid){
+        if (grid == null) return null;
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("x:").append(grid.getX()).append(",")
                 .append("y:").append(grid.getY()).append(",")
