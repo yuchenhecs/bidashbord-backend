@@ -57,9 +57,8 @@ public class GamificationService {
     public ResponseEntity<Object> getAdvisorSummaryForGamification() {
         try {
             if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
-                return new ResponseEntity<>(new ApiError(UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(new ApiError(ACCESS_DENIED), HttpStatus.FORBIDDEN);
             }
-
             Client client = clientRepository.findOne(authorizationService.getUserId());
             GamificationSummary gamificationSummary = null;
             List<Object[]> gamificationResultSet = gamificationRepository.findByAdvisorIdAndDate(client.getAdvisorId(), dateUtility.getDate(1));
@@ -81,7 +80,7 @@ public class GamificationService {
     public ResponseEntity<Object> getAdvisorAchievements(String region){
         try {
             if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
-                return new ResponseEntity<>(new ApiError(UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(new ApiError(ACCESS_DENIED), HttpStatus.FORBIDDEN);
             }
 
             Client client = clientRepository.findOne(authorizationService.getUserId());
