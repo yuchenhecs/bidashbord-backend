@@ -1,7 +1,9 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.Client;
+import com.bi.oranj.model.bi.AdvisorPerformance;
 import com.bi.oranj.model.bi.GamificationSummary;
+import com.bi.oranj.model.bi.KpiScope;
 import com.bi.oranj.model.bi.PatOnTheBack;
 import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +57,40 @@ public class GamificationService {
 
     @Autowired
     ClientRepository clientRepository;
+
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final String[] scopes = {"state", "firm", "overall"};
+
+    public ResponseEntity<Object> getAdvisorsPerformance(String kpiName, Long advisorId){
+        AdvisorPerformance advisorPerformance = new AdvisorPerformance();
+        String date = simpleDateFormat.format(new Date());
+
+        for (String scope : scopes){
+            BigDecimal percentile = gamificationRepository.findAdvisorKpiPercentile(advisorId, kpiName, date, scope);
+            List<Object[]> maxMin = gamificationRepository.findMaxAndMinInTheGivenKpi(kpiName, scope, advisorId, date);
+            BigDecimal max = maxMin.get(0)[0] instanceof Integer ? new BigDecimal((Integer) maxMin.get(0)[0]) : (BigDecimal) maxMin.get(0)[0];
+            BigDecimal min = maxMin.get(0)[1] instanceof Integer ? new BigDecimal((Integer) maxMin.get(0)[1]) : (BigDecimal) maxMin.get(0)[1];
+            KpiScope kpiScope = new KpiScope();
+            kpiScope.setPercentile(percentile);
+
+            if (kpiName.equalsIgnoreCase("avg_conversion_time")){
+                kpiScope.setWorst(max);
+                kpiScope.setBest(min);
+            } else{
+                kpiScope.setBest(max);
+                kpiScope.setWorst(min);
+            }
+
+            if (scope.equalsIgnoreCase("state")) advisorPerformance.setState(kpiScope);
+            else if (scope.equalsIgnoreCase("overall")) advisorPerformance.setOverall(kpiScope);
+            else if (scope.equalsIgnoreCase("firm")) advisorPerformance.setFirm(kpiScope);
+        }
+
+        advisorPerformance.setStateCode(advisorRepository.findAdvisorsState(advisorId));
+        advisorPerformance.setAdvisorKpi(advisorRepository.findAdvisorsKpi(advisorId, date, kpiName));
+
+        return new ResponseEntity<>(advisorPerformance, HttpStatus.OK);
+    }
 
     public ResponseEntity<Object> getAdvisorSummaryForGamification() {
         try {

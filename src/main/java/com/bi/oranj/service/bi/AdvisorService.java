@@ -36,11 +36,10 @@ public class AdvisorService extends GoalServiceAbstract {
      * returns Goal object
      * @param pageNum
      * @param firmId
-     * @param response
      * @return
      */
     @Override
-    public Goal buildResponse(int pageNum, long firmId, HttpServletResponse response) {
+    public Goal buildResponse(int pageNum, long firmId) {
         int totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
         int totalPages = totalPages(totalAdvisors);
         if (pageNum > totalPages) return null;
@@ -51,7 +50,6 @@ public class AdvisorService extends GoalServiceAbstract {
         int totalGoals = goalRepository.totalAdvisorGoals(firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
@@ -62,11 +60,10 @@ public class AdvisorService extends GoalServiceAbstract {
      * @param startDate
      * @param pageNum
      * @param firmId
-     * @param response
      * @return
      */
     @Override
-    public Goal buildResponseWithStartDate (String startDate, int pageNum, long firmId, HttpServletResponse response){
+    public Goal buildResponseWithStartDate (String startDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId);
         int totalPages = totalPages(totalAdvisors);
         if (pageNum > totalPages) return null;
@@ -77,7 +74,6 @@ public class AdvisorService extends GoalServiceAbstract {
         int totalGoals = goalRepository.totalAdvisorGoalsWithStartDate(startDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
@@ -89,11 +85,10 @@ public class AdvisorService extends GoalServiceAbstract {
      * @param endDate
      * @param pageNum
      * @param firmId
-     * @param response
      * @return
      */
     @Override
-    public Goal buildResponseWithEndDate (String endDate, int pageNum, long firmId, HttpServletResponse response){
+    public Goal buildResponseWithEndDate (String endDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId);
         int totalPages = totalPages(totalAdvisors);
         if (pageNum > totalPages) return null;
@@ -104,7 +99,6 @@ public class AdvisorService extends GoalServiceAbstract {
         int totalGoals = goalRepository.totalAdvisorGoalsWithEndDate(endDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
@@ -116,11 +110,10 @@ public class AdvisorService extends GoalServiceAbstract {
      * @param endDate
      * @param pageNum
      * @param firmId
-     * @param response
      * @return
      */
     @Override
-    public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long firmId, HttpServletResponse response){
+    public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId);
         int totalPages = totalPages(totalAdvisors);
         if (pageNum > totalPages) return null;
@@ -131,7 +124,6 @@ public class AdvisorService extends GoalServiceAbstract {
         int totalGoals = goalRepository.totalAdvisorGoalsByDateBetween(startDate, endDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
@@ -214,7 +206,6 @@ public class AdvisorService extends GoalServiceAbstract {
      */
     private Collection<Advisor> processObjectArrays (List<Object[]> goalObjects){
         Map<Integer, Advisor> linkedHashMap = new LinkedHashMap<>();
-
         StringBuilder concatenatedName = new StringBuilder();
         for (Object[] goal : goalObjects){
             concatenatedName.setLength(0);

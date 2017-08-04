@@ -9,19 +9,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class GoalServiceAbstract {
 
-    public Goal buildResponseByDateBetween(String startDate, String endDate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseByDateBetween(String startDate, String endDate, int pageNum, long userId){
         return null;
     }
 
-    public Goal buildResponseWithStartDate (String startdate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseWithStartDate (String startdate, int pageNum, long userId){
         return null;
     }
 
-    public Goal buildResponseWithEndDate (String endDate, int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponseWithEndDate (String endDate, int pageNum, long userId){
         return null;
     }
 
-    public Goal buildResponse (int pageNum, long userId, HttpServletResponse response){
+    public Goal buildResponse (int pageNum, long userId){
         return null;
     }
 }

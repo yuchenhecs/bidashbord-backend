@@ -29,4 +29,10 @@ public class GamificationController {
     public ResponseEntity<Object> getPatOnTheBackMessage(@RequestParam (value = "region", required = true) String region) {
         return gamificationService.getAdvisorAchievements(region);
     }
+
+    @ApiOperation(value = "Get advisor performance")
+    @RequestMapping(value = "/{kpiName}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getAdvisorPerformance (@PathVariable String kpiName, @RequestParam (value = "advisorId") Long advisorId){
+        return gamificationService.getAdvisorsPerformance(kpiName, advisorId);
+    }
 }

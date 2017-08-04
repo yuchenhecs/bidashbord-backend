@@ -26,7 +26,7 @@ public class ClientService extends GoalServiceAbstract {
 
 
     @Override
-    public Goal buildResponse(int pageNum, long advisorId, HttpServletResponse response) {
+    public Goal buildResponse(int pageNum, long advisorId) {
         int totalClients = clientRepository.findDistinctByAdvisor(advisorId);
         int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
@@ -37,12 +37,11 @@ public class ClientService extends GoalServiceAbstract {
         int totalGoals = goalRepository.totalClientGoals(advisorId);
         Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public Goal buildResponseWithStartDate (String startDate, int pageNum, long advisorId, HttpServletResponse response){
+    public Goal buildResponseWithStartDate (String startDate, int pageNum, long advisorId){
         int totalClients = clientRepository.findDistinctClientsWithStartDate(startDate, advisorId);
         int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
@@ -53,12 +52,11 @@ public class ClientService extends GoalServiceAbstract {
         int totalGoals = goalRepository.totalClientGoalsWithStartDate(startDate, advisorId);
         Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public Goal buildResponseWithEndDate (String endDate, int pageNum, long advisorId, HttpServletResponse response){
+    public Goal buildResponseWithEndDate (String endDate, int pageNum, long advisorId){
         int totalClients = clientRepository.findDistinctClientsWithEndDate(endDate, advisorId);
         int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
@@ -69,12 +67,11 @@ public class ClientService extends GoalServiceAbstract {
         int totalGoals = goalRepository.totalClientGoalsWithEndDate(endDate, advisorId);
         Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 
     @Override
-    public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long advisorId, HttpServletResponse response){
+    public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long advisorId){
         int totalClients = clientRepository.findDistinctClientsByDateBetween(startDate, endDate, advisorId);
         int totalPages = totalPages(totalClients);
         if (pageNum > totalPages) return null;
@@ -85,7 +82,6 @@ public class ClientService extends GoalServiceAbstract {
         int totalGoals = goalRepository.totalClientGoalsByDateBetween(startDate, endDate, advisorId);
         Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
-        response.setStatus(HttpServletResponse.SC_OK);
         return goals;
     }
 

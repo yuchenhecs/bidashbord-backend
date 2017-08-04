@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS `gamification_kpi_percentile_firm`;
 CREATE TABLE `gamification_kpi_percentile_firm` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
