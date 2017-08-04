@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -48,6 +49,9 @@ public class NetWorthService {
 
     @Autowired
     ScheduledTasks scheduledTasks;
+
+    @Autowired
+    private AuthorizationService authorizationService;
 
     @Value("${page.size}")
     private Integer pageSize;
@@ -170,37 +174,55 @@ public class NetWorthService {
     }
 
     public ResponseEntity<Object> getNetWorthSummary() {
-        try {
-            NetWorthSummary netWorthSummary = new NetWorthSummary();
-            List<NetWorthForSummary> networthList = new ArrayList<>();
-            List<String> monthList = getDateList();
-            BigDecimal numClientsBefore = BigDecimal.valueOf(0);
 
-            for(int i=0; i<monthList.size();i++) {
-                NetWorthForSummary netWorthForSummary = new NetWorthForSummary();
-                netWorthForSummary.setDate(monthList.get(i));
-                List<Object[]> monthData = networthRepository.findNetWorthForSummary(monthList.get(i));
-                for (Object[] resultSet : monthData) {
-                    if (i == 0) {
-                        netWorthForSummary.setClientsDiff(numClientsBefore);
-                        numClientsBefore = new BigDecimal((BigInteger) resultSet[0]);
-                        netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
-                        networthList.add(netWorthForSummary);
-                    } else {
-                        BigDecimal numClientsNow = new BigDecimal((BigInteger) resultSet[0]);
-                        netWorthForSummary.setClientsDiff(numClientsNow.subtract(numClientsBefore));
-                        numClientsBefore = numClientsNow;
-                        netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
-                        networthList.add(netWorthForSummary);
-                    }
-                }
-            }
-            netWorthSummary.setSummary(networthList);
+        String methodName = "";
+        if (authorizationService.isSuperAdmin()){
+            methodName = "findNetWorthForSummary";
+        } else if (authorizationService.isAdvisor()){
+            methodName = "findNetWorthForAdvisorSummary";
+        } else if (authorizationService.isAdmin()) {
+            methodName = "findNetWorthForFirmSummary";
+        } else {
+            return new ResponseEntity<>("FORBIDDEN", HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            NetWorthSummary netWorthSummary = getAuthorizedData(methodName);
             return new ResponseEntity<>(netWorthSummary, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error in fetching net worth", e);
             return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private NetWorthSummary getAuthorizedData(String methodName) throws Exception {
+        NetWorthSummary netWorthSummary = new NetWorthSummary();
+        List<NetWorthForSummary> networthList = new ArrayList<>();
+        List<String> monthList = getDateList();
+        BigDecimal numClientsBefore = BigDecimal.valueOf(0);
+
+        for(int i=0; i<monthList.size();i++) {
+            NetWorthForSummary netWorthForSummary = new NetWorthForSummary();
+            netWorthForSummary.setDate(monthList.get(i));
+//            List<Object[]> monthData = networthRepository.findNetWorthForSummary(monthList.get(i));
+            List<Object[]> monthData = (List<Object[]>) NetWorthRepository.class.getMethod(methodName).invoke(monthList.get(i));
+            for (Object[] resultSet : monthData) {
+                if (i == 0) {
+                    netWorthForSummary.setClientsDiff(numClientsBefore);
+                    numClientsBefore = new BigDecimal((BigInteger) resultSet[0]);
+                    netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
+                    networthList.add(netWorthForSummary);
+                } else {
+                    BigDecimal numClientsNow = new BigDecimal((BigInteger) resultSet[0]);
+                    netWorthForSummary.setClientsDiff(numClientsNow.subtract(numClientsBefore));
+                    numClientsBefore = numClientsNow;
+                    netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
+                    networthList.add(netWorthForSummary);
+                }
+            }
+        }
+        netWorthSummary.setSummary(networthList);
+        return netWorthSummary;
     }
 
     public List<String> getDateList() {

@@ -1,19 +1,13 @@
 package com.bi.oranj.service;
 
-import com.bi.oranj.model.bi.NetWorth;
-import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.repository.bi.NetWorthRepository;
-import com.bi.oranj.service.bi.FirmService;
 import com.bi.oranj.service.bi.NetWorthService;
 import com.bi.oranj.service.oranj.OranjService;
-import javafx.beans.binding.ObjectExpression;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 

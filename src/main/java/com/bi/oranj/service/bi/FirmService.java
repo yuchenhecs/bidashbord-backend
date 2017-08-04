@@ -13,7 +13,7 @@ import java.math.BigInteger;
 import java.util.*;
 
 @Service
-public class FirmService extends GoalService{
+public class FirmService extends GoalServiceAbstract {
     @Autowired
     private FirmRepository firmRepository;
 

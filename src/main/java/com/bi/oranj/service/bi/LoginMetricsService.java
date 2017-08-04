@@ -46,6 +46,9 @@ public class LoginMetricsService {
     private AnalyticsRepository analyticsRepository;
 
     @Autowired
+    private AuthorizationService authorizationService;
+
+    @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
@@ -214,7 +217,8 @@ public class LoginMetricsService {
     }
 
     public ResponseEntity<Object> getLoginMetricsSummary(String user){
-
+        List<Object[]> loginMetricsResultSet1 = null;
+        List<Object[]> loginMetricsResultSet2 = null;
         Long roleId;
 
         if (!inputValidator.validateInputUserType(user)) {
@@ -223,13 +227,32 @@ public class LoginMetricsService {
             roleId = getRoleId(user);
         }
 
+
         List<String> dateRange = new ArrayList<>();
         try {
             dateRange = dateUtility.getDates(dateRange, WEEK);
             LoginMetricsSummary loginMetricsSummary = new LoginMetricsSummary();
             Map<String, LoginMetricsSummary> map = new HashMap<>();
-            List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(1), dateRange.get(0));
-            for (Object[] resultSet : loginMetricsResultSet){
+
+            dateRange = dateUtility.getDates(dateRange, TWO_WEEKS);
+            if (authorizationService.isAdvisor()){
+                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForAdvisor(authorizationService.getUserId(),
+                        roleId, dateRange.get(1), dateRange.get(0));
+                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForAdvisor(authorizationService.getUserId(),
+                        roleId, dateRange.get(3), dateRange.get(2));
+            } else if (authorizationService.isAdmin()){
+                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForFirm(authorizationService.getUserId(),
+                        roleId, dateRange.get(1), dateRange.get(0));
+                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForFirm(authorizationService.getUserId(),
+                        roleId, dateRange.get(3), dateRange.get(2));
+            } else if (!authorizationService.isSuperAdmin()) {
+                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(1), dateRange.get(0));
+                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(3), dateRange.get(2));
+            } else {
+                return new ResponseEntity<>(new ApiError(HttpStatus.FORBIDDEN.toString()), HttpStatus.FORBIDDEN);
+            }
+
+            for (Object[] resultSet : loginMetricsResultSet1){
                 if(resultSet[0] != null){
                     loginMetricsSummary.setTotalLogins((BigDecimal) resultSet[0]);
                     loginMetricsSummary.setUniqueLogins(new BigDecimal((BigInteger) resultSet[1]));
@@ -240,9 +263,8 @@ public class LoginMetricsService {
                     loginMetricsSummary.setAvgSessionTime(BigDecimal.ZERO);
                 }
             }
-            dateRange = dateUtility.getDates(dateRange, TWO_WEEKS);
-            loginMetricsResultSet = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(3), dateRange.get(2));
-            for (Object[] resultSet : loginMetricsResultSet){
+
+            for (Object[] resultSet : loginMetricsResultSet2){
                 if(resultSet[0] != null){
                     loginMetricsSummary.setChangeInTotalLogins(loginMetricsSummary.getTotalLogins().subtract(((BigDecimal) resultSet[0])));
                     loginMetricsSummary.setChangeInUniqueLogins(loginMetricsSummary.getUniqueLogins().subtract(new BigDecimal((BigInteger) resultSet[1])));

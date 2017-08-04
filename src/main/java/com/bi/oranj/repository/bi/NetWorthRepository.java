@@ -90,4 +90,16 @@ public interface NetWorthRepository extends JpaRepository<NetWorth, Long> {
             "from networth n " +
             "where date(n.date) in (:date)",nativeQuery = true)
     public List<Object[]> findNetWorthForSummary(@Param("date") String date);
+
+    @Query(value = "select count(*), sum(n.value) " +
+            "from networth n join clients c on n.client_id = c.id " +
+            "where c.firm_id = :firmId and date(n.date) in (:date)",nativeQuery = true)
+    public List<Object[]> findNetWorthForFirmSummary(@Param("date") String date,
+                                                     @Param("firmId") Long firmId);
+
+    @Query(value = "select count(*), sum(n.value) " +
+            "from networth n join clients c on n.client_id = c.id " +
+            "where c.advisor_id = :advisorId and date(n.date) in (:date)",nativeQuery = true)
+    public List<Object[]> findNetWorthForAdvisorSummary(@Param("date") String date,
+                                                        @Param("advisorId") Long advisorId);
 }

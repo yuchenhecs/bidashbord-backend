@@ -1,7 +1,6 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.Goal;
-import com.bi.oranj.model.bi.wrapper.User;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.model.bi.wrapper.user.Client;
@@ -14,7 +13,7 @@ import java.math.BigInteger;
 import java.util.*;
 
 @Service
-public class ClientService extends GoalService{
+public class ClientService extends GoalServiceAbstract {
 
     @Autowired
     private ClientRepository clientRepository;
@@ -147,7 +146,6 @@ public class ClientService extends GoalService{
 
             if (linkedHashMap.containsKey(advisorId)){
                 Client advisor = linkedHashMap.get(advisorId);
-
                 HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
                 if (goalList.containsKey(type)){

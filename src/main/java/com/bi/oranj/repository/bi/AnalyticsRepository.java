@@ -24,4 +24,15 @@ public interface AnalyticsRepository extends JpaRepository<Analytics, Long>{
     @Query(value = ConstantQueries.GET_LOGIN_METRICS_FOR_SUMMARY_QUERY, nativeQuery = true)
     public List<Object[]> findLoginMetricsSummary(@Param("role") Long role, @Param("start") String start, @Param("end") String end);
 
+    @Query(value = ConstantQueries.GET_LOGIN_METRICS_FOR_ADVISOR_SUMMARY_QUERY, nativeQuery = true)
+    public List<Object[]> findLoginMetricsSummaryForAdvisor(@Param("advisorId") Long advisorId,
+                                                  @Param("role") Long role,
+                                                  @Param("start") String start,
+                                                  @Param("end") String end);
+
+    @Query(value = ConstantQueries.GET_LOGIN_METRICS_FOR_FIRM_SUMMARY_QUERY, nativeQuery = true)
+    public List<Object[]> findLoginMetricsSummaryForFirm(@Param("firmId") Long advisorId,
+                                                            @Param("role") Long role,
+                                                            @Param("start") String start,
+                                                            @Param("end") String end);
 }

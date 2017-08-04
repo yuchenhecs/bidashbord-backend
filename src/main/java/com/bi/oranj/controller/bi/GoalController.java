@@ -4,7 +4,7 @@ import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.service.bi.AdvisorService;
 import com.bi.oranj.service.bi.ClientService;
 import com.bi.oranj.service.bi.FirmService;
-import com.bi.oranj.service.bi.GoalService;
+import com.bi.oranj.service.bi.GoalsService;
 import com.bi.oranj.utils.ApiError;
 import com.bi.oranj.utils.date.DateValidator;
 import com.bi.oranj.service.bi.*;
@@ -71,7 +71,7 @@ public class GoalController {
 
     private ResponseEntity<Object> processRequest (String userType, Long userId, Integer pageNum,
                                        HttpServletResponse response, String startDate, String endDate) throws IOException {
-        GoalService goalService = getService(userType);
+        GoalServiceAbstract goalService = getService(userType);
 
         if (userId == null) userId = Long.valueOf(0);
         if (pageNum == null) pageNum = Integer.valueOf(0);
@@ -109,7 +109,7 @@ public class GoalController {
      * @param userType
      * @return
      */
-    private GoalService getService (String userType){
+    private GoalServiceAbstract getService (String userType){
         switch (userType.toLowerCase()){
             case "firms":
                 return firmService;

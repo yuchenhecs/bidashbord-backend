@@ -43,6 +43,11 @@ public class AuthorizationService {
         return roles.contains("FirmAdmin");
     }
 
+    public boolean isSuperAdmin() {
+        List<String> roles = getAuthorities();
+        return roles.contains("SuperAdmin");
+    }
+
     public boolean hasPermission(String permission) {
         return getAuthorities().contains(permission);
     }

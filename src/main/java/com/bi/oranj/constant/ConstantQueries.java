@@ -56,7 +56,9 @@ public class ConstantQueries {
                                                                         "ON f.id = a.firm_id \n" +
                                                                 "where date(creation_date) IN (:date)";
 
-    public static final String GET_GOALS_GROUPED_BY_TYPE = "select type as type, count(*) as count from BiGoal group by type";
+    public static final String GET_GOALS_GROUPED_BY_TYPE = "select type as type, count(*) as count from goals group by type";
+    public static final String GET_GOALS_GROUPED_BY_TYPE_FOR_FIRM = "select type as type, count(*) as count from goals where firm_id = :firmId group by type";
+    public static final String GET_GOALS_GROUPED_BY_TYPE_FOR_ADVISOR = "select type as type, count(*) as count from goals where advisor_id = :advisorId group by type";
 
 
     public static final String GET_GOALS_TILL_DATE_QUERY = "select g.*," +
@@ -114,6 +116,16 @@ public class ConstantQueries {
             "where date(p.position_updated_on) IN (:date)\n" +
             "group by p.asset_class";
 
+    public static final String GET_AUM_SUMMARY_ADVISOR_QUERY = "select p.asset_class, sum(p.amount) as sum\n" +
+            "from positions p join clients c on p.client_id = c.id \n" +
+            "where c.advisor_id = :advisorId and date(p.position_updated_on) IN (:date)\n" +
+            "group by p.asset_class";
+
+    public static final String GET_AUM_SUMMARY_FIRM_QUERY = "select p.asset_class, sum(p.amount) as sum\n" +
+            "from positions p join clients c on p.client_id = c.id" +
+            "where c.firm_id = :firmId and date(p.position_updated_on) IN (:date)\n" +
+            "group by p.asset_class";
+
     public static final String GET_LOGIN_METRICS_FOR_ADMIN_QUERY = "select f.id, f.firm_name as firmName, sum(innerTable.sum) as sessionSum, count(innerTable.client_id) as totalLogins, count(distinct innerTable.client_id) as uniqueLogins\n" +
             "from firms f \n" +
             "left join clients c\n" +
@@ -158,6 +170,18 @@ public class ConstantQueries {
             "select count(*) as totalLogins, client_id, sum(session_duration) as totalSessionDuration\n" +
             "from analytics \n" +
             "where role_id = :role and date(session_start_date) between date(:start) and date(:end)\n" +
+            "group by client_id) as o";
+
+    public static final String GET_LOGIN_METRICS_FOR_ADVISOR_SUMMARY_QUERY = "select sum(totalLogins) as totalLogins, count(client_id) as uniqueLogins, sum(totalSessionDuration) as totalSessionTime from (\n" +
+            "select count(*) as totalLogins, client_id, sum(session_duration) as totalSessionDuration\n" +
+            "from analytics a join clients c on a.client_id = c.id\n" +
+            "where c.advisor_id = :advisorId and a.role_id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
+            "group by client_id) as o";
+
+    public static final String GET_LOGIN_METRICS_FOR_FIRM_SUMMARY_QUERY = "select sum(totalLogins) as totalLogins, count(client_id) as uniqueLogins, sum(totalSessionDuration) as totalSessionTime from (\n" +
+            "select count(*) as totalLogins, client_id, sum(session_duration) as totalSessionDuration\n" +
+            "from analytics a join clients c on a.client_id = c.id\n" +
+            "where c.firm_id = :firmId and a.role_id = :role and date(a.session_start_date) between date(:start) and date(:end)\n" +
             "group by client_id) as o";
 
     public static final String GET_GAMIFICATION_QUERY = "select g.advisor_id, a.advisor_first_name, a.advisor_last_name, g.points, g.percentile_overall, g.percentile_state, g.percentile_firm,\n" +

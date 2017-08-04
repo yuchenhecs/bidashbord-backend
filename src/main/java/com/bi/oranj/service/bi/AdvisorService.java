@@ -17,7 +17,7 @@ import java.util.*;
  * This service is responsible for advisor related logic
  */
 @Service
-public class AdvisorService extends GoalService{
+public class AdvisorService extends GoalServiceAbstract {
 
     @Autowired
     private AdvisorRepository advisorRepository;
@@ -215,10 +215,14 @@ public class AdvisorService extends GoalService{
     private Collection<Advisor> processObjectArrays (List<Object[]> goalObjects){
         Map<Integer, Advisor> linkedHashMap = new LinkedHashMap<>();
 
+        StringBuilder concatenatedName = new StringBuilder();
         for (Object[] goal : goalObjects){
+            concatenatedName.setLength(0);
+
             int advisorId = ((BigInteger) goal[0]).intValue();
             String firstName = (String) goal[1];
             String lastName = (String) goal[2];
+            concatenatedName.append(firstName).append(" ").append(lastName);
             int count = ((BigInteger) goal[4]).intValue();
 
             String type = "";
@@ -238,13 +242,13 @@ public class AdvisorService extends GoalService{
                 advisor.setTotal(count);
             } else {
                 if (type == null){
-                    linkedHashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, Collections.emptyMap(), count));
+                    linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
                     continue;
                 }
                 HashMap<String, Integer> goalList = new HashMap<>();
                 goalList.put(type, count);
 
-                linkedHashMap.put(advisorId, new Advisor(advisorId, firstName, lastName, goalList, count));
+                linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), goalList, count));
             }
         }
         return linkedHashMap.values();
