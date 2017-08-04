@@ -255,8 +255,20 @@ public class AUMService {
         List<String> dateList = dateUtility.getQuarterFirstDates();
         for (int i=0; i<dateList.size(); i++){
 
-//            List<Object[]> aumSummaryResultSet = aumRepository.findAUMsSummary(dateList.get(i));
-            List<Object[]> aumSummaryResultSet = (List<Object[]>) AumRepository.class.getMethod(methodName).invoke(dateList.get(i));
+            List<Object[]> aumSummaryResultSet = null;
+            switch (methodName){
+                case FIND_AUM_SUMMARY:
+                    aumSummaryResultSet = aumRepository.findAUMsSummary(dateList.get(i));
+                    break;
+                case FIND_AUM_SUMMARY_FOR_ADVISOR:
+                    aumSummaryResultSet = aumRepository.findAUMsSummaryForAdvisor(authorizationService.getUserId(),dateList.get(i));
+                    break;
+                case FIND_AUM_SUMMARY_FOR_FIRM:
+                    aumSummaryResultSet = aumRepository.findAUMsSummaryForFirm(authorizationService.getUserId(),dateList.get(i));
+                    break;
+                default:
+                    break;
+            }
 
             AumDiff aumDiff = new AumDiff();
             aumDiff.setDate(dateList.get(i));

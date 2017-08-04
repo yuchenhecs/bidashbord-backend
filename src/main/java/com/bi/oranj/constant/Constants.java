@@ -39,6 +39,10 @@ public class Constants {
     public static final String NET_WORTH_GROWTH = "NET WORTH GROWTH";
     public static final String CLIENTELE_GROWTH = "CLIENTELE GROWTH";
 
+    public static final String FIND_AUM_SUMMARY = "findAUMsSummary";
+    public static final String FIND_AUM_SUMMARY_FOR_ADVISOR = "findAUMsSummaryForAdvisor";
+    public static final String FIND_AUM_SUMMARY_FOR_FIRM = "findAUMsSummaryForFirm";
+
     public static final String ERROR_DATE_VALIDATION = "Date should be in 'yyyy-MM-dd' format";
     public static final String ERROR_USER_TYPE_VALIDATION = "'user' should be either 'prospect' or 'client'";
     public static final String ERROR_REGION_VALIDATION = "'region' should be either 'overall' or 'state' or 'firm'";
