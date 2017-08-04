@@ -15,4 +15,8 @@ public class Advisor extends User{
     public Advisor (int advisorId, String firstName, String lastName, Map<String, Integer> goals, int total){
         super(advisorId, firstName, lastName, goals, total);
     }
+
+    public Advisor (int clientId, String name, Map<String, Integer> goals, int total){
+        super(clientId, name, goals, total);
+    }
 }

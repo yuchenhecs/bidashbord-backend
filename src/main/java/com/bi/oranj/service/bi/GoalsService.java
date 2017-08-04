@@ -25,13 +25,13 @@ public class GoalsService {
     HttpServletResponse response;
 
     @Autowired
-    private FirmServiceAbstract firmService;
+    private FirmService firmService;
 
     @Autowired
-    private AdvisorServiceAbstract advisorService;
+    private AdvisorService advisorService;
 
     @Autowired
-    private ClientServiceAbstract clientService;
+    private ClientService clientService;
 
     @Autowired
     private GoalRepository goalRepository;
