@@ -110,26 +110,31 @@ public class LoginMetricsService {
 
     public ResponseEntity<Object> getLoginMetricsForFirm(Long firmId, Integer pageNumber, String user, String range){
 
-        List<String> dateRange = new ArrayList<>();
-        Long roleId;
-
-        if (!inputValidator.validateInputPageNumber(pageNumber)) {
-            return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
-        }
-
-        if (!inputValidator.validateInputUserType(user)) {
-            return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
-        } else {
-            roleId = getRoleId(user);
-        }
-
-        if (!inputValidator.validateInputRangeType(range)) {
-            return new ResponseEntity<>(new ApiResponseMessage(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
-        } else {
-            dateRange = dateUtility.getDates(dateRange, range);
-        }
-
         try {
+            List<String> dateRange = new ArrayList<>();
+            Long roleId;
+
+            if (!inputValidator.validateInputPageNumber(pageNumber)) {
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
+
+            if (!inputValidator.validateInputUserType(user)) {
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            } else {
+                roleId = getRoleId(user);
+            }
+
+            if (!inputValidator.validateInputRangeType(range)) {
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            } else {
+                dateRange = dateUtility.getDates(dateRange, range);
+            }
+
+            if(firmId == null){
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                firmId = client.getFirmId();
+            }
+
             LoginMetricsForFirm loginMetricsForFirm = new LoginMetricsForFirm();
             List<AdvisorLoginMetrics> advisorLoginMetricsList = new ArrayList<>();
             List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsForFirm(firmId, roleId, dateRange.get(1), dateRange.get(0));
@@ -164,26 +169,31 @@ public class LoginMetricsService {
 
     public ResponseEntity<Object> getLoginMetricsForAdvisor(Long advisorId, Integer pageNumber, String user, String range){
 
-        List<String> dateRange = new ArrayList<>();
-        Long roleId;
-
-        if (!inputValidator.validateInputPageNumber(pageNumber)) {
-            return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
-        }
-
-        if (!inputValidator.validateInputUserType(user)) {
-            return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
-        } else {
-            roleId = getRoleId(user);
-        }
-
-        if (!inputValidator.validateInputRangeType(range)) {
-            return new ResponseEntity<>(new ApiResponseMessage(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
-        } else {
-            dateRange = dateUtility.getDates(dateRange, range);
-        }
-
         try {
+            List<String> dateRange = new ArrayList<>();
+            Long roleId;
+
+            if (!inputValidator.validateInputPageNumber(pageNumber)) {
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
+
+            if (!inputValidator.validateInputUserType(user)) {
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            } else {
+                roleId = getRoleId(user);
+            }
+
+            if (!inputValidator.validateInputRangeType(range)) {
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            } else {
+                dateRange = dateUtility.getDates(dateRange, range);
+            }
+
+            if(advisorId == null){
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                advisorId = client.getFirmId();
+            }
+
             LoginMetricsForAdvisor loginMetricsForAdvisor = new LoginMetricsForAdvisor();
             List<ClientLoginMetrics> clientLoginMetricsList = new ArrayList<>();
             List<Object[]> loginMetricsResultSet = analyticsRepository.findLoginMetricsForAdvisor(advisorId, roleId, dateRange.get(1), dateRange.get(0));

@@ -27,7 +27,7 @@ public class LoginMetricsController {
     @ApiOperation(value = "Get Login Metrics for Firm", notes = "returns Login Metrics for Firm Admin")
     @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping(path="/advisors", method = RequestMethod.GET)
-    public ResponseEntity<Object> getLoginMetricsForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
+    public ResponseEntity<Object> getLoginMetricsForFirm(@RequestParam (value = "firmId", required = false) Long firmId,
                                                @RequestParam(value = "page", required = true) Integer pageNumber,
                                                @RequestParam(value = "user", required = true) String user,
                                                @RequestParam(value = "range", required = true) String range) {
@@ -37,7 +37,7 @@ public class LoginMetricsController {
     @ApiOperation(value = "Get Login Metrics for Firm", notes = "returns Login Metrics for Firm Admin")
     @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping(path="/clients", method = RequestMethod.GET)
-    public ResponseEntity<Object> getLoginMetricsForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId,
+    public ResponseEntity<Object> getLoginMetricsForAdvisor(@RequestParam (value = "advisorId", required = false) Long advisorId,
                                                   @RequestParam(value = "page", required = true) Integer pageNumber,
                                                   @RequestParam(value = "user", required = true) String user,
                                                   @RequestParam(value = "range", required = true) String range) {
