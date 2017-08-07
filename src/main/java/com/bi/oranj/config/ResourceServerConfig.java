@@ -21,9 +21,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/grid-config/**").hasAnyAuthority("SuperAdmin", "FirmAdmin", "Advisor")
                 .antMatchers(HttpMethod.POST, "/**/grid-config/**").hasAnyAuthority("SuperAdmin", "FirmAdmin", "Advisor")
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/config/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/analytics/**").permitAll()
