@@ -27,7 +27,7 @@ public class AUMController {
     @ApiOperation(value = "Get AUMs for Firm", notes = "returns AUM for Firm")
     @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping(path="/advisors", method = RequestMethod.GET)
-    public ResponseEntity<Object> getAUMForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
+    public ResponseEntity<Object> getAUMForFirm(@RequestParam (value = "firmId", required = false) Long firmId,
                                       @RequestParam (value = "page", required = true) Integer pageNumber,
                                       @RequestParam(value = "previousDate", required = true) String previousDate,
                                       @RequestParam(value = "currentDate", required = true) String currentDate) {
@@ -37,7 +37,7 @@ public class AUMController {
     @ApiOperation(value = "Get AUMs for Advisor", notes = "returns AUM for Advisor")
     @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping(path="/clients", method = RequestMethod.GET)
-    public ResponseEntity<Object> getAUMForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId,
+    public ResponseEntity<Object> getAUMForAdvisor(@RequestParam (value = "advisorId", required = false) Long advisorId,
                                          @RequestParam (value = "page", required = true) Integer pageNumber,
                                          @RequestParam(value = "previousDate", required = true) String previousDate,
                                          @RequestParam(value = "currentDate", required = true) String currentDate) {

@@ -95,12 +95,18 @@ public class NetWorthService {
     }
 
     public ResponseEntity<Object> getNetWorthForFirm(Long firmId, Integer pageNumber) {
-        Integer totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
-        Double maxPage = Math.ceil(totalAdvisors/pageSize);
-        if (pageNumber > maxPage) {
-            return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.BAD_REQUEST);
-        }
         try {
+            if (firmId == null){
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                firmId = client.getFirmId();
+            }
+
+            Integer totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
+            Double maxPage = Math.ceil(totalAdvisors/pageSize);
+            if (pageNumber > maxPage) {
+                return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.BAD_REQUEST);
+            }
+
             NetWorthFirm netWorthFirm = new NetWorthFirm();
             List<NetWorthForFirm> networthList = new ArrayList<>();
             String yesterday = dateFormat.format(scheduledTasks.yesterday());
@@ -133,12 +139,19 @@ public class NetWorthService {
     }
 
     public ResponseEntity<Object> getNetWorthForAdvisor(Long advisorId, Integer pageNumber) {
-        Integer totalAdvisors = advisorRepository.findDistinctByFirm(advisorId);
-        Double maxPage = Math.ceil(totalAdvisors/pageSize);
-        if (pageNumber > maxPage) {
-            return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.BAD_REQUEST);
-        }
+
         try {
+            if (advisorId == null){
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                advisorId = client.getAdvisorId();
+            }
+
+            Integer totalAdvisors = advisorRepository.findDistinctByFirm(advisorId);
+            Double maxPage = Math.ceil(totalAdvisors/pageSize);
+            if (pageNumber > maxPage) {
+                return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.BAD_REQUEST);
+            }
+
             NetWorthAdvisor netWorthAdvisor = new NetWorthAdvisor();
             List<NetWorthForAdvisor> networthList = new ArrayList<>();
             String yesterday = dateFormat.format(scheduledTasks.yesterday());
@@ -195,7 +208,6 @@ public class NetWorthService {
     }
 
     private List<NetWorthForSummary> getAuthorizedData(Long userId, String userType) throws Exception {
-//        NetWorthSummary netWorthSummary = new NetWorthSummary();
         List<NetWorthForSummary> networthList = new ArrayList<>();
         List<String> monthList = getDateList();
         BigDecimal numClientsBefore = BigDecimal.valueOf(0);
@@ -236,7 +248,6 @@ public class NetWorthService {
                 }
             }
         }
-//        netWorthSummary.setSummary(networthList);
         return networthList;
     }
 

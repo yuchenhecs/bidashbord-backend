@@ -29,7 +29,7 @@ public class NetWorthController {
     @ApiOperation(value = "Get net worth for firm", notes = "returns net worth for Firm")
     @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping(path="/advisors", method = RequestMethod.GET)
-    public ResponseEntity<Object> getNetWorthForFirm(@RequestParam (value = "firmId", required = true) Long firmId,
+    public ResponseEntity<Object> getNetWorthForFirm(@RequestParam (value = "firmId", required = false) Long firmId,
                                            @RequestParam (value = "page", required = true) Integer pageNumber) {
         return networthService.getNetWorthForFirm(firmId, pageNumber);
     }
@@ -37,7 +37,7 @@ public class NetWorthController {
     @ApiOperation(value = "Get net worth for advisor", notes = "returns net worth for advisor")
     @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping(path="/clients", method = RequestMethod.GET)
-    public ResponseEntity<Object> getNetWorthForAdvisor(@RequestParam (value = "advisorId", required = true) Long advisorId,
+    public ResponseEntity<Object> getNetWorthForAdvisor(@RequestParam (value = "advisorId", required = false) Long advisorId,
                                               @RequestParam (value = "page", required = true) Integer pageNumber) {
         return networthService.getNetWorthForAdvisor(advisorId, pageNumber);
     }

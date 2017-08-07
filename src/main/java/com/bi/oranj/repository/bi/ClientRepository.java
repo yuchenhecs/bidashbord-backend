@@ -19,7 +19,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     public List<Client> findByAdvisorIdAndActiveTrueOrderByClientFirstNameAsc(Long advisorId);
 
-
     @Query(value = "select count(distinct(c.id)) from clients c " +
             "left join goals g " +
             "on c.id = g.client_id " +
@@ -123,5 +122,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
                                                   @Param("next") int next);
 
 
+    Client findById(Long id);
 
 }

@@ -118,6 +118,11 @@ public class AUMService {
                 return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
+            if(firmId == null){
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                firmId = client.getFirmId();
+            }
+
             Map<Long, AdvisorAUM> map = new HashMap<>();
             AUMForFirm aumForFirm = new AUMForFirm();
             List<AdvisorAUM> advisorAUMList = new ArrayList<>();
@@ -176,6 +181,11 @@ public class AUMService {
 
             if(!inputValidator.validateInputPageNumber(pageNumber)){
                 return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            }
+
+            if(advisorId == null){
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                advisorId = client.getAdvisorId();
             }
 
             Map<Long, ClientAUM> map = new HashMap<>();
