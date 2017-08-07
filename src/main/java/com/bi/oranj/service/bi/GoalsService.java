@@ -57,7 +57,6 @@ public class GoalsService {
         try {
             for (Object[] goals : goalsGroupedByType) {
                 GoalSummary goalSummary = new GoalSummary(goals[0].toString(), Long.parseLong(goals[1].toString()));
-                log.info(goalSummary.getType() + ":" + goalSummary.getCount());
                 goalSummaryList.add(goalSummary);
             }
         }catch (Exception e){

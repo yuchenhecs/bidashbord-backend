@@ -175,7 +175,7 @@ public class NetWorthService {
     public ResponseEntity<Object> getNetWorthSummary() {
 
         try {
-            NetWorthSummary netWorthSummary = null;
+            List<NetWorthForSummary> netWorthSummary = null;
             if (authorizationService.isSuperAdmin()){
                 netWorthSummary = getAuthorizedData(null, "SuperAdmin");
             } else if (authorizationService.isAdmin()) {
@@ -194,8 +194,8 @@ public class NetWorthService {
         }
     }
 
-    private NetWorthSummary getAuthorizedData(Long userId, String userType) throws Exception {
-        NetWorthSummary netWorthSummary = new NetWorthSummary();
+    private List<NetWorthForSummary> getAuthorizedData(Long userId, String userType) throws Exception {
+//        NetWorthSummary netWorthSummary = new NetWorthSummary();
         List<NetWorthForSummary> networthList = new ArrayList<>();
         List<String> monthList = getDateList();
         BigDecimal numClientsBefore = BigDecimal.valueOf(0);
@@ -236,8 +236,8 @@ public class NetWorthService {
                 }
             }
         }
-        netWorthSummary.setSummary(networthList);
-        return netWorthSummary;
+//        netWorthSummary.setSummary(networthList);
+        return networthList;
     }
 
     public List<String> getDateList() {

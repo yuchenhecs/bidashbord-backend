@@ -217,39 +217,41 @@ public class LoginMetricsService {
     }
 
     public ResponseEntity<Object> getLoginMetricsSummary(String user){
-        List<Object[]> loginMetricsResultSet1 = null;
-        List<Object[]> loginMetricsResultSet2 = null;
-        Long roleId;
 
-        if (!inputValidator.validateInputUserType(user)) {
-            return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
-        } else {
-            roleId = getRoleId(user);
-        }
-
-
-        List<String> dateRange = new ArrayList<>();
         try {
+            List<Object[]> loginMetricsResultSet1 = null;
+            List<Object[]> loginMetricsResultSet2 = null;
+            Long roleId;
+
+            List<String> dateRange = new ArrayList<>();
             dateRange = dateUtility.getDates(dateRange, WEEK);
             LoginMetricsSummary loginMetricsSummary = new LoginMetricsSummary();
             Map<String, LoginMetricsSummary> map = new HashMap<>();
 
             dateRange = dateUtility.getDates(dateRange, TWO_WEEKS);
-            if (authorizationService.isAdvisor()){
-                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForAdvisor(authorizationService.getUserId(),
-                        roleId, dateRange.get(1), dateRange.get(0));
-                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForAdvisor(authorizationService.getUserId(),
-                        roleId, dateRange.get(3), dateRange.get(2));
+
+
+            if (!inputValidator.validateInputUserType(user)) {
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            } else {
+                roleId = getRoleId(user);
+            }
+
+            if (authorizationService.isSuperAdmin()) {
+                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(1), dateRange.get(0));
+                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(3), dateRange.get(2));
             } else if (authorizationService.isAdmin()){
                 loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForFirm(authorizationService.getUserId(),
                         roleId, dateRange.get(1), dateRange.get(0));
                 loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForFirm(authorizationService.getUserId(),
                         roleId, dateRange.get(3), dateRange.get(2));
-            } else if (!authorizationService.isSuperAdmin()) {
-                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(1), dateRange.get(0));
-                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(3), dateRange.get(2));
+            } else if (authorizationService.isAdvisor()){
+                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForAdvisor(authorizationService.getUserId(),
+                        roleId, dateRange.get(1), dateRange.get(0));
+                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForAdvisor(authorizationService.getUserId(),
+                        roleId, dateRange.get(3), dateRange.get(2));
             } else {
-                return new ResponseEntity<>(new ApiResponseMessage(HttpStatus.FORBIDDEN.toString()), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
 
             for (Object[] resultSet : loginMetricsResultSet1){

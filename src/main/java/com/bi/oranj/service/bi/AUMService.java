@@ -230,7 +230,7 @@ public class AUMService {
     public ResponseEntity<Object> getAUMSummary() {
 
         try {
-            AUMForSummary aumForSummary = null;
+            List<AumDiff> aumForSummary = null;
             if (authorizationService.isSuperAdmin()) {
                 aumForSummary = getAuthorizedData(null, "SuperAdmin");
             } else if (authorizationService.isAdmin()){
@@ -249,8 +249,7 @@ public class AUMService {
         }
     }
 
-    private AUMForSummary getAuthorizedData (Long userId, String userType) throws Exception{
-        AUMForSummary aumForSummary = new AUMForSummary();
+    private List<AumDiff> getAuthorizedData (Long userId, String userType) throws Exception{
         List<AumDiff> aumDiffList = new ArrayList<>();
         List<String> dateList = dateUtility.getQuarterFirstDates();
         for (int i=0; i<dateList.size(); i++){
@@ -283,9 +282,8 @@ public class AUMService {
             aumDiff.setAssetClass(assetClass);
             aumDiffList.add(aumDiff);
         }
-        aumForSummary.setSummary(aumDiffList);
 
-        return aumForSummary;
+        return aumDiffList;
     }
 
 }
