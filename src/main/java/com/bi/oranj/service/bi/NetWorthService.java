@@ -174,19 +174,19 @@ public class NetWorthService {
 
     public ResponseEntity<Object> getNetWorthSummary() {
 
-        String methodName = "";
-        if (authorizationService.isSuperAdmin()){
-            methodName = "findNetWorthForSummary";
-        } else if (authorizationService.isAdvisor()){
-            methodName = "findNetWorthForAdvisorSummary";
-        } else if (authorizationService.isAdmin()) {
-            methodName = "findNetWorthForFirmSummary";
-        } else {
-            return new ResponseEntity<>("FORBIDDEN", HttpStatus.FORBIDDEN);
-        }
-
         try {
-            NetWorthSummary netWorthSummary = getAuthorizedData(methodName);
+            NetWorthSummary netWorthSummary = null;
+            if (authorizationService.isSuperAdmin()){
+                netWorthSummary = getAuthorizedData(null, "SuperAdmin");
+            } else if (authorizationService.isAdmin()) {
+                netWorthSummary = getAuthorizedData(authorizationService.getUserId(), "FirmAdmin");
+            } else if (authorizationService.isAdvisor()){
+                netWorthSummary = getAuthorizedData(authorizationService.getUserId(), "Advisor");
+            } else {
+                return new ResponseEntity<>("FORBIDDEN", HttpStatus.FORBIDDEN);
+            }
+
+
             return new ResponseEntity<>(netWorthSummary, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error in fetching net worth", e);
@@ -194,17 +194,33 @@ public class NetWorthService {
         }
     }
 
-    private NetWorthSummary getAuthorizedData(String methodName) throws Exception {
+    private NetWorthSummary getAuthorizedData(Long userId, String userType) throws Exception {
         NetWorthSummary netWorthSummary = new NetWorthSummary();
         List<NetWorthForSummary> networthList = new ArrayList<>();
         List<String> monthList = getDateList();
         BigDecimal numClientsBefore = BigDecimal.valueOf(0);
 
         for(int i=0; i<monthList.size();i++) {
+
+            List<Object[]> monthData = null;
+            switch (userType){
+                case "SuperAdmin":
+                    monthData = networthRepository.findNetWorthForSummary(monthList.get(i));
+                    break;
+                case "FirmAdmin":
+                    monthData = networthRepository.findNetWorthForFirmSummary(userId, monthList.get(i));
+                    break;
+                case "Advisor":
+                    monthData = networthRepository.findNetWorthForAdvisorSummary(userId, monthList.get(i));
+                    break;
+                default:
+                    break;
+            }
+
             NetWorthForSummary netWorthForSummary = new NetWorthForSummary();
             netWorthForSummary.setDate(monthList.get(i));
-//            List<Object[]> monthData = networthRepository.findNetWorthForSummary(monthList.get(i));
-            List<Object[]> monthData = (List<Object[]>) NetWorthRepository.class.getMethod(methodName).invoke(monthList.get(i));
+
+
             for (Object[] resultSet : monthData) {
                 if (i == 0) {
                     netWorthForSummary.setClientsDiff(numClientsBefore);

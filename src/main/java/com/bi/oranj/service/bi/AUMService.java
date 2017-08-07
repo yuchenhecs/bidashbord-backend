@@ -10,12 +10,17 @@ import com.bi.oranj.utils.InputValidator;
 import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -49,6 +54,12 @@ public class AUMService {
 
     @Autowired
     ClientRepository clientRepository;
+
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @Autowired
+    ListableBeanFactory listableBeanFactory;
 
     public ResponseEntity<Object> getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
         try {
@@ -229,46 +240,47 @@ public class AUMService {
 
     public ResponseEntity<Object> getAUMSummary() {
 
-        String methodName = "";
-        if (authorizationService.isAdmin()){
-            methodName = "findAUMsSummaryForFirm";
-        } else if (authorizationService.isAdvisor()) {
-            methodName = "findAUMsSummaryForAdvisor";
-        } else if (authorizationService.isSuperAdmin()) {
-            methodName = "findAUMsSummary";
-        } else {
-            new ResponseEntity<>("FORBIDDEN", HttpStatus.FORBIDDEN);
-        }
-
         try {
-            AUMForSummary aumForSummary = getAuthorizedData(methodName);
+            AUMForSummary aumForSummary = null;
+            if (authorizationService.isSuperAdmin()) {
+                aumForSummary = getAuthorizedData(null, "SuperAdmin");
+            } else if (authorizationService.isAdmin()){
+                aumForSummary = getAuthorizedData(authorizationService.getUserId(), "FirmAdmin");
+            } else if (authorizationService.isAdvisor()) {
+                aumForSummary = getAuthorizedData(authorizationService.getUserId(), "Advisor");
+            } else {
+                new ResponseEntity<>(ACCESS_DENIED, HttpStatus.FORBIDDEN);
+            }
+
             return new ResponseEntity<>(aumForSummary, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(ERROR_IN_GETTING_AUM, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
+            log.error(ERROR_IN_GETTING_AUM_SUMMARY, e);
+            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM_SUMMARY), HttpStatus.BAD_REQUEST);
         }
     }
 
-    private AUMForSummary getAuthorizedData (String methodName) throws Exception{
+    private AUMForSummary getAuthorizedData (Long userId, String userType) throws Exception{
         AUMForSummary aumForSummary = new AUMForSummary();
         List<AumDiff> aumDiffList = new ArrayList<>();
         List<String> dateList = dateUtility.getQuarterFirstDates();
         for (int i=0; i<dateList.size(); i++){
 
             List<Object[]> aumSummaryResultSet = null;
-            switch (methodName){
-                case FIND_AUM_SUMMARY:
+            switch (userType){
+                case "SuperAdmin":
                     aumSummaryResultSet = aumRepository.findAUMsSummary(dateList.get(i));
                     break;
-                case FIND_AUM_SUMMARY_FOR_ADVISOR:
-                    aumSummaryResultSet = aumRepository.findAUMsSummaryForAdvisor(authorizationService.getUserId(),dateList.get(i));
+                case "FirmAdmin":
+                    aumSummaryResultSet = aumRepository.findAUMsSummaryForFirm(userId, dateList.get(i));
                     break;
-                case FIND_AUM_SUMMARY_FOR_FIRM:
-                    aumSummaryResultSet = aumRepository.findAUMsSummaryForFirm(authorizationService.getUserId(),dateList.get(i));
+                case "Advisor":
+                    aumSummaryResultSet = aumRepository.findAUMsSummaryForAdvisor(userId, dateList.get(i));
                     break;
+
                 default:
                     break;
             }
+
 
             AumDiff aumDiff = new AumDiff();
             aumDiff.setDate(dateList.get(i));
@@ -286,6 +298,7 @@ public class AUMService {
 
         return aumForSummary;
     }
+
 
 }
 

@@ -49,6 +49,7 @@ public class Constants {
     public static final String ERROR_RANGE_TYPE_VALIDATION = "'range' should be either 'week' or 'month'";
     public static final String ERROR_PAGE_NUMBER_VALIDATION = "Page number should be a positive integer";
     public static final String ERROR_IN_GETTING_AUM = "Error in fetching AUMs";
+    public static final String ERROR_IN_GETTING_AUM_SUMMARY = "Error in fetching AUMs summary";
     public static final String ERROR_IN_GETTING_LOGIN_METRICS = "Error in fetching Login Metrics";
     public static final String ERROR_IN_GETTING_ADVISOR_SUMMARY = "Error in getting advisor summary";
     public static final String ERROR_IN_GETTING_ACHIEVEMENTS = "Error in getting advisor achievements";

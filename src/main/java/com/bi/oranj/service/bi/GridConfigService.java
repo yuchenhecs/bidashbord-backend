@@ -24,7 +24,7 @@ public class GridConfigService {
     public ResponseEntity<Object> insertOrUpdateIfExits (GridContainer gridContainer){
         try{
             if (gridContainer.getUserId() == null)
-                return new ResponseEntity<>("I need a userId !", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("I need userId !", HttpStatus.BAD_REQUEST);
 
             gridRepository.insertOrUpdateIfExists(
                     gridContainer.getUserId(),

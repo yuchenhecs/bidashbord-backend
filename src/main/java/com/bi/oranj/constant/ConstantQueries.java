@@ -122,7 +122,7 @@ public class ConstantQueries {
             "group by p.asset_class";
 
     public static final String GET_AUM_SUMMARY_FIRM_QUERY = "select p.asset_class, sum(p.amount) as sum\n" +
-            "from positions p join clients c on p.client_id = c.id" +
+            "from positions p join clients c on p.client_id = c.id " +
             "where c.firm_id = :firmId and date(p.position_updated_on) IN (:date)\n" +
             "group by p.asset_class";
 
