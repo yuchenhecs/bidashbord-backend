@@ -2,7 +2,7 @@ package com.bi.oranj.service.gamification;
 
 import com.bi.oranj.model.gamification.Config;
 import com.bi.oranj.repository.gamification.ConfigRepository;
-import com.bi.oranj.utils.ApiError;
+import com.bi.oranj.utils.ApiResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class ConfigService {
 
     public ResponseEntity<Object> getConfigByName(String configName){
         Config config = configRepository.findByConfigName(configName);
-        if (config == null) return new ResponseEntity<>(new ApiError("Config with the given config name not found"), HttpStatus.BAD_REQUEST);
+        if (config == null) return new ResponseEntity<>(new ApiResponseMessage("Config with the given config name not found"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(config, HttpStatus.OK);
     }
 
@@ -40,7 +40,7 @@ public class ConfigService {
                 break;
             }
         }
-        if (!exists) return new ResponseEntity<>(new ApiError("Config with the given config name does not exist"), HttpStatus.BAD_REQUEST);
+        if (!exists) return new ResponseEntity<>(new ApiResponseMessage("Config with the given config name does not exist"), HttpStatus.BAD_REQUEST);
 
         configRepository.updateByConfigName(configName, newValue);
         return new ResponseEntity<>(HttpStatus.OK);

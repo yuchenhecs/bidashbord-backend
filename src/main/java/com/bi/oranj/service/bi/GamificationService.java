@@ -9,7 +9,7 @@ import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GamificationRepository;
 import com.bi.oranj.repository.bi.PatOnTheBackRepository;
-import com.bi.oranj.utils.ApiError;
+import com.bi.oranj.utils.ApiResponseMessage;
 import com.bi.oranj.utils.InputValidator;
 import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
@@ -105,7 +105,7 @@ public class GamificationService {
     public ResponseEntity<Object> getAdvisorSummaryForGamification() {
         try {
             if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
-                return new ResponseEntity<>(new ApiError(ACCESS_DENIED), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(new ApiResponseMessage(ACCESS_DENIED), HttpStatus.FORBIDDEN);
             }
             Client client = clientRepository.findOne(authorizationService.getUserId());
             GamificationSummary gamificationSummary = null;
@@ -121,19 +121,19 @@ public class GamificationService {
             return new ResponseEntity<>(gamificationSummary, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_ADVISOR_SUMMARY, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_ACHIEVEMENTS), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_ACHIEVEMENTS), HttpStatus.BAD_REQUEST);
         }
     }
 
     public ResponseEntity<Object> getAdvisorAchievements(String region){
         try {
             if(!authorizationService.isAdvisor() && !authorizationService.isAdmin()) {
-                return new ResponseEntity<>(new ApiError(ACCESS_DENIED), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(new ApiResponseMessage(ACCESS_DENIED), HttpStatus.FORBIDDEN);
             }
 
             Client client = clientRepository.findOne(authorizationService.getUserId());
             if (!inputValidator.validateInputRegion(region)) {
-                return new ResponseEntity<>(new ApiError(ERROR_REGION_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_REGION_VALIDATION), HttpStatus.BAD_REQUEST);
             }
             PatOnTheBack patOnTheBack = null;
             List<Object[]> patOnTheBackResultSet = patOnTheBackRepository.findByAdvisorIdRegionAndDate(client.getAdvisorId(), region.toUpperCase() ,dateUtility.getDate(1));
@@ -148,7 +148,7 @@ public class GamificationService {
             return new ResponseEntity<>(patOnTheBack, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_ACHIEVEMENTS, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_ACHIEVEMENTS), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_ACHIEVEMENTS), HttpStatus.BAD_REQUEST);
         }
     }
 

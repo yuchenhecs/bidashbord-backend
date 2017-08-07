@@ -5,7 +5,7 @@ import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.AnalyticsRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
-import com.bi.oranj.utils.ApiError;
+import com.bi.oranj.utils.ApiResponseMessage;
 import com.bi.oranj.utils.InputValidator;
 import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
@@ -60,17 +60,17 @@ public class LoginMetricsService {
         Long roleId;
 
         if (!inputValidator.validateInputPageNumber(pageNumber)) {
-            return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
         }
 
         if (!inputValidator.validateInputUserType(user)) {
-            return new ResponseEntity<>(new ApiError(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             roleId = getRoleId(user);
         }
 
         if (!inputValidator.validateInputRangeType(range)) {
-            return new ResponseEntity<>(new ApiError(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             dateRange = dateUtility.getDates(dateRange, range);
         }
@@ -104,7 +104,7 @@ public class LoginMetricsService {
             return new ResponseEntity<>(loginMetricsForAdmin, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -114,17 +114,17 @@ public class LoginMetricsService {
         Long roleId;
 
         if (!inputValidator.validateInputPageNumber(pageNumber)) {
-            return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
         }
 
         if (!inputValidator.validateInputUserType(user)) {
-            return new ResponseEntity<>(new ApiError(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             roleId = getRoleId(user);
         }
 
         if (!inputValidator.validateInputRangeType(range)) {
-            return new ResponseEntity<>(new ApiError(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             dateRange = dateUtility.getDates(dateRange, range);
         }
@@ -158,7 +158,7 @@ public class LoginMetricsService {
             return new ResponseEntity<>(loginMetricsForFirm, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -168,17 +168,17 @@ public class LoginMetricsService {
         Long roleId;
 
         if (!inputValidator.validateInputPageNumber(pageNumber)) {
-            return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
         }
 
         if (!inputValidator.validateInputUserType(user)) {
-            return new ResponseEntity<>(new ApiError(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             roleId = getRoleId(user);
         }
 
         if (!inputValidator.validateInputRangeType(range)) {
-            return new ResponseEntity<>(new ApiError(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_RANGE_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             dateRange = dateUtility.getDates(dateRange, range);
         }
@@ -212,7 +212,7 @@ public class LoginMetricsService {
             return new ResponseEntity<>(loginMetricsForAdvisor, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -222,7 +222,7 @@ public class LoginMetricsService {
         Long roleId;
 
         if (!inputValidator.validateInputUserType(user)) {
-            return new ResponseEntity<>(new ApiError(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_USER_TYPE_VALIDATION), HttpStatus.BAD_REQUEST);
         } else {
             roleId = getRoleId(user);
         }
@@ -249,7 +249,7 @@ public class LoginMetricsService {
                 loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(1), dateRange.get(0));
                 loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(3), dateRange.get(2));
             } else {
-                return new ResponseEntity<>(new ApiError(HttpStatus.FORBIDDEN.toString()), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(new ApiResponseMessage(HttpStatus.FORBIDDEN.toString()), HttpStatus.FORBIDDEN);
             }
 
             for (Object[] resultSet : loginMetricsResultSet1){
@@ -279,7 +279,7 @@ public class LoginMetricsService {
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
         }
     }
 

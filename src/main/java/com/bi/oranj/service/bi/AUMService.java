@@ -5,22 +5,18 @@ import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.AumRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
-import com.bi.oranj.utils.ApiError;
+import com.bi.oranj.utils.ApiResponseMessage;
+import com.bi.oranj.utils.ApiResponseMessage;
 import com.bi.oranj.utils.InputValidator;
 import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -55,20 +51,14 @@ public class AUMService {
     @Autowired
     ClientRepository clientRepository;
 
-    @Autowired
-    ApplicationContext applicationContext;
-
-    @Autowired
-    ListableBeanFactory listableBeanFactory;
-
     public ResponseEntity<Object> getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
         try {
             if (!inputValidator.validateInputDate(previousDate, currentDate)) {
-                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             if(!inputValidator.validateInputPageNumber(pageNumber)){
-                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
             }
             Map<Long, FirmAUM> map = new HashMap<>();
             AUMForAdmin aumForAdmin = new AUMForAdmin();
@@ -114,7 +104,7 @@ public class AUMService {
             return new ResponseEntity<>(aumForAdmin, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -122,11 +112,11 @@ public class AUMService {
 
         try {
             if (!inputValidator.validateInputDate(previousDate, currentDate)) {
-                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             if(!inputValidator.validateInputPageNumber(pageNumber)){
-                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             Map<Long, AdvisorAUM> map = new HashMap<>();
@@ -174,7 +164,7 @@ public class AUMService {
             return new ResponseEntity<>(aumForFirm, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -182,11 +172,11 @@ public class AUMService {
 
         try {
             if (!inputValidator.validateInputDate(previousDate, currentDate)){
-                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             if(!inputValidator.validateInputPageNumber(pageNumber)){
-                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             Map<Long, ClientAUM> map = new HashMap<>();
@@ -234,7 +224,7 @@ public class AUMService {
             return new ResponseEntity<>(aumForAdvisor, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -254,8 +244,9 @@ public class AUMService {
 
             return new ResponseEntity<>(aumForSummary, HttpStatus.OK);
         } catch (Exception e) {
+
             log.error(ERROR_IN_GETTING_AUM_SUMMARY, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM_SUMMARY), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_AUM_SUMMARY), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -281,7 +272,6 @@ public class AUMService {
                     break;
             }
 
-
             AumDiff aumDiff = new AumDiff();
             aumDiff.setDate(dateList.get(i));
             aumDiff.setTotal(new BigDecimal(0));
@@ -298,7 +288,6 @@ public class AUMService {
 
         return aumForSummary;
     }
-
 
 }
 
