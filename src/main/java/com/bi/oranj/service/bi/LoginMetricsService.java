@@ -226,7 +226,6 @@ public class LoginMetricsService {
             List<String> dateRange = new ArrayList<>();
             dateRange = dateUtility.getDates(dateRange, WEEK);
             LoginMetricsSummary loginMetricsSummary = new LoginMetricsSummary();
-            Map<String, LoginMetricsSummary> map = new HashMap<>();
 
             dateRange = dateUtility.getDates(dateRange, TWO_WEEKS);
 
@@ -277,8 +276,8 @@ public class LoginMetricsService {
                     loginMetricsSummary.setChangeInAvgSessionTime(loginMetricsSummary.getAvgSessionTime().subtract(BigDecimal.ZERO));
                 }
             }
-            map.put(user, loginMetricsSummary);
-            return new ResponseEntity<>(map, HttpStatus.OK);
+
+            return new ResponseEntity<>(loginMetricsSummary, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_LOGIN_METRICS, e);
             return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_LOGIN_METRICS), HttpStatus.BAD_REQUEST);
