@@ -4,7 +4,7 @@ import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.model.bi.GoalSummary;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.utils.date.DateValidator;
-import com.bi.oranj.utils.ApiError;
+import com.bi.oranj.utils.ApiResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class GoalsService {
             }
         }catch (Exception e){
             log.error("Error in fetching goals", e);
-            return new ResponseEntity<>(new ApiError("Error in fetching Goals"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fetching Goals"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(goalSummaryList, HttpStatus.OK);
     }
@@ -76,7 +76,7 @@ public class GoalsService {
         if (pageNum == null) pageNum = Integer.valueOf(0);
 
         if (goalServiceAbstract == null || pageNum < 0){
-            return new ResponseEntity<>(new ApiError("Bad input parameter"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
         Goal goal = null;
@@ -90,11 +90,11 @@ public class GoalsService {
                 && dateValidator.validate(endDate) && dateValidator.isLess(startDate, endDate))
             goal = goalServiceAbstract.buildResponseByDateBetween(startDate, endDate, pageNum, userId);
         else {
-            return new ResponseEntity<>(new ApiError("Bad input parameter"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
         if (goal == null) {
-            return new ResponseEntity<>(new ApiError("Data not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(goal, HttpStatus.OK);
     }

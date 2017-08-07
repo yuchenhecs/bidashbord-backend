@@ -5,7 +5,7 @@ import com.bi.oranj.repository.bi.AdvisorRepository;
 import com.bi.oranj.repository.bi.AumRepository;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
-import com.bi.oranj.utils.ApiError;
+import com.bi.oranj.utils.ApiResponseMessage;
 import com.bi.oranj.utils.InputValidator;
 import com.bi.oranj.utils.date.DateUtility;
 import org.slf4j.Logger;
@@ -53,11 +53,11 @@ public class AUMService {
     public ResponseEntity<Object> getAUMForAdmin(Integer pageNumber, String previousDate, String currentDate) {
         try {
             if (!inputValidator.validateInputDate(previousDate, currentDate)) {
-                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             if(!inputValidator.validateInputPageNumber(pageNumber)){
-                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
             }
             Map<Long, FirmAUM> map = new HashMap<>();
             AUMForAdmin aumForAdmin = new AUMForAdmin();
@@ -103,7 +103,7 @@ public class AUMService {
             return new ResponseEntity<>(aumForAdmin, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -111,11 +111,11 @@ public class AUMService {
 
         try {
             if (!inputValidator.validateInputDate(previousDate, currentDate)) {
-                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             if(!inputValidator.validateInputPageNumber(pageNumber)){
-                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             Map<Long, AdvisorAUM> map = new HashMap<>();
@@ -163,7 +163,7 @@ public class AUMService {
             return new ResponseEntity<>(aumForFirm, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -171,11 +171,11 @@ public class AUMService {
 
         try {
             if (!inputValidator.validateInputDate(previousDate, currentDate)){
-                return new ResponseEntity<>(new ApiError(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_DATE_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             if(!inputValidator.validateInputPageNumber(pageNumber)){
-                return new ResponseEntity<>(new ApiError(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponseMessage(ERROR_PAGE_NUMBER_VALIDATION), HttpStatus.BAD_REQUEST);
             }
 
             Map<Long, ClientAUM> map = new HashMap<>();
@@ -223,7 +223,7 @@ public class AUMService {
             return new ResponseEntity<>(aumForAdvisor, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -245,7 +245,7 @@ public class AUMService {
             return new ResponseEntity<>(aumForSummary, HttpStatus.OK);
         } catch (Exception e) {
             log.error(ERROR_IN_GETTING_AUM, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_AUM), HttpStatus.BAD_REQUEST);
         }
     }
 

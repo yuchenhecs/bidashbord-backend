@@ -7,7 +7,7 @@ import com.bi.oranj.repository.bi.*;
 import com.bi.oranj.repository.oranj.OranjAUMRepository;
 import com.bi.oranj.repository.oranj.OranjGoalRepository;
 import com.bi.oranj.repository.oranj.*;
-import com.bi.oranj.utils.ApiError;
+import com.bi.oranj.utils.ApiResponseMessage;
 import com.bi.oranj.utils.date.DateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-import static com.bi.oranj.constant.Constants.ERROR_DATE_VALIDATION;
 import static com.bi.oranj.constant.Constants.ERROR_IN_GETTING_GOALS_FROM_ORANJ;
 
 @Service
@@ -90,7 +89,7 @@ public class OranjService {
 
             savePositions(positionRows, dateFormat1);
         } catch (Exception ex){
-            return new ResponseEntity<>(new ApiError("Error while fetching positions data"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error while fetching positions data"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -108,18 +107,18 @@ public class OranjService {
             else history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(limitNum);
             savePositions(history, dateFormat1);
         }catch (Exception ex){
-            return new ResponseEntity<>(new ApiError("Error while fetching positions data"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error while fetching positions data"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<Object> fetchPositionsDataByDate(String date) {
-        if (!dateValidator.validate(date)) return new ResponseEntity<>(new ApiError("Date is not valid"), HttpStatus.BAD_REQUEST);
+        if (!dateValidator.validate(date)) return new ResponseEntity<>(new ApiResponseMessage("Date is not valid"), HttpStatus.BAD_REQUEST);
 
         List<OranjPositions> positions = oranjPositionsRepository.fetchPositionsHistoryByDate(date);
         if (positions.isEmpty()){
             log.info("Empty data set for the given date -> {}", date);
-            return new ResponseEntity<>(new ApiError(String.format("Empty data set for the given date %s", date)), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(String.format("Empty data set for the given date %s", date)), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -152,7 +151,6 @@ public class OranjService {
             positionHistory.setUpdatedOn(dateFormat1.parse((o[9]).toString()));
             posHis.add(positionHistory);
         }
-
         positionRepository.save(posHis);
     }
 
@@ -163,9 +161,9 @@ public class OranjService {
             saveGoals(oranjGoalList);
         }catch (Exception e){
             log.error(ERROR_IN_GETTING_GOALS_FROM_ORANJ, e);
-            return new ResponseEntity<>(new ApiError(ERROR_IN_GETTING_GOALS_FROM_ORANJ), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage(ERROR_IN_GETTING_GOALS_FROM_ORANJ), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Goals created on " + date + " have been saved", HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseMessage("Goals created on " + date + " have been saved"), HttpStatus.OK);
     }
 
     public ResponseEntity<Object> getGoalsTillDate(String date){
@@ -175,9 +173,9 @@ public class OranjService {
             saveGoals(oranjGoalList);
         }catch (Exception e){
             log.error("Error in fetching goals from Oranj.", e);
-            return new ResponseEntity<>(new ApiError("Error in fetching Goals from Oranj DB"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fetching Goals from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Goals created till " + date + " have been saved", HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseMessage("Goals created till " + date + " have been saved"), HttpStatus.OK);
     }
 
     private void saveGoals(List<OranjGoal> oranjGoalList){
@@ -234,14 +232,12 @@ public class OranjService {
                         return firm;
                     })
                     .collect(Collectors.toList());
-
             firmRepository.save(biFirmList);
-
         }catch (Exception e){
             log.error("Error in fetching Firms from Oranj.", e);
-            return new ResponseEntity<>(new ApiError("Error in fecthing Firms from Oranj DB"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fecthing Firms from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("All Firms have been saved", HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseMessage("All Firms have been saved"), HttpStatus.OK);
     }
 
     public ResponseEntity<Object> getAllAdvisors(){
@@ -265,9 +261,9 @@ public class OranjService {
             advisorRepository.save(biAdvisorsList);
         }catch (Exception e){
             log.error("Error in fetching Advisors from Oranj.", e);
-            return new ResponseEntity<>(new ApiError("Error in fecthing Advisors from Oranj DB"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fecthing Advisors from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("All Advisors have been saved", HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseMessage("All Advisors have been saved"), HttpStatus.OK);
     }
 
     public ResponseEntity<Object> getAllClients(){
@@ -292,16 +288,12 @@ public class OranjService {
                         return client;
                     })
                     .collect(Collectors.toList());
-
-
             clientRepository.save(biClientsList);
-
-
         }catch (Exception e){
             log.error("Error in fetching Clients from Oranj.", e);
-            return new ResponseEntity<>(new ApiError("Error in fecthing Clients from Oranj DB"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fecthing Clients from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("All Clients have been saved", HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseMessage("All Clients have been saved"), HttpStatus.OK);
     }
 
     private String getRandomAssetClass (){
@@ -311,7 +303,6 @@ public class OranjService {
         assetClasses.add("Non US Stock");
         assetClasses.add("US Bond");
         assetClasses.add("Other");
-
         return assetClasses.get(new Random().nextInt(assetClasses.size()));
     }
 
@@ -323,9 +314,9 @@ public class OranjService {
 
         }catch (Exception e){
             log.error("Error in fetching net worth from Oranj.", e);
-            return new ResponseEntity<>(new ApiError("Error in fetching net worth from Oranj DB"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fetching net worth from Oranj DB"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Net worth till " + date + " have been saved", HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseMessage("Net worth till " + date + " have been saved"), HttpStatus.OK);
     }
 
     public ResponseEntity<Object> getNetWorthForDate(String date){
@@ -334,10 +325,9 @@ public class OranjService {
             saveNetWorth(oranjNetWorthList);
         }catch (Exception e){
             log.error("Error in fetching goals from Oranj", e);
-            return new ResponseEntity<>(new ApiError("Error in fetching goals from Oranj"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fetching goals from Oranj"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Goals created on " + date + " have been saved", HttpStatus.OK);
-
+        return new ResponseEntity<>(new ApiResponseMessage("Goals created on " + date + " have been saved"), HttpStatus.OK);
     }
 
     private void saveNetWorth(List<Object[]> oranjNetWorthList){
@@ -353,8 +343,6 @@ public class OranjService {
                     return netWorth;
                 })
                 .collect(Collectors.toList());
-
-
         netWorthRepository.save(netWorthList);
     }
 }

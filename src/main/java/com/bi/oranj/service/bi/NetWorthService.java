@@ -6,7 +6,7 @@ import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.FirmRepository;
 import com.bi.oranj.repository.bi.NetWorthRepository;
 import com.bi.oranj.scheduler.ScheduledTasks;
-import com.bi.oranj.utils.ApiError;
+import com.bi.oranj.utils.ApiResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class NetWorthService {
         Integer totalFirms = firmRepository.findDistinctFromFirm();
         Double maxPage = Math.ceil(totalFirms/pageSize);
         if (pageNumber > maxPage) {
-            return new ResponseEntity<>(new ApiError("Data not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.BAD_REQUEST);
         }
         try {
             NetWorthAdmin netWorthAdmin = new NetWorthAdmin();
@@ -90,7 +90,7 @@ public class NetWorthService {
             return new ResponseEntity<>(netWorthAdmin, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error in fetching net worth", e);
-            return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -98,7 +98,7 @@ public class NetWorthService {
         Integer totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
         Double maxPage = Math.ceil(totalAdvisors/pageSize);
         if (pageNumber > maxPage) {
-            return new ResponseEntity<>(new ApiError("Data not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.BAD_REQUEST);
         }
         try {
             NetWorthFirm netWorthFirm = new NetWorthFirm();
@@ -128,7 +128,7 @@ public class NetWorthService {
             return new ResponseEntity<>(netWorthFirm, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error in fetching net worth", e);
-            return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -136,7 +136,7 @@ public class NetWorthService {
         Integer totalAdvisors = advisorRepository.findDistinctByFirm(advisorId);
         Double maxPage = Math.ceil(totalAdvisors/pageSize);
         if (pageNumber > maxPage) {
-            return new ResponseEntity<>(new ApiError("Data not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.BAD_REQUEST);
         }
         try {
             NetWorthAdvisor netWorthAdvisor = new NetWorthAdvisor();
@@ -168,7 +168,7 @@ public class NetWorthService {
             return new ResponseEntity<>(netWorthAdvisor, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error in fetching net worth", e);
-            return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -190,7 +190,7 @@ public class NetWorthService {
             return new ResponseEntity<>(netWorthSummary, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error in fetching net worth", e);
-            return new ResponseEntity<>(new ApiError("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseMessage("Error in fetching net worth"), HttpStatus.BAD_REQUEST);
         }
     }
 
