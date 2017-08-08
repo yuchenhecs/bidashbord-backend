@@ -2,6 +2,7 @@ package com.bi.oranj.controller.bi;
 
 import com.bi.oranj.model.bi.GridContainer;
 import com.bi.oranj.service.bi.GridConfigService;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,14 @@ public class GridConfigController {
     private GridConfigService gridConfigService;
 
     @ApiOperation(value = "Get Grid Config by user id")
+    @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping (method = RequestMethod.GET, value = "/{userId}")
     public ResponseEntity getGridConfig (@PathVariable Long userId){
         return gridConfigService.getGridConfig(userId);
     }
 
     @ApiOperation(value = "Insert or update config by user id")
+    @ApiImplicitParam(name = "authorization", value = "Bearer 'tokenId'", required = true, dataType = "String", paramType = "header")
     @RequestMapping (method = RequestMethod.POST)
     public ResponseEntity insertOrUpdateConfig (@RequestBody GridContainer gridContainer){
         return gridConfigService.insertOrUpdateIfExits(gridContainer);
