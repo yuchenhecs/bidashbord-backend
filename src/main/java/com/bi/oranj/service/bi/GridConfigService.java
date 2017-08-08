@@ -1,10 +1,8 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.Grid;
-import com.bi.oranj.model.bi.GridContainer;
 import com.bi.oranj.model.bi.GridEntity;
 import com.bi.oranj.repository.bi.GridRepository;
-import com.bi.oranj.utils.ApiResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 @Service
@@ -43,17 +44,16 @@ public class GridConfigService {
 
     public ResponseEntity<Object> getGridConfig (Long userId){
 
-        GridContainer gridContainer = new GridContainer();
+        Map<String, Grid> gridContainer = new HashMap<>();
+
         try{
-            GridEntity gridConfig = gridRepository.getGridConfig(userId);
+            List<GridEntity> gridConfig = gridRepository.getGridConfig(userId);
 
             if (gridConfig == null) return new ResponseEntity<>("null", HttpStatus.OK);
 
-            gridContainer.setUserId(userId);
-            gridContainer.setGoals(convertStringToGrid(gridConfig.getGoals()));
-            gridContainer.setAum(convertStringToGrid(gridConfig.getAum()));
-            gridContainer.setNetWorth(convertStringToGrid(gridConfig.getNetWorth()));
-            gridContainer.setLogins(convertStringToGrid(gridConfig.getLogins()));
+            for (GridEntity ge : gridConfig){
+                gridContainer.put(ge.getTileType(), convertStringToGrid(ge.getSettings()));
+            }
         } catch (Exception e) {
             log.error("Error occurred while getting grid config", e);
             return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);

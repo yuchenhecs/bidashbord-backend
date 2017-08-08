@@ -15,7 +15,7 @@ import java.util.List;
 public interface GridRepository extends JpaRepository<GridEntity, Long>{
 
     @Query (value = "SELECT * FROM grid_config WHERE user_id = :userId", nativeQuery = true)
-    public GridEntity getGridConfig (@Param("userId") Long userId);
+    public List<GridEntity> getGridConfig (@Param("userId") Long userId);
 
     @Transactional
     @Modifying

@@ -1,6 +1,5 @@
 package com.bi.oranj.controller.bi;
 
-import com.bi.oranj.model.bi.GridContainer;
 import com.bi.oranj.service.bi.GridConfigService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
