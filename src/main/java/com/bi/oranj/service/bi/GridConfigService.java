@@ -3,6 +3,7 @@ package com.bi.oranj.service.bi;
 import com.bi.oranj.model.bi.Grid;
 import com.bi.oranj.model.bi.GridEntity;
 import com.bi.oranj.repository.bi.GridRepository;
+import org.hibernate.annotations.SQLInsert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Service
 public class GridConfigService {
@@ -24,16 +22,21 @@ public class GridConfigService {
     @Autowired
     private AuthorizationService authorizationService;
 
+
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public ResponseEntity<Object> insertOrUpdateIfExits (GridContainer gridContainer){
+    public ResponseEntity<Object> insertOrUpdateIfExits (Map<String, Grid> gridContainer){
         try{
-            gridRepository.insertOrUpdateIfExists(
-                    authorizationService.getUserId(),
-                    convertGridToString(gridContainer.getGoals()),
-                    convertGridToString(gridContainer.getAum()),
-                    convertGridToString(gridContainer.getNetWorth()),
-                    convertGridToString(gridContainer.getLogins()));
+
+            for (Map.Entry e : gridContainer.entrySet()){
+
+                gridRepository.insertOrUpdateIfExists(
+                        authorizationService.getUserId(),
+                        (String) e.getKey(),
+                        convertGridToString((Grid) e.getValue())
+                );
+            }
+
         } catch (Exception e){
             log.error("Error occurred while insert/updating grid config", e);
             return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,7 +52,7 @@ public class GridConfigService {
         try{
             List<GridEntity> gridConfig = gridRepository.getGridConfig(userId);
 
-            if (gridConfig == null) return new ResponseEntity<>("null", HttpStatus.OK);
+            if (gridConfig == null || gridConfig.isEmpty()) return new ResponseEntity<>(Collections.EMPTY_MAP, HttpStatus.OK);
 
             for (GridEntity ge : gridConfig){
                 gridContainer.put(ge.getTileType(), convertStringToGrid(ge.getSettings()));

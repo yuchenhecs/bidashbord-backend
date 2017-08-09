@@ -1,6 +1,7 @@
 package com.bi.oranj.repository.bi;
 
 import com.bi.oranj.model.bi.GridEntity;
+import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,13 +20,10 @@ public interface GridRepository extends JpaRepository<GridEntity, Long>{
 
     @Transactional
     @Modifying
-    @Query (value = "INSERT INTO grid_config (user_id, goals, aum, net_worth, logins) \n" +
-            "values (:userId, :goals, :aum, :netWorth, :logins) \n" +
-            "ON DUPLICATE KEY UPDATE goals = VALUES(goals), aum = VALUES(aum), \n" +
-            "net_worth = VALUES (net_worth), logins = VALUES (logins);", nativeQuery = true)
-    public void insertOrUpdateIfExists (@Param("userId") Long userId,
-                                        @Param("goals") String goals,
-                                        @Param("aum") String aum,
-                                        @Param("netWorth") String netWorth,
-                                        @Param("logins") String logins);
+    @Query(value = "INSERT INTO grid_config (user_id, tile_type, settings) " +
+            "values (:userId, :tileType, :settings) " +
+            "ON DUPLICATE KEY UPDATE settings = VALUES(settings);", nativeQuery = true)
+    public List<GridEntity> insertOrUpdateIfExists(@Param("userId") Long userId,
+                                                   @Param("tileType") String tileType,
+                                                   @Param("settings") String settings);
 }

@@ -1,6 +1,7 @@
 package com.bi.oranj.model.bi;
 
 import lombok.Data;
+import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLInsert;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,9 +16,6 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "grid_config")
-@SQLInsert(sql = "INSERT INTO grid_config (user_id, tile_type, settings) " +
-        "values (?, ?, ?) " +
-        "ON DUPLICATE KEY UPDATE tile_type = VALUES(tile_type), settings = VALUES(settings);")
 public class GridEntity {
 
     @Id
@@ -26,5 +24,7 @@ public class GridEntity {
 
     @Column (name = "tile_type")
     private String tileType;
+
+    @Column (name = "settings")
     private String settings;
 }
