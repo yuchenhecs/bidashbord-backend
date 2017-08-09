@@ -232,14 +232,23 @@ public class AdvisorService extends GoalServiceAbstract {
                 advisor.setGoals(goalList);
                 advisor.setTotal(count);
             } else {
-                if (type == null){
-                    linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
-                    continue;
-                }
                 HashMap<String, Integer> goalList = new HashMap<>();
-                goalList.put(type, count);
+                goalList.put("custom", 0);
+                goalList.put("college", 0);
+                goalList.put("retirement", 0);
+                goalList.put("insurance", 0);
+                goalList.put("home", 0);
+                goalList.put("special_event", 0);
 
-                linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), goalList, count));
+                linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), goalList, 0));
+//                if (type == null){
+//                    linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
+//                    continue;
+//                }
+//                HashMap<String, Integer> goalList = new HashMap<>();
+//                goalList.put(type, count);
+
+//                linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), goalList, count));
             }
         }
         return linkedHashMap.values();

@@ -85,8 +85,8 @@ public class FirmService extends GoalServiceAbstract {
     }
 
     private Collection<Firm> findGoals (int pageNum){
-        List<Object[]> firms = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
-        return processObjectArrays(firms);
+        List<Object[]> goalObjects = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Firm> findGoalsByDateBetween (String startDate, String endDate, int pageNum){
@@ -105,7 +105,7 @@ public class FirmService extends GoalServiceAbstract {
     }
 
     private Collection<Firm> processObjectArrays (List<Object[]> goalObjects){
-        Map<Integer, Firm> linkedHashMap = new LinkedHashMap<>();
+        Map<Integer, Firm> idMapFirm = new LinkedHashMap<>();
 
         for (Object[] goal : goalObjects){
             int firmId = ((BigInteger) goal[0]).intValue();
@@ -116,8 +116,8 @@ public class FirmService extends GoalServiceAbstract {
             if (goal[2] == null) type = null;
             else type = ((String) goal[2]).trim().toLowerCase();
 
-            if (linkedHashMap.containsKey(firmId)) {
-                Firm firm = linkedHashMap.get(firmId);
+            if (idMapFirm.containsKey(firmId)) {
+                Firm firm = idMapFirm.get(firmId);
                 HashMap<String, Integer> goalList = (HashMap<String, Integer>) firm.getGoals();
 
                 if (goalList.containsKey(type)) {
@@ -128,19 +128,27 @@ public class FirmService extends GoalServiceAbstract {
                 firm.setGoals(goalList);
                 firm.setTotal(count);
             } else {
-
-                if (type == null) {
-                    linkedHashMap.put(firmId, new Firm(firmId, firmName, Collections.emptyMap(), count));
-                    continue;
-                }
-
                 HashMap<String, Integer> goalList = new HashMap<>();
-                goalList.put(type, count);
-                linkedHashMap.put(firmId, new Firm(firmId, firmName, goalList, count));
+                goalList.put("custom", 0);
+                goalList.put("college", 0);
+                goalList.put("retirement", 0);
+                goalList.put("insurance", 0);
+                goalList.put("home", 0);
+                goalList.put("special_event", 0);
+                idMapFirm.put(firmId, new Firm(firmId, firmName, goalList, 0));
+
+//                if (type == null) {
+//                    idMapFirm.put(firmId, new Firm(firmId, firmName, Collections.emptyMap(), count));
+//                    continue;
+//                }
+//
+//                HashMap<String, Integer> goalList = new HashMap<>();
+//                goalList.put(type, count);
+//                idMapFirm.put(firmId, new Firm(firmId, firmName, goalList, count));
             }
         }
 
-        return linkedHashMap.values();
+        return idMapFirm.values();
     }
 
     private Goal processGoalresponse (Collection<Firm> firms, int pageNum, int totalFirms, int totalGoals){

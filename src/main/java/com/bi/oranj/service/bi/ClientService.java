@@ -1,6 +1,7 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.Goal;
+import com.bi.oranj.model.bi.wrapper.user.Advisor;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.model.bi.wrapper.user.Client;
@@ -129,7 +130,7 @@ public class ClientService extends GoalServiceAbstract {
         for (Object[] goal : goalObjects){
             concatenatedName.setLength(0); // clears string builder
 
-            int advisorId = ((BigInteger) goal[0]).intValue();
+            int clientId = ((BigInteger) goal[0]).intValue();
             String firstName = (String) goal[1];
             String lastName = (String) goal[2];
             concatenatedName.append(firstName).append(" ").append(lastName);
@@ -140,8 +141,8 @@ public class ClientService extends GoalServiceAbstract {
             else type = ((String) goal[3]).trim().toLowerCase();
 
 
-            if (linkedHashMap.containsKey(advisorId)){
-                Client advisor = linkedHashMap.get(advisorId);
+            if (linkedHashMap.containsKey(clientId)){
+                Client advisor = linkedHashMap.get(clientId);
                 HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
                 if (goalList.containsKey(type)){
@@ -153,16 +154,25 @@ public class ClientService extends GoalServiceAbstract {
                 advisor.setTotal(count);
 
             } else {
-
-                if (type == null){
-                    linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
-                    continue;
-                }
-
                 HashMap<String, Integer> goalList = new HashMap<>();
-                goalList.put(type, count);
+                goalList.put("custom", 0);
+                goalList.put("college", 0);
+                goalList.put("retirement", 0);
+                goalList.put("insurance", 0);
+                goalList.put("home", 0);
+                goalList.put("special_event", 0);
 
-                linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), goalList, count));
+                linkedHashMap.put(clientId, new Client(clientId, concatenatedName.toString(), goalList, 0));
+
+//                if (type == null){
+//                    linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
+//                    continue;
+//                }
+//
+//                HashMap<String, Integer> goalList = new HashMap<>();
+//                goalList.put(type, count);
+//
+//                linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), goalList, count));
             }
         }
 
