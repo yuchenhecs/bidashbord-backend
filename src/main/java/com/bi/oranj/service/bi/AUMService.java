@@ -304,9 +304,14 @@ public class AUMService {
             aumDiff.setDate(dateList.get(i));
             aumDiff.setTotal(new BigDecimal(0));
             Map<String, BigDecimal> assetClass = new HashMap<>();
+            assetClass.put("Cash", BigDecimal.ZERO);
+            assetClass.put("US Bond", BigDecimal.ZERO);
+            assetClass.put("Other", BigDecimal.ZERO);
+            assetClass.put("Non US Stock", BigDecimal.ZERO);
+            assetClass.put("US Stock", BigDecimal.ZERO);
 
             for (Object[] resultSet : aumSummaryResultSet){
-                assetClass.put(resultSet[0].toString(), (BigDecimal) resultSet[1]);
+                assetClass.put(resultSet[0].toString(), assetClass.get(resultSet[0].toString()).add((BigDecimal) resultSet[1]));
                 aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[1]));
             }
             aumDiff.setAssetClass(assetClass);
