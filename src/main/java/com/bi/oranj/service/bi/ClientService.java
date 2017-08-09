@@ -162,17 +162,14 @@ public class ClientService extends GoalServiceAbstract {
                 goalList.put("home", 0);
                 goalList.put("special_event", 0);
 
-                linkedHashMap.put(clientId, new Client(clientId, concatenatedName.toString(), goalList, 0));
+                if (type == null){
+                    linkedHashMap.put(clientId, new Client(clientId, concatenatedName.toString(), goalList, count));
+                    continue;
+                }
 
-//                if (type == null){
-//                    linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
-//                    continue;
-//                }
-//
-//                HashMap<String, Integer> goalList = new HashMap<>();
-//                goalList.put(type, count);
-//
-//                linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), goalList, count));
+                goalList.put(type, count);
+
+                linkedHashMap.put(clientId, new Client(clientId, concatenatedName.toString(), goalList, count));
             }
         }
 

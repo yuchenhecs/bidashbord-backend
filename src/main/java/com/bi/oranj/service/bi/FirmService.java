@@ -135,16 +135,13 @@ public class FirmService extends GoalServiceAbstract {
                 goalList.put("insurance", 0);
                 goalList.put("home", 0);
                 goalList.put("special_event", 0);
-                idMapFirm.put(firmId, new Firm(firmId, firmName, goalList, 0));
 
-//                if (type == null) {
-//                    idMapFirm.put(firmId, new Firm(firmId, firmName, Collections.emptyMap(), count));
-//                    continue;
-//                }
-//
-//                HashMap<String, Integer> goalList = new HashMap<>();
-//                goalList.put(type, count);
-//                idMapFirm.put(firmId, new Firm(firmId, firmName, goalList, count));
+                if (type == null) {
+                    idMapFirm.put(firmId, new Firm(firmId, firmName, goalList, count));
+                    continue;
+                }
+                goalList.put(type, count);
+                idMapFirm.put(firmId, new Firm(firmId, firmName, goalList, count));
             }
         }
 
