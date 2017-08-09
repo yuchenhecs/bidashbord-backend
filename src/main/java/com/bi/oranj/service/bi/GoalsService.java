@@ -51,9 +51,11 @@ public class GoalsService {
         if (authorizationService.isSuperAdmin()){
             goalsGroupedByType = goalRepository.findGoalsGroupedByType();
         } else if (authorizationService.isAdvisor()){
-            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForAdvisor(authorizationService.getUserId());
+            Client client = clientRepository.findById(authorizationService.getUserId());
+            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForAdvisor(client.getAdvisorId());
         } else if (authorizationService.isAdmin()){
-            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForFirm(authorizationService.getUserId());
+            Client client = clientRepository.findById(authorizationService.getUserId());
+            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForFirm(client.getFirmId());
         } else {
             return new ResponseEntity<Object>("FORBIDDEN", HttpStatus.FORBIDDEN);
         }

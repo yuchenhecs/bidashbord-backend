@@ -244,9 +244,11 @@ public class AUMService {
             if (authorizationService.isSuperAdmin()) {
                 aumForSummary = getAuthorizedData(null, "SuperAdmin");
             } else if (authorizationService.isAdmin()){
-                aumForSummary = getAuthorizedData(authorizationService.getUserId(), "FirmAdmin");
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                aumForSummary = getAuthorizedData(client.getFirmId(), "FirmAdmin");
             } else if (authorizationService.isAdvisor()) {
-                aumForSummary = getAuthorizedData(authorizationService.getUserId(), "Advisor");
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                aumForSummary = getAuthorizedData(client.getAdvisorId(), "Advisor");
             } else {
                 new ResponseEntity<>(ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
