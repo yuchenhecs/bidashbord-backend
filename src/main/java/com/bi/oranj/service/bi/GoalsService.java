@@ -49,7 +49,6 @@ public class GoalsService {
         List<Object[]> goalsGroupedByType = null;
 
         if (authorizationService.isSuperAdmin()){
-
             goalsGroupedByType = goalRepository.findGoalsGroupedByType();
         } else if (authorizationService.isAdmin()){
             Client client = clientRepository.findById(authorizationService.getUserId());
