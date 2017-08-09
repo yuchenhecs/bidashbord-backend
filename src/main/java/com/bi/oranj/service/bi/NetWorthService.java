@@ -192,9 +192,11 @@ public class NetWorthService {
             if (authorizationService.isSuperAdmin()){
                 netWorthSummary = getAuthorizedData(null, "SuperAdmin");
             } else if (authorizationService.isAdmin()) {
-                netWorthSummary = getAuthorizedData(authorizationService.getUserId(), "FirmAdmin");
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                netWorthSummary = getAuthorizedData(client.getFirmId(), "FirmAdmin");
             } else if (authorizationService.isAdvisor()){
-                netWorthSummary = getAuthorizedData(authorizationService.getUserId(), "Advisor");
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                netWorthSummary = getAuthorizedData(client.getAdvisorId(), "Advisor");
             } else {
                 return new ResponseEntity<>("FORBIDDEN", HttpStatus.FORBIDDEN);
             }

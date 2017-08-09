@@ -250,15 +250,13 @@ public class LoginMetricsService {
                 loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(1), dateRange.get(0));
                 loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummary(roleId, dateRange.get(3), dateRange.get(2));
             } else if (authorizationService.isAdmin()){
-                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForFirm(authorizationService.getUserId(),
-                        roleId, dateRange.get(1), dateRange.get(0));
-                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForFirm(authorizationService.getUserId(),
-                        roleId, dateRange.get(3), dateRange.get(2));
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForFirm(client.getFirmId(), roleId, dateRange.get(1), dateRange.get(0));
+                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForFirm(client.getFirmId(), roleId, dateRange.get(3), dateRange.get(2));
             } else if (authorizationService.isAdvisor()){
-                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForAdvisor(authorizationService.getUserId(),
-                        roleId, dateRange.get(1), dateRange.get(0));
-                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForAdvisor(authorizationService.getUserId(),
-                        roleId, dateRange.get(3), dateRange.get(2));
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                loginMetricsResultSet1 = analyticsRepository.findLoginMetricsSummaryForAdvisor(client.getAdvisorId(), roleId, dateRange.get(1), dateRange.get(0));
+                loginMetricsResultSet2 = analyticsRepository.findLoginMetricsSummaryForAdvisor(client.getAdvisorId(), roleId, dateRange.get(3), dateRange.get(2));
             } else {
                 return new ResponseEntity<>(ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
