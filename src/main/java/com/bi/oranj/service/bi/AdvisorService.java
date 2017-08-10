@@ -220,9 +220,10 @@ public class AdvisorService extends GoalServiceAbstract {
             if (goal[3] == null) type = null;
             else type = ((String) goal[3]).trim().toLowerCase();
 
+
             if (linkedHashMap.containsKey(advisorId)){
                 Advisor advisor = linkedHashMap.get(advisorId);
-                HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
+                Map<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
                 if (goalList.containsKey(type)){
                     goalList.put(type, goalList.get(type) + count);
@@ -232,11 +233,20 @@ public class AdvisorService extends GoalServiceAbstract {
                 advisor.setGoals(goalList);
                 advisor.setTotal(count);
             } else {
+                HashMap<String, Integer> goalList = new HashMap<>();
+                goalList.put("custom", 0);
+                goalList.put("college", 0);
+                goalList.put("retirement", 0);
+                goalList.put("insurance", 0);
+                goalList.put("home", 0);
+                goalList.put("special_event", 0);
+
+
                 if (type == null){
-                    linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
+                    linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), goalList, count));
                     continue;
                 }
-                HashMap<String, Integer> goalList = new HashMap<>();
+
                 goalList.put(type, count);
 
                 linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), goalList, count));

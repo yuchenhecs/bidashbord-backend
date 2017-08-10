@@ -50,12 +50,14 @@ public class GoalsService {
 
         if (authorizationService.isSuperAdmin()){
             goalsGroupedByType = goalRepository.findGoalsGroupedByType();
-        } else if (authorizationService.isAdvisor()){
-            Client client = clientRepository.findById(authorizationService.getUserId());
-            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForAdvisor(client.getAdvisorId());
         } else if (authorizationService.isAdmin()){
             Client client = clientRepository.findById(authorizationService.getUserId());
+            if (client == null) return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
             goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForFirm(client.getFirmId());
+        } else if (authorizationService.isAdvisor()){
+            Client client = clientRepository.findById(authorizationService.getUserId());
+            if (client == null) return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
+            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForAdvisor(client.getAdvisorId());
         } else {
             return new ResponseEntity<Object>("FORBIDDEN", HttpStatus.FORBIDDEN);
         }
