@@ -103,16 +103,30 @@ public class OranjService {
         List<Object[]> history = null;
 
         try{
-            if (limitNum == 0) history = oranjPositionsRepository.fetchPositionsHistory();
-            else history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(limitNum);
-            savePositions(history, dateFormat1);
+            if (limitNum == 0) {
+                long offset = 0;
+                do{
+                    history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(offset * 1000l, 1000l);
+                    offset++;
+                    savePositions(history, dateFormat1);
+                } while (history != null || !history.isEmpty());
+            }
+            else {
+                while (limitNum > 0){
+                    long offset = 0;
+                    history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(offset * 1000l, limitNum);
+                    offset++;
+                    savePositions(history, dateFormat1);
+                    limitNum -= 1000;
+                }
+            }
         }catch (Exception ex){
             return new ResponseEntity<>(new ApiResponseMessage("Error while fetching positions data"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> fetchPositionsDataByDate(String date) {
+    public ResponseEntity<Object> fetchPositionsByDate(String date) {
         if (!dateValidator.validate(date)) return new ResponseEntity<>(new ApiResponseMessage("Date is not valid"), HttpStatus.BAD_REQUEST);
 
         List<OranjPositions> positions = oranjPositionsRepository.fetchPositionsHistoryByDate(date);
