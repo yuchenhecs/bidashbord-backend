@@ -87,7 +87,7 @@ public class DateValidator {
         return validatePattern(date) && isLessThanToday(date);
     }
 
-    public boolean isLess (String firstDate, String secondDate){
+    public boolean isLessOrEqual (String firstDate, String secondDate){
         Date first = null;
         Date second = null;
         try{
@@ -96,6 +96,6 @@ public class DateValidator {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return first.before(second);
+        return first.before(second) || first.equals(second);
     }
 }

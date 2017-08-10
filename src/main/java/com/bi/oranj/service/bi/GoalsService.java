@@ -80,13 +80,13 @@ public class GoalsService {
                                                    String startDate, String endDate) throws IOException {
         GoalServiceAbstract goalServiceAbstract = getService(userType);
 
-        if (userId == null){
-            if(authorizationService.isSuperAdmin()){
+        if (userId == null) {
+            if (authorizationService.isSuperAdmin()) {
                 userId = Long.valueOf(0);
-            } else if(authorizationService.isAdmin()){
+            } else if (authorizationService.isAdmin()) {
                 Client client = clientRepository.findById(authorizationService.getUserId());
                 userId = client.getFirmId();
-            } else if(authorizationService.isAdvisor()){
+            } else if (authorizationService.isAdvisor()) {
                 Client client = clientRepository.findById(authorizationService.getUserId());
                 userId = client.getAdvisorId();
             }
@@ -94,7 +94,7 @@ public class GoalsService {
 
         if (pageNum == null) pageNum = Integer.valueOf(0);
 
-        if (goalServiceAbstract == null || pageNum < 0){
+        if (goalServiceAbstract == null || pageNum < 0) {
             return new ResponseEntity<>(new ApiResponseMessage("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
@@ -106,14 +106,14 @@ public class GoalsService {
         else if (endDate == null && dateValidator.validate(startDate))
             goal = goalServiceAbstract.buildResponseWithStartDate(startDate, pageNum, userId);
         else if (startDate != null && startDate != null && dateValidator.validate(startDate)
-                && dateValidator.validate(endDate) && dateValidator.isLess(startDate, endDate))
+                && dateValidator.validate(endDate) && dateValidator.isLessOrEqual(startDate, endDate))
             goal = goalServiceAbstract.buildResponseByDateBetween(startDate, endDate, pageNum, userId);
         else {
             return new ResponseEntity<>(new ApiResponseMessage("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
         if (goal == null) {
-            return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Goal(), HttpStatus.OK);
         }
         return new ResponseEntity<>(goal, HttpStatus.OK);
     }
