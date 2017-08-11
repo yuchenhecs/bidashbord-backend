@@ -32,20 +32,6 @@ public class GridConfigService {
                     gridRepository.saveAndFlush(new GridEntity(authorizationService.getUserId(), k, convertGridToString(v)))
             );
 
-//            gridContainer.forEach((k, v) ->
-//                    gridRepository.insertOrUpdateIfExists(
-//                            authorizationService.getUserId(), k, convertGridToString((Grid) v))
-//            );
-
-//            for (Map.Entry e : gridContainer.entrySet()){
-//
-//                gridRepository.insertOrUpdateIfExists(
-//                        authorizationService.getUserId(),
-//                        (String) e.getKey(),
-//                        convertGridToString((Grid) e.getValue())
-//                );
-//            }
-
         } catch (Exception e){
             log.error("Error occurred while insert/updating grid config", e);
             return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
