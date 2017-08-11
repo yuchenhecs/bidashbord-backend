@@ -28,8 +28,9 @@ public interface OranjPositionsRepository extends JpaRepository<OranjPositions, 
     @Query (value = "select poshis.id position_id, poshis.portfolio portfolio_id, qport.oranj_user_id client_id, " +
             "poshis.ticker_name, poshis.asset_class, poshis.price, poshis.quantity, poshis.value amount, " +
             "poshis.insert_date creation_date, poshis.update_date updated_on from quovo_positions_history poshis " +
-            "join quovo_portfolios qport on qport.id = poshis.portfolio limit 0, :num", nativeQuery = true)
-    List<Object[]> fetchPositionsHistoryWithLimit(@Param("num") Long num);
+            "join quovo_portfolios qport on qport.id = poshis.portfolio limit :offset, :num", nativeQuery = true)
+    List<Object[]> fetchPositionsHistoryWithLimit(@Param("offset") Long offset,
+                                                  @Param("num") Long num);
 
     @Query (value = "select poshis.id position_id, poshis.portfolio portfolio_id, qport.oranj_user_id client_id, " +
             "poshis.ticker_name, poshis.asset_class, poshis.price, poshis.quantity, poshis.value amount, " +

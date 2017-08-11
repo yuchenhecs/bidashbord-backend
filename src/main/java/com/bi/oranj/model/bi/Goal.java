@@ -80,4 +80,11 @@ public class Goal{
         this.type = type;
     }
 
+    public Goal(Collection<? extends User> users, String type, boolean last){
+        this.users = users;
+        this.type = type;
+        this.last = last;
+    }
+
+
 }

@@ -103,16 +103,31 @@ public class OranjService {
         List<Object[]> history = null;
 
         try{
-            if (limitNum == 0) history = oranjPositionsRepository.fetchPositionsHistory();
-            else history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(limitNum);
-            savePositions(history, dateFormat1);
+            if (limitNum == 0) {
+                long offset = 0;
+                do{
+                    history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(offset * 1000l, 1000l);
+                    offset++;
+                    savePositions(history, dateFormat1);
+                } while (history != null || !history.isEmpty());
+            }
+            else {
+                long offset = 0;
+                while (limitNum > 0){
+                    history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(offset * 1000l, 1000l);
+                    offset++;
+                    savePositions(history, dateFormat1);
+                    limitNum -= 1000;
+                    history.clear();
+                }
+            }
         }catch (Exception ex){
             return new ResponseEntity<>(new ApiResponseMessage("Error while fetching positions data"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> fetchPositionsDataByDate(String date) {
+    public ResponseEntity<Object> fetchPositionsByDate(String date) {
         if (!dateValidator.validate(date)) return new ResponseEntity<>(new ApiResponseMessage("Date is not valid"), HttpStatus.BAD_REQUEST);
 
         List<OranjPositions> positions = oranjPositionsRepository.fetchPositionsHistoryByDate(date);
@@ -129,7 +144,9 @@ public class OranjService {
         for (Object[] o : history) {
 
             String assetClass =  (String) o[4];
-            if (assetClass == null) assetClass = getRandomAssetClass(); // ! this is for dummy data
+
+            // ! this is for dummy data. to fill missing asset class fields
+            if (assetClass == null) assetClass = getRandomAssetClass();
 
             String date = "";
             if (o[8].getClass() == Timestamp.class) date = ((Timestamp) o[8]).toString();
@@ -152,6 +169,7 @@ public class OranjService {
             posHis.add(positionHistory);
         }
         positionRepository.save(posHis);
+        positionRepository.flush();
     }
 
     public ResponseEntity<Object> getGoals(String date){
