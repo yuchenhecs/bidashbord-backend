@@ -192,9 +192,11 @@ public class NetWorthService {
             if (authorizationService.isSuperAdmin()){
                 netWorthSummary = getAuthorizedData(null, "SuperAdmin");
             } else if (authorizationService.isAdmin()) {
-                netWorthSummary = getAuthorizedData(authorizationService.getUserId(), "FirmAdmin");
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                netWorthSummary = getAuthorizedData(client.getFirmId(), "FirmAdmin");
             } else if (authorizationService.isAdvisor()){
-                netWorthSummary = getAuthorizedData(authorizationService.getUserId(), "Advisor");
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                netWorthSummary = getAuthorizedData(client.getAdvisorId(), "Advisor");
             } else {
                 return new ResponseEntity<>("FORBIDDEN", HttpStatus.FORBIDDEN);
             }
@@ -210,7 +212,6 @@ public class NetWorthService {
     private List<NetWorthForSummary> getAuthorizedData(Long userId, String userType) throws Exception {
         List<NetWorthForSummary> networthList = new ArrayList<>();
         List<String> monthList = getDateList();
-        BigDecimal numClientsBefore = BigDecimal.valueOf(0);
 
         for(int i=0; i<monthList.size();i++) {
 
@@ -235,14 +236,11 @@ public class NetWorthService {
 
             for (Object[] resultSet : monthData) {
                 if (i == 0) {
-                    netWorthForSummary.setClientsDiff(numClientsBefore);
-                    numClientsBefore = new BigDecimal((BigInteger) resultSet[0]);
+                    netWorthForSummary.setClientsDiff(new BigDecimal((BigInteger) resultSet[0]));
                     netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
                     networthList.add(netWorthForSummary);
                 } else {
-                    BigDecimal numClientsNow = new BigDecimal((BigInteger) resultSet[0]);
-                    netWorthForSummary.setClientsDiff(numClientsNow.subtract(numClientsBefore));
-                    numClientsBefore = numClientsNow;
+                    netWorthForSummary.setClientsDiff(new BigDecimal((BigInteger) resultSet[0]));
                     netWorthForSummary.setAbsNet((BigDecimal) resultSet[1]);
                     networthList.add(netWorthForSummary);
                 }
@@ -261,7 +259,7 @@ public class NetWorthService {
             monthList.add(firstDayDate.toString());
             firstDayDate = firstDayDate.plusMonths(1);
         }
-        monthList.add(currentDate.toString());
+        monthList.add(currentDate.minusDays(1).toString());
         return monthList;
     }
 }

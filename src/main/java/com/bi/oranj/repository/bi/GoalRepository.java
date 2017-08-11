@@ -13,13 +13,13 @@ import static com.bi.oranj.constant.ConstantQueries.GET_GOALS_GROUPED_BY_TYPE_FO
 
 public interface GoalRepository extends JpaRepository<BiGoal, Integer> {
 
-    @Query(value = "SELECT count(id) FROM BiGoal")
+    @Query(value = "select count(g.id) from goals g join firms f on g.firm_id = f.id where f.active = 1;", nativeQuery = true)
     public Integer totalGoals();
 
-    @Query(value = "SELECT count(id) FROM BiGoal WHERE firmId = ?1")
+    @Query(value = "select count(g.id) from goals g join advisors a on g.advisor_id = a.id where g.firm_id = ?1 and a.active = 1;", nativeQuery = true)
     public Integer totalAdvisorGoals (long firmId);
 
-    @Query(value = "SELECT count(id) FROM BiGoal WHERE advisorId = ?1")
+    @Query(value = "SELECT count(g.id) FROM goals g join clients c on c.id = g.client_id WHERE g.advisor_id = ?1 and c.active = 1;", nativeQuery = true)
     public Integer totalClientGoals (long advisorId);
 
     @Query(value = GET_GOALS_GROUPED_BY_TYPE, nativeQuery = true)

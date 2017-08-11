@@ -1,6 +1,7 @@
 package com.bi.oranj.service.bi;
 
 import com.bi.oranj.model.bi.Goal;
+import com.bi.oranj.model.bi.wrapper.user.Advisor;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.model.bi.wrapper.user.Client;
@@ -29,11 +30,12 @@ public class ClientService extends GoalServiceAbstract {
     public Goal buildResponse(int pageNum, long advisorId) {
         int totalClients = clientRepository.findDistinctByAdvisor(advisorId);
         int totalPages = totalPages(totalClients);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Client> clients = findGoals(advisorId, pageNum);
         if (clients == null || clients.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalClientGoals(advisorId);
         Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -44,11 +46,12 @@ public class ClientService extends GoalServiceAbstract {
     public Goal buildResponseWithStartDate (String startDate, int pageNum, long advisorId){
         int totalClients = clientRepository.findDistinctClientsWithStartDate(startDate, advisorId);
         int totalPages = totalPages(totalClients);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Client> clients = findGoalsWithStartDate(advisorId, startDate, pageNum);
         if (clients == null || clients.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalClientGoalsWithStartDate(startDate, advisorId);
         Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -59,11 +62,12 @@ public class ClientService extends GoalServiceAbstract {
     public Goal buildResponseWithEndDate (String endDate, int pageNum, long advisorId){
         int totalClients = clientRepository.findDistinctClientsWithEndDate(endDate, advisorId);
         int totalPages = totalPages(totalClients);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Client> clients = findGoalsWithEndDate(advisorId, endDate, pageNum);
         if (clients == null || clients.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalClientGoalsWithEndDate(endDate, advisorId);
         Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -74,11 +78,12 @@ public class ClientService extends GoalServiceAbstract {
     public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long advisorId){
         int totalClients = clientRepository.findDistinctClientsByDateBetween(startDate, endDate, advisorId);
         int totalPages = totalPages(totalClients);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Client> clients = findGoalsByDate(advisorId, startDate, endDate, pageNum);
         if (clients == null || clients.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalClientGoalsByDateBetween(startDate, endDate, advisorId);
         Goal goals = processGoalresponse(clients, pageNum, totalClients, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -107,7 +112,6 @@ public class ClientService extends GoalServiceAbstract {
     }
 
     private Goal processGoalresponse (Collection<Client> clients, int pageNum, int totalClients, int totalGoals){
-
         Goal goal = new Goal();
         goal.setTotalUsers(totalClients);
         goal.setTotalGoals(totalGoals);
@@ -129,7 +133,7 @@ public class ClientService extends GoalServiceAbstract {
         for (Object[] goal : goalObjects){
             concatenatedName.setLength(0); // clears string builder
 
-            int advisorId = ((BigInteger) goal[0]).intValue();
+            int clientId = ((BigInteger) goal[0]).intValue();
             String firstName = (String) goal[1];
             String lastName = (String) goal[2];
             concatenatedName.append(firstName).append(" ").append(lastName);
@@ -140,8 +144,8 @@ public class ClientService extends GoalServiceAbstract {
             else type = ((String) goal[3]).trim().toLowerCase();
 
 
-            if (linkedHashMap.containsKey(advisorId)){
-                Client advisor = linkedHashMap.get(advisorId);
+            if (linkedHashMap.containsKey(clientId)){
+                Client advisor = linkedHashMap.get(clientId);
                 HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
                 if (goalList.containsKey(type)){
@@ -153,16 +157,22 @@ public class ClientService extends GoalServiceAbstract {
                 advisor.setTotal(count);
 
             } else {
+                HashMap<String, Integer> goalList = new HashMap<>();
+                goalList.put("custom", 0);
+                goalList.put("college", 0);
+                goalList.put("retirement", 0);
+                goalList.put("insurance", 0);
+                goalList.put("home", 0);
+                goalList.put("special_event", 0);
 
                 if (type == null){
-                    linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
+                    linkedHashMap.put(clientId, new Client(clientId, concatenatedName.toString(), goalList, count));
                     continue;
                 }
 
-                HashMap<String, Integer> goalList = new HashMap<>();
                 goalList.put(type, count);
 
-                linkedHashMap.put(advisorId, new Client(advisorId, concatenatedName.toString(), goalList, count));
+                linkedHashMap.put(clientId, new Client(clientId, concatenatedName.toString(), goalList, count));
             }
         }
 

@@ -3,6 +3,8 @@ package com.bi.oranj.service.bi;
 import com.bi.oranj.model.bi.Client;
 import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.model.bi.GoalSummary;
+import com.bi.oranj.model.bi.wrapper.User;
+import com.bi.oranj.model.bi.wrapper.user.Advisor;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.utils.date.DateValidator;
@@ -15,8 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class GoalsService {
@@ -50,10 +51,14 @@ public class GoalsService {
 
         if (authorizationService.isSuperAdmin()){
             goalsGroupedByType = goalRepository.findGoalsGroupedByType();
-        } else if (authorizationService.isAdvisor()){
-            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForAdvisor(authorizationService.getUserId());
         } else if (authorizationService.isAdmin()){
-            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForFirm(authorizationService.getUserId());
+            Client client = clientRepository.findById(authorizationService.getUserId());
+            if (client == null) return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
+            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForFirm(client.getFirmId());
+        } else if (authorizationService.isAdvisor()){
+            Client client = clientRepository.findById(authorizationService.getUserId());
+            if (client == null) return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
+            goalsGroupedByType = goalRepository.findGoalsGroupedByTypeForAdvisor(client.getAdvisorId());
         } else {
             return new ResponseEntity<Object>("FORBIDDEN", HttpStatus.FORBIDDEN);
         }
@@ -76,13 +81,13 @@ public class GoalsService {
                                                    String startDate, String endDate) throws IOException {
         GoalServiceAbstract goalServiceAbstract = getService(userType);
 
-        if (userId == null){
-            if(authorizationService.isSuperAdmin()){
+        if (userId == null) {
+            if (authorizationService.isSuperAdmin()) {
                 userId = Long.valueOf(0);
-            } else if(authorizationService.isAdmin()){
+            } else if (authorizationService.isAdmin()) {
                 Client client = clientRepository.findById(authorizationService.getUserId());
                 userId = client.getFirmId();
-            } else if(authorizationService.isAdvisor()){
+            } else if (authorizationService.isAdvisor() && userId == null) {
                 Client client = clientRepository.findById(authorizationService.getUserId());
                 userId = client.getAdvisorId();
             }
@@ -90,7 +95,7 @@ public class GoalsService {
 
         if (pageNum == null) pageNum = Integer.valueOf(0);
 
-        if (goalServiceAbstract == null || pageNum < 0){
+        if (goalServiceAbstract == null || pageNum < 0) {
             return new ResponseEntity<>(new ApiResponseMessage("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
@@ -102,15 +107,12 @@ public class GoalsService {
         else if (endDate == null && dateValidator.validate(startDate))
             goal = goalServiceAbstract.buildResponseWithStartDate(startDate, pageNum, userId);
         else if (startDate != null && startDate != null && dateValidator.validate(startDate)
-                && dateValidator.validate(endDate) && dateValidator.isLess(startDate, endDate))
+                && dateValidator.validate(endDate) && dateValidator.isLessOrEqual(startDate, endDate))
             goal = goalServiceAbstract.buildResponseByDateBetween(startDate, endDate, pageNum, userId);
         else {
             return new ResponseEntity<>(new ApiResponseMessage("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
-        if (goal == null) {
-            return new ResponseEntity<>(new ApiResponseMessage("Data not found"), HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(goal, HttpStatus.OK);
     }
 

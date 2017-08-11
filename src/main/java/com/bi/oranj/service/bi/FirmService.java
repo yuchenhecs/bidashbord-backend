@@ -28,11 +28,12 @@ public class FirmService extends GoalServiceAbstract {
     public Goal buildResponse(int pageNum, long userId) {
         int totalFirms = firmRepository.findDistinctFromFirm();
         int totalPages = totalPages(totalFirms);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Firm> firms = findGoals(pageNum);
         if (firms == null || firms.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalGoals();
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -43,11 +44,12 @@ public class FirmService extends GoalServiceAbstract {
     public Goal buildResponseWithStartDate (String startDate, int pageNum, long userId){
         int totalFirms = firmRepository.findDistinctFirmsWithStartDate(startDate);
         int totalPages = totalPages(totalFirms);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Firm> firms = findGoalsWithStartDate(startDate, pageNum);
         if (firms == null || firms.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalGoalsWithStartDate(startDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if ( goals!=null && pageNum == totalPages) goals.setLast(true);
@@ -58,11 +60,12 @@ public class FirmService extends GoalServiceAbstract {
     public Goal buildResponseWithEndDate (String endDate, int pageNum, long userId){
         int totalFirms = firmRepository.findDistinctFirmsWithEndDate(endDate);
         int totalPages = totalPages(totalFirms);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Firm> firms = findGoalsWithEndDate(endDate, pageNum);
         if (firms == null || firms.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalGoalsWithEndDate(endDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -73,11 +76,12 @@ public class FirmService extends GoalServiceAbstract {
     public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long userId){
         int totalFirms = firmRepository.findDistinctFirmsByDateBetween(startDate, endDate);
         int totalPages = totalPages(totalFirms);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Firm> firms = findGoalsByDateBetween(startDate, endDate, pageNum);
         if (firms == null || firms.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalGoalsByDateBetween(startDate, endDate);
         Goal goals = processGoalresponse(firms, pageNum, totalFirms, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -85,8 +89,8 @@ public class FirmService extends GoalServiceAbstract {
     }
 
     private Collection<Firm> findGoals (int pageNum){
-        List<Object[]> firms = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
-        return processObjectArrays(firms);
+        List<Object[]> goalObjects = firmRepository.findGoalsOrdered(pageNum * pageSize, pageSize);
+        return processObjectArrays(goalObjects);
     }
 
     private Collection<Firm> findGoalsByDateBetween (String startDate, String endDate, int pageNum){
@@ -105,7 +109,7 @@ public class FirmService extends GoalServiceAbstract {
     }
 
     private Collection<Firm> processObjectArrays (List<Object[]> goalObjects){
-        Map<Integer, Firm> linkedHashMap = new LinkedHashMap<>();
+        Map<Integer, Firm> idMapFirm = new LinkedHashMap<>();
 
         for (Object[] goal : goalObjects){
             int firmId = ((BigInteger) goal[0]).intValue();
@@ -116,8 +120,8 @@ public class FirmService extends GoalServiceAbstract {
             if (goal[2] == null) type = null;
             else type = ((String) goal[2]).trim().toLowerCase();
 
-            if (linkedHashMap.containsKey(firmId)) {
-                Firm firm = linkedHashMap.get(firmId);
+            if (idMapFirm.containsKey(firmId)) {
+                Firm firm = idMapFirm.get(firmId);
                 HashMap<String, Integer> goalList = (HashMap<String, Integer>) firm.getGoals();
 
                 if (goalList.containsKey(type)) {
@@ -128,26 +132,27 @@ public class FirmService extends GoalServiceAbstract {
                 firm.setGoals(goalList);
                 firm.setTotal(count);
             } else {
+                HashMap<String, Integer> goalList = new HashMap<>();
+                goalList.put("custom", 0);
+                goalList.put("college", 0);
+                goalList.put("retirement", 0);
+                goalList.put("insurance", 0);
+                goalList.put("home", 0);
+                goalList.put("special_event", 0);
 
                 if (type == null) {
-                    linkedHashMap.put(firmId, new Firm(firmId, firmName, Collections.emptyMap(), count));
+                    idMapFirm.put(firmId, new Firm(firmId, firmName, goalList, count));
                     continue;
                 }
-
-                HashMap<String, Integer> goalList = new HashMap<>();
                 goalList.put(type, count);
-                linkedHashMap.put(firmId, new Firm(firmId, firmName, goalList, count));
+                idMapFirm.put(firmId, new Firm(firmId, firmName, goalList, count));
             }
         }
 
-        return linkedHashMap.values();
+        return idMapFirm.values();
     }
 
     private Goal processGoalresponse (Collection<Firm> firms, int pageNum, int totalFirms, int totalGoals){
-
-        if (firms == null || firms.isEmpty())
-            return null;
-
         Goal goal = new Goal();
         goal.setTotalUsers(totalFirms);
         goal.setTotalGoals(totalGoals);

@@ -42,11 +42,12 @@ public class AdvisorService extends GoalServiceAbstract {
     public Goal buildResponse(int pageNum, long firmId) {
         int totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
         int totalPages = totalPages(totalAdvisors);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Advisor> advisors = findGoals(firmId, pageNum);
         if (advisors == null || advisors.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalAdvisorGoals(firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -66,11 +67,12 @@ public class AdvisorService extends GoalServiceAbstract {
     public Goal buildResponseWithStartDate (String startDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId);
         int totalPages = totalPages(totalAdvisors);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Advisor> advisors = findGoalsWithStartDate(firmId, startDate, pageNum);
         if (advisors == null || advisors.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalAdvisorGoalsWithStartDate(startDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -91,11 +93,12 @@ public class AdvisorService extends GoalServiceAbstract {
     public Goal buildResponseWithEndDate (String endDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId);
         int totalPages = totalPages(totalAdvisors);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Advisor> advisors = findGoalsWithEndDate(firmId, endDate, pageNum);
         if (advisors == null || advisors.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalAdvisorGoalsWithEndDate(endDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -116,11 +119,12 @@ public class AdvisorService extends GoalServiceAbstract {
     public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId);
         int totalPages = totalPages(totalAdvisors);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
 
         Collection<Advisor> advisors = findGoalsByDate(firmId, startDate, endDate, pageNum);
         if (advisors == null || advisors.isEmpty())
-            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")), true);
         int totalGoals = goalRepository.totalAdvisorGoalsByDateBetween(startDate, endDate, firmId);
         Goal goals = processGoalresponse(advisors, pageNum, totalAdvisors, totalGoals);
         if (goals != null && pageNum == totalPages) goals.setLast(true);
@@ -186,9 +190,6 @@ public class AdvisorService extends GoalServiceAbstract {
      * @return
      */
     private Goal processGoalresponse (Collection<Advisor> advisors, int pageNum, int totalAdvisors, int totalGoals){
-        if (advisors == null || advisors.isEmpty())
-            return null;
-
         Goal goal = new Goal();
         goal.setTotalUsers(totalAdvisors);
         goal.setTotalGoals(totalGoals);
@@ -220,9 +221,10 @@ public class AdvisorService extends GoalServiceAbstract {
             if (goal[3] == null) type = null;
             else type = ((String) goal[3]).trim().toLowerCase();
 
+
             if (linkedHashMap.containsKey(advisorId)){
                 Advisor advisor = linkedHashMap.get(advisorId);
-                HashMap<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
+                Map<String, Integer> goalList = (HashMap<String, Integer>) advisor.getGoals();
 
                 if (goalList.containsKey(type)){
                     goalList.put(type, goalList.get(type) + count);
@@ -232,11 +234,20 @@ public class AdvisorService extends GoalServiceAbstract {
                 advisor.setGoals(goalList);
                 advisor.setTotal(count);
             } else {
+                HashMap<String, Integer> goalList = new HashMap<>();
+                goalList.put("custom", 0);
+                goalList.put("college", 0);
+                goalList.put("retirement", 0);
+                goalList.put("insurance", 0);
+                goalList.put("home", 0);
+                goalList.put("special_event", 0);
+
+
                 if (type == null){
-                    linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), Collections.emptyMap(), count));
+                    linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), goalList, count));
                     continue;
                 }
-                HashMap<String, Integer> goalList = new HashMap<>();
+
                 goalList.put(type, count);
 
                 linkedHashMap.put(advisorId, new Advisor(advisorId, concatenatedName.toString(), goalList, count));

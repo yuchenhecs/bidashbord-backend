@@ -68,8 +68,20 @@ public class AUMService {
                 FirmAUM firmAUM = new FirmAUM();
                 firmAUM.setFirmId(firmList.get(i).getId());
                 firmAUM.setName(firmList.get(i).getFirmName());
-                firmAUM.setPrevious(new AumDiff(previousDate, BigDecimal.ZERO, new HashMap<String, BigDecimal>()));
-                firmAUM.setCurrent(new AumDiff(currentDate, BigDecimal.ZERO, new HashMap<String, BigDecimal>()));
+                Map<String, BigDecimal> previousAssetClass = new HashMap<>();
+                previousAssetClass.put("Cash", BigDecimal.ZERO);
+                previousAssetClass.put("US Bond", BigDecimal.ZERO);
+                previousAssetClass.put("Other", BigDecimal.ZERO);
+                previousAssetClass.put("Non US Stock", BigDecimal.ZERO);
+                previousAssetClass.put("US Stock", BigDecimal.ZERO);
+                Map<String, BigDecimal> currentAssetClass = new HashMap<>();
+                currentAssetClass.put("Cash", BigDecimal.ZERO);
+                currentAssetClass.put("US Bond", BigDecimal.ZERO);
+                currentAssetClass.put("Other", BigDecimal.ZERO);
+                currentAssetClass.put("Non US Stock", BigDecimal.ZERO);
+                currentAssetClass.put("US Stock", BigDecimal.ZERO);
+                firmAUM.setPrevious(new AumDiff(previousDate, BigDecimal.ZERO, previousAssetClass));
+                firmAUM.setCurrent(new AumDiff(currentDate, BigDecimal.ZERO, currentAssetClass));
                 firmAUMList.add(firmAUM);
                 map.put(firmAUM.getFirmId(), firmAUM);
             }
@@ -79,7 +91,7 @@ public class AUMService {
                 FirmAUM firmAUM = map.get(((BigInteger) resultSet[0]).longValue());
                 AumDiff aumDiff = firmAUM.getPrevious();
                 Map<String, BigDecimal> assetClass = aumDiff.getAssetClass();
-                assetClass.put(resultSet[1].toString(), (BigDecimal) resultSet[2]);
+                assetClass.put(resultSet[1].toString(), assetClass.get(resultSet[1].toString()).add((BigDecimal) resultSet[2]));
                 aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[2]));
                 aumDiff.setAssetClass(assetClass);
                 firmAUM.setPrevious(aumDiff);
@@ -90,7 +102,7 @@ public class AUMService {
                 FirmAUM firmAUM = map.get(((BigInteger) resultSet[0]).longValue());
                 AumDiff aumDiff = firmAUM.getCurrent();
                 Map<String, BigDecimal> assetClass = aumDiff.getAssetClass();
-                assetClass.put(resultSet[1].toString(), (BigDecimal) resultSet[2]);
+                assetClass.put(resultSet[1].toString(), assetClass.get(resultSet[1].toString()).add((BigDecimal) resultSet[2]));
                 aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[2]));
                 aumDiff.setAssetClass(assetClass);
                 firmAUM.setCurrent(aumDiff);
@@ -132,8 +144,20 @@ public class AUMService {
                 AdvisorAUM advisorAUM = new AdvisorAUM();
                 advisorAUM.setAdvisorId(advisorList.get(i).getId());
                 advisorAUM.setName(advisorList.get(i).getAdvisorFirstName() + " " + advisorList.get(i).getAdvisorLastName());
-                advisorAUM.setPrevious(new AumDiff(previousDate, BigDecimal.ZERO, new HashMap<String, BigDecimal>()));
-                advisorAUM.setCurrent(new AumDiff(currentDate, BigDecimal.ZERO, new HashMap<String, BigDecimal>()));
+                Map<String, BigDecimal> previousAssetClass = new HashMap<>();
+                previousAssetClass.put("Cash", BigDecimal.ZERO);
+                previousAssetClass.put("US Bond", BigDecimal.ZERO);
+                previousAssetClass.put("Other", BigDecimal.ZERO);
+                previousAssetClass.put("Non US Stock", BigDecimal.ZERO);
+                previousAssetClass.put("US Stock", BigDecimal.ZERO);
+                Map<String, BigDecimal> currentAssetClass = new HashMap<>();
+                currentAssetClass.put("Cash", BigDecimal.ZERO);
+                currentAssetClass.put("US Bond", BigDecimal.ZERO);
+                currentAssetClass.put("Other", BigDecimal.ZERO);
+                currentAssetClass.put("Non US Stock", BigDecimal.ZERO);
+                currentAssetClass.put("US Stock", BigDecimal.ZERO);
+                advisorAUM.setPrevious(new AumDiff(previousDate, BigDecimal.ZERO, previousAssetClass));
+                advisorAUM.setCurrent(new AumDiff(currentDate, BigDecimal.ZERO, currentAssetClass));
                 advisorAUMList.add(advisorAUM);
                 map.put(advisorAUM.getAdvisorId(), advisorAUM);
             }
@@ -143,7 +167,7 @@ public class AUMService {
                 AdvisorAUM advisorAUM = map.get(((BigInteger) resultSet[0]).longValue());
                 AumDiff aumDiff = advisorAUM.getPrevious();
                 Map<String, BigDecimal> assetClass = aumDiff.getAssetClass();
-                assetClass.put(resultSet[1].toString(), (BigDecimal) resultSet[2]);
+                assetClass.put(resultSet[1].toString(), assetClass.get(resultSet[1].toString()).add((BigDecimal) resultSet[2]));
                 aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[2]));
                 aumDiff.setAssetClass(assetClass);
                 advisorAUM.setPrevious(aumDiff);
@@ -154,7 +178,7 @@ public class AUMService {
                 AdvisorAUM advisorAUM = map.get(((BigInteger) resultSet[0]).longValue());
                 AumDiff aumDiff = advisorAUM.getCurrent();
                 Map<String, BigDecimal> assetClass = aumDiff.getAssetClass();
-                assetClass.put(resultSet[1].toString(), (BigDecimal) resultSet[2]);
+                assetClass.put(resultSet[1].toString(), assetClass.get(resultSet[1].toString()).add((BigDecimal) resultSet[2]));
                 aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[2]));
                 aumDiff.setAssetClass(assetClass);
                 advisorAUM.setCurrent(aumDiff);
@@ -197,8 +221,20 @@ public class AUMService {
                 ClientAUM clientAUM = new ClientAUM();
                 clientAUM.setClientId(clientList.get(i).getId());
                 clientAUM.setName(clientList.get(i).getClientFirstName() + " " + clientList.get(i).getClientLastName());
-                clientAUM.setPrevious(new AumDiff(previousDate, BigDecimal.ZERO, new HashMap<String, BigDecimal>()));
-                clientAUM.setCurrent(new AumDiff(currentDate, BigDecimal.ZERO, new HashMap<String, BigDecimal>()));
+                Map<String, BigDecimal> previousAssetClass = new HashMap<>();
+                previousAssetClass.put("Cash", BigDecimal.ZERO);
+                previousAssetClass.put("US Bond", BigDecimal.ZERO);
+                previousAssetClass.put("Other", BigDecimal.ZERO);
+                previousAssetClass.put("Non US Stock", BigDecimal.ZERO);
+                previousAssetClass.put("US Stock", BigDecimal.ZERO);
+                Map<String, BigDecimal> currentAssetClass = new HashMap<>();
+                currentAssetClass.put("Cash", BigDecimal.ZERO);
+                currentAssetClass.put("US Bond", BigDecimal.ZERO);
+                currentAssetClass.put("Other", BigDecimal.ZERO);
+                currentAssetClass.put("Non US Stock", BigDecimal.ZERO);
+                currentAssetClass.put("US Stock", BigDecimal.ZERO);
+                clientAUM.setPrevious(new AumDiff(previousDate, BigDecimal.ZERO, previousAssetClass));
+                clientAUM.setCurrent(new AumDiff(currentDate, BigDecimal.ZERO, currentAssetClass));
                 clientAUMList.add(clientAUM);
                 map.put(clientAUM.getClientId(), clientAUM);
             }
@@ -208,7 +244,7 @@ public class AUMService {
                 ClientAUM clientAUM = map.get(((BigInteger) resultSet[0]).longValue());
                 AumDiff aumDiff = clientAUM.getPrevious();
                 Map<String, BigDecimal> assetClass = aumDiff.getAssetClass();
-                assetClass.put(resultSet[1].toString(), (BigDecimal) resultSet[2]);
+                assetClass.put(resultSet[1].toString(), assetClass.get(resultSet[1].toString()).add((BigDecimal) resultSet[2]));
                 aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[2]));
                 aumDiff.setAssetClass(assetClass);
                 clientAUM.setPrevious(aumDiff);
@@ -219,7 +255,7 @@ public class AUMService {
                 ClientAUM clientAUM = map.get(((BigInteger) resultSet[0]).longValue());
                 AumDiff aumDiff = clientAUM.getCurrent();
                 Map<String, BigDecimal> assetClass = aumDiff.getAssetClass();
-                assetClass.put(resultSet[1].toString(), (BigDecimal) resultSet[2]);
+                assetClass.put(resultSet[1].toString(), assetClass.get(resultSet[1].toString()).add((BigDecimal) resultSet[2]));
                 aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[2]));
                 aumDiff.setAssetClass(assetClass);
                 clientAUM.setCurrent(aumDiff);
@@ -244,9 +280,13 @@ public class AUMService {
             if (authorizationService.isSuperAdmin()) {
                 aumForSummary = getAuthorizedData(null, "SuperAdmin");
             } else if (authorizationService.isAdmin()){
-                aumForSummary = getAuthorizedData(authorizationService.getUserId(), "FirmAdmin");
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                if (client == null) return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
+                aumForSummary = getAuthorizedData(client.getFirmId(), "FirmAdmin");
             } else if (authorizationService.isAdvisor()) {
-                aumForSummary = getAuthorizedData(authorizationService.getUserId(), "Advisor");
+                Client client = clientRepository.findById(authorizationService.getUserId());
+                if (client == null) return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
+                aumForSummary = getAuthorizedData(client.getAdvisorId(), "Advisor");
             } else {
                 new ResponseEntity<>(ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
@@ -284,9 +324,14 @@ public class AUMService {
             aumDiff.setDate(dateList.get(i));
             aumDiff.setTotal(new BigDecimal(0));
             Map<String, BigDecimal> assetClass = new HashMap<>();
+            assetClass.put("Cash", BigDecimal.ZERO);
+            assetClass.put("US Bond", BigDecimal.ZERO);
+            assetClass.put("Other", BigDecimal.ZERO);
+            assetClass.put("Non US Stock", BigDecimal.ZERO);
+            assetClass.put("US Stock", BigDecimal.ZERO);
 
             for (Object[] resultSet : aumSummaryResultSet){
-                assetClass.put(resultSet[0].toString(), (BigDecimal) resultSet[1]);
+                assetClass.put(resultSet[0].toString(), assetClass.get(resultSet[0].toString()).add((BigDecimal) resultSet[1]));
                 aumDiff.setTotal(aumDiff.getTotal().add((BigDecimal) resultSet[1]));
             }
             aumDiff.setAssetClass(assetClass);
