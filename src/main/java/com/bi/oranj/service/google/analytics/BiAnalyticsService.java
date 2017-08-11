@@ -36,8 +36,8 @@ public class BiAnalyticsService {
 
     private final Logger logger = LoggerFactory.getLogger(BiAnalyticsService.class);
     private static final int maxResults = 10000;
-    private static final SimpleDateFormat simpleDateFormatQuery = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat simpleDateFormatSave = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final SimpleDateFormat simpleDateFormatQuery = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat simpleDateFormatSave = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static final Map<String, String> dimensions;
     static {

@@ -1,5 +1,7 @@
 package com.bi.oranj.utils.date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -18,7 +20,7 @@ public class DateValidator {
     private Pattern pattern;
     private Matcher matcher;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private static final String DATE_PATTERN =
             "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
@@ -78,7 +80,7 @@ public class DateValidator {
         try{
             input = simpleDateFormat.parse(date);
         }catch (Exception ex){
-            ex.printStackTrace();
+            log.error("Error in parsing date");
         }
         return input.before(today);
     }
@@ -94,7 +96,7 @@ public class DateValidator {
             first = simpleDateFormat.parse(firstDate);
             second = simpleDateFormat.parse(secondDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("Error in parsing date");
         }
         return first.before(second) || first.equals(second);
     }

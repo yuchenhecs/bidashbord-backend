@@ -30,7 +30,7 @@ import java.util.List;
 public class NetWorthService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     HttpServletResponse response;
 
 
@@ -47,7 +47,7 @@ public class NetWorthService {
     private FirmRepository firmRepository;
 
     @Autowired
-    ScheduledTasks scheduledTasks;
+    private ScheduledTasks scheduledTasks;
 
     @Autowired
     private AuthorizationService authorizationService;
