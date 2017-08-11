@@ -27,8 +27,8 @@ public class ScheduledTasks {
     CronRepository cronRepository;
 
 
-    private static final Logger log = LoggerFactory.getLogger(Scheduled.class);
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final Logger log = LoggerFactory.getLogger(Scheduled.class);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public Date yesterday() {
         final Calendar cal = Calendar.getInstance();

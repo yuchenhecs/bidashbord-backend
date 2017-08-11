@@ -58,7 +58,7 @@ public class GamificationService {
     @Autowired
     ClientRepository clientRepository;
 
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static final String[] scopes = {"state", "firm", "overall"};
 
     public ResponseEntity<Object> getAdvisorsPerformance(String kpiName){
