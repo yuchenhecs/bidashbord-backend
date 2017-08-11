@@ -112,12 +112,13 @@ public class OranjService {
                 } while (history != null || !history.isEmpty());
             }
             else {
+                long offset = 0;
                 while (limitNum > 0){
-                    long offset = 0;
-                    history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(offset * 1000l, limitNum);
+                    history = oranjPositionsRepository.fetchPositionsHistoryWithLimit(offset * 1000l, 1000l);
                     offset++;
                     savePositions(history, dateFormat1);
                     limitNum -= 1000;
+                    history.clear();
                 }
             }
         }catch (Exception ex){
@@ -143,7 +144,9 @@ public class OranjService {
         for (Object[] o : history) {
 
             String assetClass =  (String) o[4];
-            if (assetClass == null) assetClass = getRandomAssetClass(); // ! this is for dummy data
+
+            // ! this is for dummy data. to fill missing asset class fields
+            if (assetClass == null) assetClass = getRandomAssetClass();
 
             String date = "";
             if (o[8].getClass() == Timestamp.class) date = ((Timestamp) o[8]).toString();
@@ -166,6 +169,7 @@ public class OranjService {
             posHis.add(positionHistory);
         }
         positionRepository.save(posHis);
+        positionRepository.flush();
     }
 
     public ResponseEntity<Object> getGoals(String date){

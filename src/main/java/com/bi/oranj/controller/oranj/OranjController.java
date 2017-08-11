@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,7 @@ public class OranjController {
 
     @ApiOperation( value = "Build initial historical data")
     @RequestMapping (path = "/aum", method = RequestMethod.GET)
-    public void buildData (@RequestParam(value = "limit", required = false) Integer limit, HttpServletResponse response){
+    public ResponseEntity buildData (@RequestParam(value = "limit", required = false) Integer limit, HttpServletResponse response){
         log.info("Building initial data");
         try{
             if (limit == null) limit = 0;
@@ -65,8 +66,9 @@ public class OranjController {
             oranjService.fetchPositionsData();
         }catch (Exception ex){
             log.error("Error while building initial data", ex);
+            new ResponseEntity<>("Error while fetching positions data", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "Save All Firms from Oranj DB To BI DB", notes = "Saves all the firms created till today")
