@@ -87,7 +87,7 @@ public class GoalsService {
             } else if (authorizationService.isAdmin()) {
                 Client client = clientRepository.findById(authorizationService.getUserId());
                 userId = client.getFirmId();
-            } else if (authorizationService.isAdvisor()) {
+            } else if (authorizationService.isAdvisor() && userId == null) {
                 Client client = clientRepository.findById(authorizationService.getUserId());
                 userId = client.getAdvisorId();
             }
