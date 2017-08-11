@@ -42,7 +42,8 @@ public class AdvisorService extends GoalServiceAbstract {
     public Goal buildResponse(int pageNum, long firmId) {
         int totalAdvisors = advisorRepository.findDistinctByFirm(firmId);
         int totalPages = totalPages(totalAdvisors);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
 
         Collection<Advisor> advisors = findGoals(firmId, pageNum);
         if (advisors == null || advisors.isEmpty())
@@ -66,7 +67,8 @@ public class AdvisorService extends GoalServiceAbstract {
     public Goal buildResponseWithStartDate (String startDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithStartDate(startDate, firmId);
         int totalPages = totalPages(totalAdvisors);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
 
         Collection<Advisor> advisors = findGoalsWithStartDate(firmId, startDate, pageNum);
         if (advisors == null || advisors.isEmpty())
@@ -91,7 +93,8 @@ public class AdvisorService extends GoalServiceAbstract {
     public Goal buildResponseWithEndDate (String endDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsWithEndDate(endDate, firmId);
         int totalPages = totalPages(totalAdvisors);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
 
         Collection<Advisor> advisors = findGoalsWithEndDate(firmId, endDate, pageNum);
         if (advisors == null || advisors.isEmpty())
@@ -116,7 +119,8 @@ public class AdvisorService extends GoalServiceAbstract {
     public Goal buildResponseByDateBetween (String startDate, String endDate, int pageNum, long firmId){
         int totalAdvisors = advisorRepository.findDistinctAdvisorsByDateBetween(startDate, endDate, firmId);
         int totalPages = totalPages(totalAdvisors);
-        if (pageNum > totalPages) return null;
+        if (pageNum > totalPages)
+            return new Goal(Collections.emptyList(), this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().indexOf("S")));
 
         Collection<Advisor> advisors = findGoalsByDate(firmId, startDate, endDate, pageNum);
         if (advisors == null || advisors.isEmpty())
@@ -186,9 +190,6 @@ public class AdvisorService extends GoalServiceAbstract {
      * @return
      */
     private Goal processGoalresponse (Collection<Advisor> advisors, int pageNum, int totalAdvisors, int totalGoals){
-        if (advisors == null || advisors.isEmpty())
-            return null;
-
         Goal goal = new Goal();
         goal.setTotalUsers(totalAdvisors);
         goal.setTotalGoals(totalGoals);

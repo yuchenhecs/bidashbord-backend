@@ -3,6 +3,8 @@ package com.bi.oranj.service.bi;
 import com.bi.oranj.model.bi.Client;
 import com.bi.oranj.model.bi.Goal;
 import com.bi.oranj.model.bi.GoalSummary;
+import com.bi.oranj.model.bi.wrapper.User;
+import com.bi.oranj.model.bi.wrapper.user.Advisor;
 import com.bi.oranj.repository.bi.ClientRepository;
 import com.bi.oranj.repository.bi.GoalRepository;
 import com.bi.oranj.utils.date.DateValidator;
@@ -15,8 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class GoalsService {
@@ -112,9 +113,6 @@ public class GoalsService {
             return new ResponseEntity<>(new ApiResponseMessage("Bad input parameter"), HttpStatus.BAD_REQUEST);
         }
 
-        if (goal == null) {
-            return new ResponseEntity<>(new Goal(), HttpStatus.OK);
-        }
         return new ResponseEntity<>(goal, HttpStatus.OK);
     }
 
