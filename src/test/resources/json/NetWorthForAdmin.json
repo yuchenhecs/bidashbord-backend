@@ -1,0 +1,20 @@
+{
+  "data": {
+    "hasNext": true,
+    "page": 0,
+    "firms": [
+      {
+        "firmId": 723,
+        "name": "0401002",
+        "absNet": null,
+        "avgNet": null
+      },
+      {
+        "firmId": 510,
+        "name": "23andme",
+        "absNet": 0,
+        "avgNet": 0
+      }
+    ]
+  }
+}

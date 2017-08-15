@@ -1,0 +1,49 @@
+{
+  "hasNext": false,
+  "page": 0,
+  "count": 0,
+  "totalClients": 2,
+  "clients": [{
+    "name": "UnitTest Client",
+    "previous": {
+      "date": "2017-06-11",
+      "total": 287346,
+      "assetClass": {
+        "US Stocks": 1782,
+        "Non US Stocks": 12345,
+        "Cash": 1234
+      }
+    },
+    "current": {
+      "date": "2017-06-11",
+      "total": 287346,
+      "assetClass": {
+        "US Stocks": 1782,
+        "Non US Stocks": 12345,
+        "Cash": 1234
+      }
+    },
+    "clientId": 13
+  }, {
+    "name": "UnitTest Client",
+    "previous": {
+      "date": "2017-06-11",
+      "total": 287346,
+      "assetClass": {
+        "US Stocks": 1782,
+        "Non US Stocks": 12345,
+        "Cash": 1234
+      }
+    },
+    "current": {
+      "date": "2017-06-11",
+      "total": 287346,
+      "assetClass": {
+        "US Stocks": 1782,
+        "Non US Stocks": 12345,
+        "Cash": 1234
+      }
+    },
+    "clientId": 13
+  }]
+}
